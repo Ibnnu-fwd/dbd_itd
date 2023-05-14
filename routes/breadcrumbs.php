@@ -34,7 +34,7 @@ Breadcrumbs::for('regency.create', function (BreadcrumbTrail $trail) {
 // District
 Breadcrumbs::for('district', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push('Kabupaten/Kota', route('admin.district.index'));
+    $trail->push('Kecamatan', route('admin.district.index'));
 });
 
 // District > Create
@@ -53,4 +53,28 @@ Breadcrumbs::for('tpa-type', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('tpa-type.create', function (BreadcrumbTrail $trail) {
     $trail->parent('tpa-type');
     $trail->push('Tambah Jenis TPA', route('admin.tpa-type.create'));
+});
+
+// Tpa Type > Edit
+Breadcrumbs::for('tpa-type.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('tpa-type');
+    $trail->push('Edit Jenis TPA', route('admin.tpa-type.edit', $data->id));
+});
+
+// Floor Type
+Breadcrumbs::for('floor-type', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Jenis Lantai', route('admin.floor-type.index'));
+});
+
+// Floor Type > Create
+Breadcrumbs::for('floor-type.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('floor-type');
+    $trail->push('Tambah Jenis Lantai', route('admin.floor-type.create'));
+});
+
+// Floor Type > Edit
+Breadcrumbs::for('floor-type.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('floor-type');
+    $trail->push('Edit Jenis Lantai', route('admin.floor-type.edit', $data->id));
 });

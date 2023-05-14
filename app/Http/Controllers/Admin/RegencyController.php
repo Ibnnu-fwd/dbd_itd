@@ -23,8 +23,11 @@ class RegencyController extends Controller
         if ($request->ajax()) {
             return datatables()
                 ->of($this->regency->getAll())
-                ->addColumn('name', function ($data) {
-                    return view('admin.regency.column.name', compact('data'));
+                ->addColumn('regency', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('province', function($data) {
+                    return $data->province->name;
                 })
                 ->addColumn('action', function ($data) {
                     return view('admin.regency.column.action', compact('data'));

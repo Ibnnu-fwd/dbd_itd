@@ -1,18 +1,16 @@
 <x-app-layout>
-    <x-breadcrumb name="district" />
+    <x-breadcrumb name="floor-type" />
     <x-card-container>
         <div class="text-end mb-4">
-            <x-link-button route="{{ route('admin.district.create') }}" color="gray" type="button">
+            <x-link-button route="{{ route('admin.floor-type.create') }}" color="gray" type="button">
                 Tambah
             </x-link-button>
         </div>
-        <table id="districtTable" class="w-full">
+        <table id="tpaTypeTable" class="w-full">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Kecamatan</th>
-                    <th>Kabupaten/Kota</th>
-                    <th>Provinsi</th>
+                    <th>Jenis Lantai</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -22,12 +20,12 @@
     @push('js-internal')
         <script>
             function btnDelete(id, name) {
-                let url = "{{ route('admin.district.destroy', ':id') }}";
+                let url = "{{ route('admin.floor-type.destroy', ':id') }}";
                 url = url.replace(':id', id);
 
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: `Apakah anda yakin ingin menghapus kecamatan ${name}?`,
+                    text: `Apakah anda yakin ingin menghapus jenis TPA ${name}?`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Ya, hapus!',
@@ -48,7 +46,7 @@
                                         title: 'Berhasil',
                                         text: response.message
                                     }).then(() => {
-                                        $('#districtTable').DataTable().ajax.reload();
+                                        $('#tpaTypeTable').DataTable().ajax.reload();
                                     })
                                 } else {
                                     Swal.fire({
@@ -64,27 +62,19 @@
             }
 
             $(function() {
-                $('#districtTable').DataTable({
+                $('#tpaTypeTable').DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: true,
                     autoWidth: false,
-                    ajax: "{{ route('admin.district.index') }}",
+                    ajax: "{{ route('admin.floor-type.index') }}",
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'
                         },
                         {
-                            data: 'district',
-                            name: 'district'
-                        },
-                        {
-                            data: 'regency',
-                            name: 'regency'
-                        },
-                        {
-                            data: 'province',
-                            name: 'province'
+                            data: 'name',
+                            name: 'name'
                         },
                         {
                             data: 'action',

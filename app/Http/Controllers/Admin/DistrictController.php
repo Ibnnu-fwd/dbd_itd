@@ -24,8 +24,14 @@ class DistrictController extends Controller
         if($request->ajax()) {
             return datatables()
             ->of($this->district->getAll())
-            ->addColumn('name', function($data) {
-                return view('admin.district.column.name', compact('data'));
+            ->addColumn('district', function($data) {
+                return $data->name;
+            })
+            ->addColumn('regency', function($data) {
+                return $data->regency->name;
+            })
+            ->addColumn('province', function($data) {
+                return $data->regency->province->name;
             })
             ->addColumn('action', function($data) {
                 return view('admin.district.column.action', compact('data'));

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\FloorTypeController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\RegencyController;
 use App\Http\Controllers\Admin\TpaTypeController;
@@ -37,6 +38,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
 
     // Tpa Type
     Route::resource('tpa-type', TpaTypeController::class, ['as' => 'admin']);
+
+    // Floor Type
+    Route::resource('floor-type', FloorTypeController::class, ['as' => 'admin']);
 });
 
 require __DIR__.'/auth.php';

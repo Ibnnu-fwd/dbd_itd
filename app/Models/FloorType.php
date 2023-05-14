@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TpaType extends Model
+class FloorType extends Model
 {
     use HasFactory;
 
@@ -16,7 +16,7 @@ class TpaType extends Model
         });
     }
 
-    public $table = 'tpa_types';
+    public $table = 'floor_types';
 
     protected $fillable = [
         'name',
