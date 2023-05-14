@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('broods', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('district_id')->constrained('districts');
+            $table->char('district_id', 7)->nullable();
             $table->string('latitude');
             $table->string('longitude');
             $table->string('houseowner_name', 100);
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

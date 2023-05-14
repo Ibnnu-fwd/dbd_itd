@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\RegencyController;
+use App\Http\Controllers\Admin\TpaTypeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,17 +20,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
+    Route::get('/', DashboardController::class)->name('admin.dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Province
+    Route::resource('province', ProvinceController::class, ['as' => 'admin']);
+
+    // Regency
+    Route::resource('regency', RegencyController::class, ['as' => 'admin']);
+
+    // District
+    Route::resource('district', DistrictController::class, ['as' => 'admin']);
+
+    // Tpa Type
+    Route::resource('tpa-type', TpaTypeController::class, ['as' => 'admin']);
 });
 
 require __DIR__.'/auth.php';

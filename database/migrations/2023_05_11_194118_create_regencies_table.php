@@ -12,10 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('regencies', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('province_id')->nullable()->constrained('provinces');
+            $table->char('id', 4)->primary();
+            $table->char('province_id', 2);
             $table->string('name', 100);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('province_id')->references('id')->on('provinces');
         });
     }
 

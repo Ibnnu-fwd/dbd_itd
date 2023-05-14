@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('larvae', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('regency_id')->nullable()->constrained('regencies');
-            $table->foreignId('district_id')->nullable()->constrained('districts');
+            $table->char('regency_id', 4)->nullable();
+            $table->char('district_id', 7)->nullable();
             $table->foreignId('location_type_id')->nullable()->constrained('location_types');
             $table->foreignId('settlement_type_id')->nullable()->constrained('settlement_types');
             $table->foreignId('environment_type_id')->nullable()->constrained('environment_types');
@@ -31,7 +31,13 @@ return new class extends Migration
             $table->double('salinity');
             $table->double('ph');
             $table->enum('aquatic_plant', ['yes', 'no']);
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('regency_id')->references('id')->on('regencies');
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

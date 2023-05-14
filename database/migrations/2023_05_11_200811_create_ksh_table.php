@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('longitude');
             $table->date('ksh_date');
             $table->string('ksh_time');
-            $table->foreignId('regency_id')->nullable()->constrained('regencies');
+            $table->char('regency_id', 4)->nullable();
             $table->string('house_name');
             $table->string('house_owner');
             $table->foreignId('tpa_type_id')->nullable()->constrained('tpa_types');
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('regency_id')->references('id')->on('regencies');
         });
     }
 

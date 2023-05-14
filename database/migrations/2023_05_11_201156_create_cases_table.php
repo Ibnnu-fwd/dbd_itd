@@ -14,9 +14,14 @@ return new class extends Migration
         Schema::create('cases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('abj_id')->nullable()->constrained('abj');
-            $table->foreignId('district_id')->nullable()->constrained('districts');
+            $table->char('district_id', 7)->nullable();
             $table->integer('amount_of_case');
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

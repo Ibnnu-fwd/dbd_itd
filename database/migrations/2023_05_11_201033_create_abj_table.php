@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('abj', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('district_id')->nullable()->constrained('districts');
+            $table->char('district_id', 7)->nullable();
             $table->foreignId('ksh_id')->nullable()->constrained('ksh');
             $table->integer('abj_total');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

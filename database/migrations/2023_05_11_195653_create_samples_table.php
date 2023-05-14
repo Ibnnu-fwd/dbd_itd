@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('sample_method_id')->nullable()->constrained('sample_methods');
             $table->string('latitude');
             $table->string('longitude');
-            $table->foreignId('province_id')->nullable()->constrained('provinces');
-            $table->foreignId('regency_id')->nullable()->constrained('regencies');
-            $table->foreignId('district_id')->nullable()->constrained('districts');
+            $table->char('province_id', 2)->nullable();
+            $table->char('regency_id', 4)->nullable();
+            $table->char('district_id', 7)->nullable();
             $table->foreignId('morphotype_id')->constrained('morphotypes');
             $table->foreignId('viruses_id')->constrained('viruses');
             $table->integer('amount');
@@ -27,6 +27,10 @@ return new class extends Migration
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->foreign('regency_id')->references('id')->on('regencies');
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

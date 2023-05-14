@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('environment_variables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('district_id')->nullable()->constrained('districts');
+            $table->char('district_id', 7)->nullable()->constrained('districts');
             $table->double('moisture');
             $table->double('temperature');
             $table->integer('rain_day');
@@ -22,7 +22,10 @@ return new class extends Migration
             $table->integer('quarter');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 
