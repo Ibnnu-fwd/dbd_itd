@@ -6,7 +6,7 @@
             <x-sidebar-item title="Dashboard" icon="fas fa-tachometer-alt" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
             <x-sidebar-dropdown title="Master" icon="fas fa-folder" toggle="master"
-                active="{{ request()->routeIs('admin.province.*') || request()->routeIs('admin.regency.*') || request()->routeIs('admin.district.*') || request()->routeIs('admin.tpa-type.*') }}">
+                active="{{ request()->routeIs('admin.province.*') || request()->routeIs('admin.regency.*') || request()->routeIs('admin.district.*') || request()->routeIs('admin.tpa-type.*') || request()->routeIs('admin.floor-type.*') }}">
                 <x-sidebar-item title="Provinsi" route="{{ route('admin.province.index') }}"
                     active="{{ request()->routeIs('admin.province.*') }}" />
                 <x-sidebar-item title="Kabupaten / Kota" route="{{ route('admin.regency.index') }}"
@@ -15,6 +15,8 @@
                     active="{{ request()->routeIs('admin.district.*') }}" />
                 <x-sidebar-item title="Jenis TPA" route="{{ route('admin.tpa-type.index') }}"
                     active="{{ request()->routeIs('admin.tpa-type.*') }}" />
+                <x-sidebar-item title="Jenis Lantai" route="{{ route('admin.floor-type.index') }}"
+                    active="{{ request()->routeIs('admin.floor-type.*') }}" />
             </x-sidebar-dropdown>
         </ul>
     </div>

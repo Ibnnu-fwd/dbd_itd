@@ -10,7 +10,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Name</th>
+                    <th>Kabupaten</th>
+                    <th>Provinsi</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -73,8 +74,12 @@
                             name: 'DT_RowIndex'
                         },
                         {
-                            data: 'name',
-                            name: 'name'
+                            data: 'regency',
+                            name: 'regency'
+                        },
+                        {
+                            data: 'province',
+                            name: 'province'
                         },
                         {
                             data: 'action',

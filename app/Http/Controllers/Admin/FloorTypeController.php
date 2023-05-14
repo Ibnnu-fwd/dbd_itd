@@ -3,33 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Interface\TpaTypeInterface;
+use App\Repositories\Interface\FloorTypeInterface;
 use Illuminate\Http\Request;
 
-class TpaTypeController extends Controller
+class FloorTypeController extends Controller
 {
-    private $tpaType;
+    private $floorType;
 
-    public function __construct(TpaTypeInterface $tpaType)
+    public function __construct(FloorTypeInterface $floorType)
     {
-        $this->tpaType = $tpaType;
+        $this->floorType = $floorType;
     }
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
             return datatables()
-                ->of($this->tpaType->getAll())
+                ->of($this->floorType->getAll())
                 ->addColumn('name', function ($data) {
                     return $data->name;
                 })
                 ->addColumn('action', function ($data) {
-                    return view('admin.tpa-type.column.action', compact('data'));
+                    return view('admin.floor-type.column.action', compact('data'));
                 })
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('admin.tpa-type.index');
+
+        return view('admin.floor-type.index');
     }
 
     /**
@@ -37,7 +38,7 @@ class TpaTypeController extends Controller
      */
     public function create()
     {
-        return view('admin.tpa-type.create');
+        return view('admin.floor-type.create');
     }
 
     /**
@@ -46,11 +47,14 @@ class TpaTypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:tpa_types,name'
+            'name' => 'required|unique:floor_types,name'
+        ], [
+            'name.required' => 'Jenis lantai tidak boleh kosong',
+            'name.unique' => 'Jenis lantai sudah ada'
         ]);
 
-        $this->tpaType->create($request->all());
-        return redirect()->route('admin.tpa-type.index')->with('success', 'Tipe TPA berhasil ditambahkan');
+        $this->floorType->create($request->all());
+        return redirect()->route('admin.floor-type.index')->with('success', 'Jenis lantai berhasil ditambahkan');
     }
 
     /**
@@ -66,8 +70,8 @@ class TpaTypeController extends Controller
      */
     public function edit(string $id)
     {
-        return view('admin.tpa-type.edit', [
-            'tpaType' => $this->tpaType->getById($id)
+        return view('admin.floor-type.edit', [
+            'floorType' => $this->floorType->getById($id)
         ]);
     }
 
@@ -77,14 +81,14 @@ class TpaTypeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:tpa_types,name,' . $id
+            'name' => 'required|unique:floor_types,name,' . $id
         ], [
-            'name.required' => 'Nama jenis TPA tidak boleh kosong',
-            'name.unique' => 'Nama jenis TPA sudah terdaftar'
+            'name.required' => 'Jenis lantai tidak boleh kosong',
+            'name.unique' => 'Jenis lantai sudah ada'
         ]);
 
-        $this->tpaType->update($id, $request->all());
-        return redirect()->route('admin.tpa-type.index')->with('success', 'Tipe TPA berhasil diperbarui');
+        $this->floorType->update($id, $request->all());
+        return redirect()->route('admin.floor-type.index')->with('success', 'Jenis lantai berhasil diubah');
     }
 
     /**
@@ -92,10 +96,10 @@ class TpaTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->tpaType->delete($id);
+        $this->floorType->delete($id);
         return response()->json([
             'status' => true,
-            'message' => 'Tipe TPA berhasil dihapus'
+            'message' => 'Jenis lantai berhasil dihapus'
         ]);
     }
 }

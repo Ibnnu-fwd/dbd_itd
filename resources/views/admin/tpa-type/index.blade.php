@@ -25,7 +25,7 @@
 
                 Swal.fire({
                     title: 'Apakah anda yakin?',
-                    text: `Provinsi ${name} akan dihapus`,
+                    text: `Apakah anda yakin ingin menghapus jenis TPA ${name}?`,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Ya, hapus!',
