@@ -78,3 +78,21 @@ Breadcrumbs::for('floor-type.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->parent('floor-type');
     $trail->push('Edit Jenis Lantai', route('admin.floor-type.edit', $data->id));
 });
+
+// Environment Type
+Breadcrumbs::for('environment-type', function(BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Jenis Lingkungan', route('admin.environment-type.index'));
+});
+
+// Environment Type > Create
+Breadcrumbs::for('environment-type.create', function(BreadcrumbTrail $trail) {
+    $trail->parent('environment-type');
+    $trail->push('Tambah Jenis Lingkungan', route('admin.environment-type.create'));
+});
+
+// Environment Type > Edit
+Breadcrumbs::for('environment-type.edit', function(BreadcrumbTrail $trail, $data) {
+    $trail->parent('environment-type');
+    $trail->push('Edit Jenis Lingkungan', route('admin.environment-type.edit', $data->id));
+});

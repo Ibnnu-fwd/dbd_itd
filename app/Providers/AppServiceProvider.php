@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interface\DistrictInterface::class, \App\Repositories\DistrictRepository::class);
         $this->app->bind(\App\Repositories\Interface\TpaTypeInterface::class, \App\Repositories\TpaTypeRepository::class);
         $this->app->bind(\App\Repositories\Interface\FloorTypeInterface::class, \App\Repositories\FloorTypeRepository::class);
+        $this->app->bind(\App\Repositories\Interface\EnvironmentTypeInterface::class, \App\Repositories\EnvironmentTypeRepository::class);
     }
 
     /**

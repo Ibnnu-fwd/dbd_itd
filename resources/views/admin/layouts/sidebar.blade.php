@@ -17,6 +17,8 @@
                     active="{{ request()->routeIs('admin.tpa-type.*') }}" />
                 <x-sidebar-item title="Jenis Lantai" route="{{ route('admin.floor-type.index') }}"
                     active="{{ request()->routeIs('admin.floor-type.*') }}" />
+                <x-sidebar-item title="Jenis Lingkungan" route="{{ route('admin.environment-type.index') }}"
+                    active="{{ request()->routeIs('admin.environment-type.*') }}" />
             </x-sidebar-dropdown>
         </ul>
     </div>

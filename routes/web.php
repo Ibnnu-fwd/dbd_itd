@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\EnvironmentTypeController;
 use App\Http\Controllers\Admin\FloorTypeController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\RegencyController;
@@ -41,6 +42,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
 
     // Floor Type
     Route::resource('floor-type', FloorTypeController::class, ['as' => 'admin']);
+
+    // Environment Type
+    Route::resource('environment-type', EnvironmentTypeController::class, ['as' => 'admin']);
 });
 
 require __DIR__.'/auth.php';
