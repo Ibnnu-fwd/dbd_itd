@@ -28,7 +28,7 @@ class Province extends Model
 
     public function villages()
     {
-        return $this->hasManyThrough(Village::class, District::class);
+        return $this->hasMany(Village::class);
     }
 
     public function scopeFilter($query, array $filters)

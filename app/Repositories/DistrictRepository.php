@@ -14,7 +14,8 @@ class DistrictRepository implements DistrictInterface
     private $regency;
     private $district;
 
-    public function __construct(District $district, Province $province, Regency $regency) {
+    public function __construct(District $district, Province $province, Regency $regency)
+    {
         $this->district = $district;
         $this->province = $province;
         $this->regency = $regency;
@@ -28,6 +29,12 @@ class DistrictRepository implements DistrictInterface
     public function getById($id)
     {
         return $this->district->with(['province', 'regency'])->findOrFail($id);
+    }
+
+    public function search($search)
+    {
+        return $this->district->with(['province', 'regency'])
+            ->where('name', 'like', '%' . $search . '%')->get();
     }
 
     public function create(array $attributes)

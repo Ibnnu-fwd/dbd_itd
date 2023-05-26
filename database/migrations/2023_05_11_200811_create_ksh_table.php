@@ -18,6 +18,8 @@ return new class extends Migration
             $table->date('ksh_date');
             $table->string('ksh_time');
             $table->char('regency_id', 4)->nullable();
+            $table->char('district_id', 7)->nullable();
+            $table->char('village_id', 10)->nullable();
             $table->string('house_name');
             $table->string('house_owner');
             $table->foreignId('tpa_type_id')->nullable()->constrained('tpa_types');
@@ -29,6 +31,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('regency_id')->references('id')->on('regencies');
+            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

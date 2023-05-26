@@ -11,7 +11,7 @@
                 <tr>
                     <th>#</th>
                     <th>Jenis Lantai</th>
-                    <th>Action</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
         </table>

@@ -1,11 +1,11 @@
 <x-app-layout>
-    <x-breadcrumb name="tpa-type.edit" :data="$tpaType" />
+    <x-breadcrumb name="village.edit" :data="$village" />
     <div class="lg:w-1/2 w-full">
         <x-card-container>
-            <form action="{{ route('admin.tpa-type.update', $tpaType->id) }}" method="POST">
+            <form action="{{ route('admin.village.update', $village->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <x-input id="name" name="name" type="text" label="Jenis TPA" :value="$tpaType->name" required />
+                <x-input id="name" name="name" type="text" label="Jenis TPA" :value="$village->name" required />
                 <x-button type="submit" class="bg-primary">Simpan</x-button>
             </form>
         </x-card-container>

@@ -96,3 +96,75 @@ Breadcrumbs::for('environment-type.edit', function(BreadcrumbTrail $trail, $data
     $trail->parent('environment-type');
     $trail->push('Edit Jenis Lingkungan', route('admin.environment-type.edit', $data->id));
 });
+
+// Village
+Breadcrumbs::for('village', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Desa', route('admin.village.index'));
+});
+
+// Village > Create
+Breadcrumbs::for('village.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('village');
+    $trail->push('Tambah Desa', route('admin.village.create'));
+});
+
+// Village > Edit
+Breadcrumbs::for('village.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('village');
+    $trail->push('Edit Desa', route('admin.village.edit', $data->id));
+});
+
+// Location Type
+Breadcrumbs::for('location-type', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Jenis Lokasi', route('admin.location-type.index'));
+});
+
+// Location Type > Create
+Breadcrumbs::for('location-type.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('location-type');
+    $trail->push('Tambah Jenis Lokasi', route('admin.location-type.create'));
+});
+
+// Location Type > Edit
+Breadcrumbs::for('location-type.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('location-type');
+    $trail->push('Edit Jenis Lokasi', route('admin.location-type.edit', $data->id));
+});
+
+// Settlement Type
+Breadcrumbs::for('settlement-type', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Jenis Permukiman', route('admin.settlement-type.index'));
+});
+
+// Settlement Type > Create
+Breadcrumbs::for('settlement-type.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('settlement-type');
+    $trail->push('Tambah Jenis Permukiman', route('admin.settlement-type.create'));
+});
+
+// Settlement Type > Edit
+Breadcrumbs::for('settlement-type.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('settlement-type');
+    $trail->push('Edit Jenis Permukiman', route('admin.settlement-type.edit', $data->id));
+});
+
+// Building Type
+Breadcrumbs::for('building-type', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Jenis Bangunan', route('admin.building-type.index'));
+});
+
+// Building Type > Create
+Breadcrumbs::for('building-type.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('building-type');
+    $trail->push('Tambah Jenis Bangunan', route('admin.building-type.create'));
+});
+
+// Building Type > Edit
+Breadcrumbs::for('building-type.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('building-type');
+    $trail->push('Edit Jenis Bangunan', route('admin.building-type.edit', $data->id));
+});
