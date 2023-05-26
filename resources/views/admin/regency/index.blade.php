@@ -12,7 +12,7 @@
                     <th>#</th>
                     <th>Kabupaten</th>
                     <th>Provinsi</th>
-                    <th>Action</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
         </table>
@@ -68,7 +68,22 @@
                     serverSide: true,
                     responsive: true,
                     autoWidth: false,
-                    ajax: "{{ route('admin.regency.index') }}",
+                    scrollY: 200,
+                    scroller: {
+                        loadingIndicator: true
+                    },
+                    ajax: function(data, callback, settings) {
+                        // reload from server side
+                        $.ajax({
+                            url: '{{ route('admin.regency.index') }}',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: data,
+                            success: function(response) {
+                                callback(response);
+                            }
+                        });
+                    },
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'

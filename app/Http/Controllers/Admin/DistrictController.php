@@ -7,6 +7,7 @@ use App\Repositories\Interface\DistrictInterface;
 use App\Repositories\Interface\ProvinceInterface;
 use App\Repositories\Interface\RegencyInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class DistrictController extends Controller
 {
@@ -14,30 +15,31 @@ class DistrictController extends Controller
     private $province;
     private $regency;
 
-    public function __construct(DistrictInterface $district, ProvinceInterface $province, RegencyInterface $regency) {
+    public function __construct(DistrictInterface $district, ProvinceInterface $province, RegencyInterface $regency)
+    {
         $this->district = $district;
         $this->province = $province;
         $this->regency = $regency;
     }
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->district->getAll())
-            ->addColumn('district', function($data) {
-                return $data->name;
-            })
-            ->addColumn('regency', function($data) {
-                return $data->regency->name;
-            })
-            ->addColumn('province', function($data) {
-                return $data->regency->province->name;
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.district.column.action', compact('data'));
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->district->getAll())
+                ->addColumn('district', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('regency', function ($data) {
+                    return $data->regency->name;
+                })
+                ->addColumn('province', function ($data) {
+                    return $data->regency->province->name;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.district.column.action', compact('data'));
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.district.index');
     }
@@ -88,5 +90,23 @@ class DistrictController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    // Custom Function
+    public function list(Request $request)
+    {
+        $districts = $this->district->getAll();
+        if (isset($request->search)) {
+            $districts = $this->district->search($request->search);
+        }
+        $arr_data = new Collection();
+        foreach ($districts as $district) {
+            $arr_data->push([
+                'id' => $district->id,
+                'text' => $district->name,
+            ]);
+        }
+
+        return response()->json($arr_data);
     }
 }

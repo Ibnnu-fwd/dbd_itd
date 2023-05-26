@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('abj_id')->nullable()->constrained('abj');
             $table->char('district_id', 7)->nullable();
+            $table->char('village_id', 10)->nullable();
             $table->integer('amount_of_case');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');

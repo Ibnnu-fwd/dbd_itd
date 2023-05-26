@@ -13,7 +13,7 @@
                     <th>Kecamatan</th>
                     <th>Kabupaten/Kota</th>
                     <th>Provinsi</th>
-                    <th>Action</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
         </table>
@@ -69,7 +69,21 @@
                     serverSide: true,
                     responsive: true,
                     autoWidth: false,
-                    ajax: "{{ route('admin.district.index') }}",
+                    scrollY: 200,
+                    scroller: {
+                        loadingIndicator: true
+                    },
+                    ajax: function(data, callback, settings) {
+                        $.ajax({
+                            url: '{{ route('admin.district.index') }}',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: data,
+                            success: function(response) {
+                                callback(response);
+                            }
+                        });
+                    },
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'

@@ -17,6 +17,7 @@ class Village extends Model
         'is_active'
     ];
 
+
     public function district()
     {
         return $this->belongsTo(District::class);
@@ -24,12 +25,12 @@ class Village extends Model
 
     public function regency()
     {
-        return $this->belongsToThrough(Regency::class, District::class);
+        return $this->belongsTo(Regency::class);
     }
 
     public function province()
     {
-        return $this->belongsToThrough(Province::class, District::class);
+        return $this->belongsTo(Province::class);
     }
 
     public function scopeFilter($query, array $filters)
@@ -58,5 +59,13 @@ class Village extends Model
         $query->when($filters['province_id'] ?? false, function ($query, $province_id) {
             $query->where('province_id', $province_id);
         });
+    }
+
+    public function generateId()
+    {
+        $lastVillage = $this->orderBy('id', 'desc')->first();
+        $lastId = $lastVillage ? $lastVillage->id : 0;
+        $newId = $lastId + 1;
+        return $newId;
     }
 }

@@ -1,8 +1,4 @@
 <div class="inline-flex gap-2">
-    <x-link-button route="{{ route('admin.regency.edit', $data->id) }}" color="gray">
-        Ubah
-    </x-link-button>
-    <x-link-button onclick="btnDelete('{{ $data->id }}', '{{ $data->name }}')" color="red">
-        Hapus
-    </x-link-button>
+    <x-icon-button route="{{ route('admin.regency.edit', $data->id) }}" color="gray" icon="fas fa-edit" />
+        <x-icon-button onclick="btnDelete('{{ $data->id }}', '{{ $data->name }}')" color="red" icon="fas fa-trash" />
 </div>

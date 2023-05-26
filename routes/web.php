@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\Admin\BuildingTypeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\EnvironmentTypeController;
 use App\Http\Controllers\Admin\FloorTypeController;
+use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\RegencyController;
+use App\Http\Controllers\Admin\SettlementTypeController;
 use App\Http\Controllers\Admin\TpaTypeController;
+use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +39,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
     Route::resource('regency', RegencyController::class, ['as' => 'admin']);
 
     // District
+    Route::post('district/list', [DistrictController::class, 'list'])->name('admin.district.list');
     Route::resource('district', DistrictController::class, ['as' => 'admin']);
 
     // Tpa Type
@@ -41,6 +47,21 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function() {
 
     // Floor Type
     Route::resource('floor-type', FloorTypeController::class, ['as' => 'admin']);
+
+    // Environment Type
+    Route::resource('environment-type', EnvironmentTypeController::class, ['as' => 'admin']);
+
+    // Village
+    Route::resource('village', VillageController::class, ['as' => 'admin']);
+
+    // Location Type
+    Route::resource('location-type', LocationTypeController::class, ['as' => 'admin']);
+
+    // Settlement Type
+    Route::resource('settlement-type', SettlementTypeController::class, ['as' => 'admin']);
+
+    // Building Type
+    Route::resource('building-type', BuildingTypeController::class, ['as' => 'admin']);
 });
 
 require __DIR__.'/auth.php';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interface\FloorTypeInterface;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class FloorTypeController extends Controller
 {
@@ -47,7 +48,9 @@ class FloorTypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:floor_types,name'
+            'name' => ['required', Rule::unique('floor_types', 'name')->where(function ($query) {
+                return $query->where('is_active', 1);
+            })]
         ], [
             'name.required' => 'Jenis lantai tidak boleh kosong',
             'name.unique' => 'Jenis lantai sudah ada'
@@ -81,7 +84,9 @@ class FloorTypeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|unique:floor_types,name,' . $id
+            'name' => ['required', Rule::unique('floor_types', 'name')->where(function ($query) {
+                return $query->where('is_active', 1);
+            })]
         ], [
             'name.required' => 'Jenis lantai tidak boleh kosong',
             'name.unique' => 'Jenis lantai sudah ada'

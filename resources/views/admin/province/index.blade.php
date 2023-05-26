@@ -11,7 +11,7 @@
                 <tr>
                     <th>#</th>
                     <th>Name</th>
-                    <th>Action</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
         </table>
@@ -30,7 +30,7 @@
                     showCancelButton: true,
                     confirmButtonText: 'Ya, hapus!',
                     cancelButtonText: 'Tidak',
-                    reverseButtons: true
+                    reverseButtons: true,
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -67,7 +67,22 @@
                     serverSide: true,
                     responsive: true,
                     autoWidth: false,
-                    ajax: "{{ route('admin.province.index') }}",
+                    scrollY: 200,
+                    scroller: {
+                        loadingIndicator: true
+                    },
+                    ajax: function(data, callback, settings) {
+                        // reload from server side
+                        $.ajax({
+                            url: '{{ route('admin.province.index') }}',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: data,
+                            success: function(response) {
+                                callback(response);
+                            }
+                        });
+                    },
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'

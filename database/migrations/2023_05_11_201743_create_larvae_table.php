@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->char('regency_id', 4)->nullable();
             $table->char('district_id', 7)->nullable();
+            $table->char('village_id', 10)->nullable();
             $table->foreignId('location_type_id')->nullable()->constrained('location_types');
             $table->foreignId('settlement_type_id')->nullable()->constrained('settlement_types');
             $table->foreignId('environment_type_id')->nullable()->constrained('environment_types');
