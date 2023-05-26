@@ -18,7 +18,7 @@
             </x-sidebar-dropdown>
             <x-sidebar-dropdown title="Master Tipe" icon="fas fa-folder" toggle="master-type"
                 active="{{
-                    request()->routeIs('admin.tpa-type.*') || request()->routeIs('admin.floor-type.*') || request()->routeIs('admin.environment-type.*') || request()->routeIs('admin.location-type.*') || request()->routeIs('admin.settlement-type.*')
+                    request()->routeIs('admin.tpa-type.*') || request()->routeIs('admin.floor-type.*') || request()->routeIs('admin.environment-type.*') || request()->routeIs('admin.location-type.*') || request()->routeIs('admin.settlement-type.*') || request()->routeIs('admin.building-type.*')
                 }}">
                 <x-sidebar-item title="Jenis TPA" route="{{ route('admin.tpa-type.index') }}"
                     active="{{ request()->routeIs('admin.tpa-type.*') }}" />
