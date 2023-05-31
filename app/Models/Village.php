@@ -18,6 +18,7 @@ class Village extends Model
     ];
 
 
+    // RELATIONSHIPS
     public function district()
     {
         return $this->belongsTo(District::class);
@@ -33,6 +34,12 @@ class Village extends Model
         return $this->belongsTo(Province::class);
     }
 
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
+
+    // SCOPES
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {

@@ -10,4 +10,5 @@ interface DistrictInterface
     public function update($id, array $attributes);
     public function delete($id);
     public function search($search);
+    public function getByRegency($regencyId);
 }

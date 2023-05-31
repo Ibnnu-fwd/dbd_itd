@@ -10,4 +10,5 @@ interface VillageInterface
     public function update($id, $attributes);
     public function delete($id);
     public function search($search);
+    public function getByDistrict($districtId);
 }

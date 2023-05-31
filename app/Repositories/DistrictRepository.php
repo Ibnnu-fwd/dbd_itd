@@ -51,4 +51,9 @@ class DistrictRepository implements DistrictInterface
     {
         return $this->district->findOrFail($id)->update(['is_active' => 0]);
     }
+
+    public function getByRegency($regencyId)
+    {
+        return $this->district->where('regency_id', $regencyId)->get();
+    }
 }

@@ -41,4 +41,9 @@ class RegencyRepository implements RegencyInterface
     {
         return $this->regency->findOrFail($id)->update(['is_active' => 0]);
     }
+
+    public function getByProvince(string $provinceId)
+    {
+        return $this->regency->where('province_id', $provinceId)->get();
+    }
 }

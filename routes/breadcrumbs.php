@@ -7,7 +7,7 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Dashboard', route('admin.dashboard'));
 });
 
-// Province
+// ------------ PROVINCE ------------
 Breadcrumbs::for('province', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Provinsi', route('admin.province.index'));
@@ -19,7 +19,7 @@ Breadcrumbs::for('province.create', function (BreadcrumbTrail $trail) {
     $trail->push('Tambah Provinsi', route('admin.province.create'));
 });
 
-// Regency
+// ------------ REGENCY ------------
 Breadcrumbs::for('regency', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Kabupaten/Kota', route('admin.regency.index'));
@@ -31,7 +31,7 @@ Breadcrumbs::for('regency.create', function (BreadcrumbTrail $trail) {
     $trail->push('Tambah Kabupaten/Kota', route('admin.regency.create'));
 });
 
-// District
+// ------------ DISTRICT ------------
 Breadcrumbs::for('district', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Kecamatan', route('admin.district.index'));
@@ -43,7 +43,7 @@ Breadcrumbs::for('district.create', function (BreadcrumbTrail $trail) {
     $trail->push('Tambah Kecamatan', route('admin.district.create'));
 });
 
-// Tpa Type
+// ------------ TPA TYPE ------------
 Breadcrumbs::for('tpa-type', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Jenis TPA', route('admin.tpa-type.index'));
@@ -61,7 +61,7 @@ Breadcrumbs::for('tpa-type.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->push('Edit Jenis TPA', route('admin.tpa-type.edit', $data->id));
 });
 
-// Floor Type
+// ------------ FLOOR TYPE ------------
 Breadcrumbs::for('floor-type', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Jenis Lantai', route('admin.floor-type.index'));
@@ -79,25 +79,25 @@ Breadcrumbs::for('floor-type.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->push('Edit Jenis Lantai', route('admin.floor-type.edit', $data->id));
 });
 
-// Environment Type
-Breadcrumbs::for('environment-type', function(BreadcrumbTrail $trail) {
+// ------------ ENVIRONMENT TYPE ------------
+Breadcrumbs::for('environment-type', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Jenis Lingkungan', route('admin.environment-type.index'));
 });
 
 // Environment Type > Create
-Breadcrumbs::for('environment-type.create', function(BreadcrumbTrail $trail) {
+Breadcrumbs::for('environment-type.create', function (BreadcrumbTrail $trail) {
     $trail->parent('environment-type');
     $trail->push('Tambah Jenis Lingkungan', route('admin.environment-type.create'));
 });
 
 // Environment Type > Edit
-Breadcrumbs::for('environment-type.edit', function(BreadcrumbTrail $trail, $data) {
+Breadcrumbs::for('environment-type.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->parent('environment-type');
     $trail->push('Edit Jenis Lingkungan', route('admin.environment-type.edit', $data->id));
 });
 
-// Village
+// ------------ VILLAGE TYPE ------------
 Breadcrumbs::for('village', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Desa', route('admin.village.index'));
@@ -115,7 +115,7 @@ Breadcrumbs::for('village.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->push('Edit Desa', route('admin.village.edit', $data->id));
 });
 
-// Location Type
+// ------------ LOCATION TYPE ------------
 Breadcrumbs::for('location-type', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Jenis Lokasi', route('admin.location-type.index'));
@@ -133,7 +133,7 @@ Breadcrumbs::for('location-type.edit', function (BreadcrumbTrail $trail, $data) 
     $trail->push('Edit Jenis Lokasi', route('admin.location-type.edit', $data->id));
 });
 
-// Settlement Type
+// ------------ SETTLEMENT TYPE ------------
 Breadcrumbs::for('settlement-type', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Jenis Permukiman', route('admin.settlement-type.index'));
@@ -151,7 +151,7 @@ Breadcrumbs::for('settlement-type.edit', function (BreadcrumbTrail $trail, $data
     $trail->push('Edit Jenis Permukiman', route('admin.settlement-type.edit', $data->id));
 });
 
-// Building Type
+// ------------ BUILDING TYPE ------------
 Breadcrumbs::for('building-type', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Jenis Bangunan', route('admin.building-type.index'));
@@ -167,4 +167,107 @@ Breadcrumbs::for('building-type.create', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('building-type.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->parent('building-type');
     $trail->push('Edit Jenis Bangunan', route('admin.building-type.edit', $data->id));
+});
+
+// ------------ SEROTYPE ------------
+Breadcrumbs::for('serotype', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Serotipe', route('admin.serotype.index'));
+});
+
+// Serotype > Create
+Breadcrumbs::for('serotype.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('serotype');
+    $trail->push('Tambah Serotipe', route('admin.serotype.create'));
+});
+
+// Serotype > Edit
+Breadcrumbs::for('serotype.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('serotype');
+    $trail->push('Edit Serotipe', route('admin.serotype.edit', $data->id));
+});
+
+// ------------ VIRUS ------------
+Breadcrumbs::for('virus', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Virus', route('admin.virus.index'));
+});
+
+// Virus > Create
+Breadcrumbs::for('virus.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('virus');
+    $trail->push('Tambah Virus', route('admin.virus.create'));
+});
+
+// Virus > Edit
+Breadcrumbs::for('virus.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('virus');
+    $trail->push('Edit Virus', route('admin.virus.edit', $data->id));
+});
+
+// ------------ MORPHOTYPE ------------
+Breadcrumbs::for('morphotype', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Morfotipe', route('admin.morphotype.index'));
+});
+
+// Morphtype > Create
+Breadcrumbs::for('morphotype.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('morphotype');
+    $trail->push('Tambah Morfotipe', route('admin.morphotype.create'));
+});
+
+// Morphtype > Edit
+Breadcrumbs::for('morphotype.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('morphotype');
+    $trail->push('Edit Morfotipe', route('admin.morphotype.edit', $data->id));
+});
+
+// ------------ SAMPLE METHOD ------------
+Breadcrumbs::for('sample-method', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Metode Pengambilan Sampel', route('admin.sample-method.index'));
+});
+
+// Sample Method > Create
+Breadcrumbs::for('sample-method.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('sample-method');
+    $trail->push('Tambah Metode Pengambilan Sampel', route('admin.sample-method.create'));
+});
+
+// Sample Method > Edit
+Breadcrumbs::for('sample-method.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('sample-method');
+    $trail->push('Edit Metode Pengambilan Sampel', route('admin.sample-method.edit', $data->id));
+});
+
+// ------------ SAMPLE ------------
+Breadcrumbs::for('sample', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Sampel', route('admin.sample.index'));
+});
+
+// Sample > Create
+Breadcrumbs::for('sample.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('sample');
+    $trail->push('Tambah', route('admin.sample.create'));
+});
+
+// Sample > Edit
+Breadcrumbs::for('sample.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('sample');
+    $trail->push($data->sample_code, route('admin.sample.show', $data->id));
+    $trail->push('Edit', route('admin.sample.edit', $data->id));
+});
+
+// Sample > Detail Sample
+Breadcrumbs::for('sample.detail-sample', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('sample');
+    $trail->push($data->sample_code, route('admin.sample.detail-sample', $data->id));
+});
+
+// Sample > Detail Sample > Virus
+Breadcrumbs::for('sample.detail-sample.virus', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('sample.detail-sample', $data->sample);
+    $trail->push($data->virus->name);
 });

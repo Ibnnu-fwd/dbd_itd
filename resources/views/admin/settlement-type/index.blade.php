@@ -101,6 +101,7 @@
                     text: '{{ Session::get('error') }}'
                 })
             @endif
+
         </script>
     @endpush
 </x-app-layout>

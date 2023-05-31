@@ -95,18 +95,7 @@ class DistrictController extends Controller
     // Custom Function
     public function list(Request $request)
     {
-        $districts = $this->district->getAll();
-        if (isset($request->search)) {
-            $districts = $this->district->search($request->search);
-        }
-        $arr_data = new Collection();
-        foreach ($districts as $district) {
-            $arr_data->push([
-                'id' => $district->id,
-                'text' => $district->name,
-            ]);
-        }
-
-        return response()->json($arr_data);
+        $districts = $this->district->getByRegency($request->regency_id);
+        return response()->json($districts);
     }
 }

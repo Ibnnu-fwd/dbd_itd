@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,4 +47,37 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // RELATIONSHIPS
+    public function samples()
+    {
+        return $this->hasMany(Sample::class, 'created_by');
+    }
+
+    public function detailSamples()
+    {
+        return $this->hasMany(DetailSample::class, 'created_by');
+    }
+
+    // SCOPES
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('phone', 'like', '%' . $search . '%');
+        });
+    }
+
+    public function scopeFilterByRole($query, array $filters)
+    {
+        $query->when($filters['role'] ?? false, function ($query, $role) {
+            $query->where('role', $role);
+        });
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

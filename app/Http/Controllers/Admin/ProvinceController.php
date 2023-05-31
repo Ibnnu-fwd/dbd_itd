@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Interface\ProvinceInterface;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ProvinceController extends Controller
 {
@@ -18,17 +19,17 @@ class ProvinceController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->province->getAll())
-            ->addColumn('name', function($data) {
-                return $data->name;
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.province.column.action', compact('data'));
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->province->getAll())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.province.column.action', compact('data'));
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.province.index');
     }
@@ -100,6 +101,21 @@ class ProvinceController extends Controller
                 'status' => false,
                 'message' => $th->getMessage()
             ]);
+        }
+    }
+
+    public function list(Request $request)
+    {
+        if ($request->ajax()) {
+            $provinces = $this->province->getAll();
+            $data = new Collection();
+            foreach ($provinces as $province) {
+                $data->push([
+                    'id' => $province->id,
+                    'text' => $province->name
+                ]);
+            }
+            return response()->json($data);
         }
     }
 }

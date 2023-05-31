@@ -52,4 +52,9 @@ class VillageRepository implements VillageInterface
     {
         return $this->village->find($id)->update(['is_active' => 0]);
     }
+
+    public function getByDistrict($districtId)
+    {
+        return $this->village->where('district_id', $districtId)->get();
+    }
 }
