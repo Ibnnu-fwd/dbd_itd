@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Interface\ProvinceInterface;
 use App\Repositories\Interface\RegencyInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class RegencyController extends Controller
 {
@@ -84,5 +85,12 @@ class RegencyController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    // CUSTOM FUNCTION
+    public function list(Request $regency)
+    {
+        $regency = $this->regency->getByProvince($regency->province_id);
+        return response()->json($regency);
     }
 }

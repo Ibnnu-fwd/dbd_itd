@@ -17,6 +17,7 @@ class Regency extends Model
         'is_active'
     ];
 
+    // RELATIONSHIPS
     public function province()
     {
         return $this->belongsTo(Province::class);
@@ -32,6 +33,12 @@ class Regency extends Model
         return $this->hasMany(Village::class);
     }
 
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
+
+    // SCOPES
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {

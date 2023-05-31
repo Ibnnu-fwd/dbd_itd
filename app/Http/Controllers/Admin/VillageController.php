@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interface\VillageInterface;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -70,7 +71,20 @@ class VillageController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $village = $this->village->getById($id);
+        $address = $village->name . ', ' . $village->district->name . ', ' . $village->district->regency->name . ', ' . $village->district->regency->province->name;
+        $address = strtolower($address);
+        $validAddress = ucwords($address);
+
+        $json = file_get_contents("https://geocode.maps.co/search?q=$village->name");
+        $json = json_decode($json);
+
+        return response()->json([
+            'address' => $validAddress,
+            'detail' => $json[0],
+            'latitude' => $json[0]->lat,
+            'longitude' => $json[0]->lon
+        ]);
     }
 
     /**
@@ -104,5 +118,12 @@ class VillageController extends Controller
     {
         $this->village->delete($id);
         return redirect()->route('admin.village.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    // CUSTOM FUNCTION
+    public function list(Request $request)
+    {
+        $villages = $this->village->getByDistrict($request->district_id);
+        return response()->json($villages);
     }
 }

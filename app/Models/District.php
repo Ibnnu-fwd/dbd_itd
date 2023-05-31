@@ -17,6 +17,7 @@ class District extends Model
         'is_active'
     ];
 
+    // RELATIONSHIPS
     public function regency()
     {
         return $this->belongsTo(Regency::class);
@@ -32,6 +33,12 @@ class District extends Model
         return $this->belongsTo(Province::class);
     }
 
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
+
+    // SCOPES
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {

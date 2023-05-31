@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('viruses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('serotype_id')->nullable()->constrained('serotypes');
             $table->string('name')->unique();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

@@ -8,6 +8,11 @@ td {
     font-size: 0.75rem;
 }
 
+/* datatable thead th font weight normal */
+table.dataTable thead th {
+    font-weight: normal;
+}
+
 .dataTables_length select,
 .dataTables_filter input,
 .dataTables_info,
@@ -39,7 +44,7 @@ td {
 }
 .select2-container .select2-selection--single {
     /* Selection box itself */
-    @apply box-border cursor-pointer block select-none shadow border rounded-md;
+    @apply box-border cursor-pointer block select-none border rounded-md;
 }
 
 .select2-container .select2-selection--single .select2-selection__rendered {
@@ -163,7 +168,7 @@ td {
 
 .select2-container--default .select2-selection--single {
     /* Selection bar - Self */
-    @apply p-1 !h-10 border-solid border border-gray-300 focus:border-primary !rounded-lg focus:!ring-0 !ring-green-700 bg-white;
+    @apply p-1 !h-10 border-solid border border-gray-300 focus:border-primary !rounded-lg focus:!ring-0 !ring-blue-700 bg-white;
 }
 .select2-container--default
     .select2-selection--single
@@ -238,7 +243,7 @@ td {
 }
 
 .select2-container--default .select2-selection--multiple {
-    @apply p-1 min-h-full h-12 border-solid border !border-green-700 !rounded-lg focus:!ring-0 !ring-green-700 shadow bg-white;
+    @apply p-1 min-h-full h-12 border-solid border !border-green-700 !rounded-lg focus:!ring-0 !ring-blue-700 shadow bg-white;
 }
 
 .select2-container--default

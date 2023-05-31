@@ -16,6 +16,13 @@ class LocationType extends Model
         'is_active'
     ];
 
+    // RELATIONSHIPS
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
+
+    // SCOPES
     public function scopeActive($query)
     {
         return $query->where('is_active', 1);

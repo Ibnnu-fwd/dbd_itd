@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\DetailSample;
+use App\Models\Sample;
+use App\Observers\DetailSampleObserver;
+use App\Observers\SampleObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +25,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interface\LocationTypeInterface::class, \App\Repositories\LocationTypeRepository::class);
         $this->app->bind(\App\Repositories\Interface\SettlementTypeInterface::class, \App\Repositories\SettlementTypeRepository::class);
         $this->app->bind(\App\Repositories\Interface\BuildingTypeInterface::class, \App\Repositories\BuildingTypeRepository::class);
+        $this->app->bind(\App\Repositories\Interface\SerotypeInterface::class, \App\Repositories\SerotypeRepository::class);
+        $this->app->bind(\App\Repositories\Interface\VirusInterface::class, \App\Repositories\VirusRepository::class);
+        $this->app->bind(\App\Repositories\Interface\MorphotypeInterface::class, \App\Repositories\MorphotypeRepository::class);
+        $this->app->bind(\App\Repositories\Interface\SampleMethodInterface::class, \App\Repositories\SampleMethodRepository::class);
+        $this->app->bind(\App\Repositories\Interface\SampleInterface::class, \App\Repositories\SampleRepository::class);
+        $this->app->bind(\App\Repositories\Interface\DetailSampleVirusInterface::class, \App\Repositories\DetailSampleVirusRepository::class);
     }
 
     /**
@@ -28,6 +38,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Sample::observe(SampleObserver::class);
     }
 }

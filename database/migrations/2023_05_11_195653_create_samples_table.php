@@ -21,17 +21,11 @@ return new class extends Migration
             $table->char('regency_id', 4)->nullable();
             $table->char('district_id', 7)->nullable();
             $table->char('village_id', 10)->nullable();
-            $table->foreignId('morphotype_id')->constrained('morphotypes');
-            $table->foreignId('viruses_id')->constrained('viruses');
-            $table->integer('amount');
+            $table->text('location_name')->nullable(); // rumah sakit, puskesmas, dll
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-
-            $table->foreign('province_id')->references('id')->on('provinces');
-            $table->foreign('regency_id')->references('id')->on('regencies');
-            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

@@ -16,6 +16,7 @@ class Province extends Model
         'is_active'
     ];
 
+    // RELATIONSHIPS
     public function districts()
     {
         return $this->hasMany(District::class);
@@ -30,6 +31,13 @@ class Province extends Model
     {
         return $this->hasMany(Village::class);
     }
+
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
+
+    // SCOPES
 
     public function scopeFilter($query, array $filters)
     {
