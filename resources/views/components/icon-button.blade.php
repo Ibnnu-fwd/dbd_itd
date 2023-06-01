@@ -1,6 +1,6 @@
 @props(['route' => '#', 'id' => '#', 'color' => 'gray', 'icon' => '', 'onclick' => '', 'class' => ''])
 
-<a id="{{ $id }}" onclick="{{ $onclick }}" href="{{ $route }}" {!! $attributes->merge([
+<a id="{{ $id }}" type="button" onclick="{{ $onclick }}" href="{{ $route }}" {!! $attributes->merge([
     'class' =>
         $class .
         ' text-white bg-' .

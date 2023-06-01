@@ -25,7 +25,7 @@
                                 {{ $locationType->name }}</option>
                         @endforeach
                     </x-select>
-                    <x-textarea id="description" label="Keterangan" name="description" type="text" required
+                    <x-textarea id="description" label="Keterangan" name="description" type="text"
                         :value="$sample->description" />
                 </div>
                 <div>

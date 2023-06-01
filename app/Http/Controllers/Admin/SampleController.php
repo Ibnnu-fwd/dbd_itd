@@ -186,7 +186,7 @@ class SampleController extends Controller
             'sample_method_id' => ['required'],
             'location_name' => ['required'],
             'location_type_id' => ['required'],
-            'description' => ['required'],
+            'description' => ['nullable'],
             'province_id' => ['required'],
             'regency_id' => ['required'],
             'district_id' => ['required'],

@@ -14,12 +14,12 @@
                     <th>Metode</th>
                     <th>Lokasi</th>
                     <th>Alamat</th>
-                    <th>Aksi</th>
                     <th>
                         <i class="fas fa-user-plus"></i>
                     <th>
                         <i class="fas fa-user-edit"></i>
                     </th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
         </table>
@@ -99,12 +99,7 @@
                             data: 'address',
                             name: 'address'
                         },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false,
-                        },
+
                         {
                             data: 'created_by',
                             name: 'created_by'
@@ -112,7 +107,13 @@
                         {
                             data: 'updated_by',
                             name: 'updated_by'
-                        }
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searchable: false,
+                        },
                     ]
                 });
             });

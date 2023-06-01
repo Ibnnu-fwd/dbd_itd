@@ -11,4 +11,6 @@ interface SampleInterface
     public function delete($id);
 
     public function detailSample($id);
+    public function getAllRegency();
+    public function getAllGroupByDistrict($regency_id);
 }

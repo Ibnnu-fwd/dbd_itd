@@ -19,7 +19,7 @@ class DetailSampleMorphotype extends Model
     // RELATIONSHIPS
     public function detailSampleVirus()
     {
-        return $this->belongsTo(DetailSampleVirus::class, 'detail_sample_virus_id');
+        return $this->belongsTo(DetailSampleVirus::class, 'detail_sample_virus_id', 'id');
     }
 
     public function morphotype()

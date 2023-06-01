@@ -256,18 +256,31 @@ Breadcrumbs::for('sample.create', function (BreadcrumbTrail $trail) {
 // Sample > Edit
 Breadcrumbs::for('sample.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->parent('sample');
-    $trail->push($data->sample_code, route('admin.sample.show', $data->id));
+    $trail->push($data->sample_code, route('admin.sample.detail-sample', $data->id));
     $trail->push('Edit', route('admin.sample.edit', $data->id));
 });
 
 // Sample > Detail Sample
 Breadcrumbs::for('sample.detail-sample', function (BreadcrumbTrail $trail, $data) {
     $trail->parent('sample');
-    $trail->push($data->sample_code, route('admin.sample.detail-sample', $data->id));
+    $trail->push($data->sample_code, route('admin.sample.edit', $data->id));
+    $trail->push('Detail', route('admin.sample.detail-sample', $data->id));
 });
 
 // Sample > Detail Sample > Virus
 Breadcrumbs::for('sample.detail-sample.virus', function (BreadcrumbTrail $trail, $data) {
     $trail->parent('sample.detail-sample', $data->sample);
     $trail->push($data->virus->name);
+});
+
+// ------------ VARIABLE AGENT ------------
+Breadcrumbs::for('variable-agent', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Variabel Agen', route('admin.variable-agent.index'));
+});
+
+// Variable Agent > Show
+Breadcrumbs::for('variable-agent.show', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('variable-agent');
+    $trail->push($data->name, route('admin.variable-agent.show', $data->id));
 });
