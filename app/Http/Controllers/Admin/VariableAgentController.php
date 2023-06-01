@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interface\RegencyInterface;
 use App\Repositories\Interface\SampleInterface;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class VariableAgentController extends Controller
@@ -47,7 +48,6 @@ class VariableAgentController extends Controller
 
     public function show($id, Request $request)
     {
-        // dd($this->sample->getAllGroupByDistrict($id));
         if ($request->ajax()) {
             return datatables()
                 ->of($this->sample->getAllGroupByDistrict($id))
@@ -55,7 +55,7 @@ class VariableAgentController extends Controller
                     return $data['district'];
                 })
                 ->addColumn('location', function ($data) {
-                    return $data['location'];
+                    return $data['latitude'] . ', ' . $data['longitude'];
                 })
                 ->addColumn('count', function ($data) {
                     return $data['count'] ?? 0;
@@ -73,6 +73,57 @@ class VariableAgentController extends Controller
         return view('admin.variable-agent.show', [
             'regency' => $this->regency->getById($id),
             'id' => $id,
+            'samples' => $this->sample->getAllGroupByDistrict($id),
+            'months' => [
+                '1' => 'Januari',
+                '2' => 'Februari',
+                '3' => 'Maret',
+                '4' => 'April',
+                '5' => 'Mei',
+                '6' => 'Juni',
+                '7' => 'Juli',
+                '8' => 'Agustus',
+                '9' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember',
+            ],
+        ]);
+    }
+
+    public function showFilterMonth($id, Request $request)
+    {
+        $samples = $this->sample->getAllGroupByDistrictFilterByMonth($id, $request->month);
+        $data = $samples->map(function ($data) {
+            return [
+                'district' => $data['district'],
+                'location' => $data['latitude'] . ', ' . $data['longitude'],
+                'count' => $data['count'] ?? 0,
+                'type' => view('admin.variable-agent.column.type', compact('data'))->render(),
+            ];
+        });
+
+        return response()->json([
+            'data' => $data,
+            'samples' => $samples,
+        ]);
+    }
+
+    public function showFilterDateRange($id, Request $request)
+    {
+        $samples = $this->sample->getAllGroupByDistrictFilterByDateRange($id, $request->start_date, $request->end_date);
+        $data = $samples->map(function ($data) {
+            return [
+                'district' => $data['district'],
+                'location' => $data['latitude'] . ', ' . $data['longitude'],
+                'count' => $data['count'] ?? 0,
+                'type' => view('admin.variable-agent.column.type', compact('data'))->render(),
+            ];
+        });
+
+        return response()->json([
+            'data' => $data,
+            'samples' => $samples,
         ]);
     }
 }

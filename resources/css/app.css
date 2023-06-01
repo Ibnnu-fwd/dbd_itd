@@ -407,3 +407,31 @@ table.dataTable thead th {
     @apply text-xs;
 }
 
+.datepicker-cell {
+    @apply text-xs;
+    @apply font-medium;
+    @apply p-1;
+    @apply m-1;
+}
+
+.datepicker-cell.range {
+    border-radius: 0;
+}
+
+.datepicker-cell.selected {
+    @apply bg-primary;
+    @apply text-white;
+}
+
+.datepicker-cell.range-end {
+    @apply bg-primary;
+    @apply text-white;
+}
+
+.days-of-week .dow{
+    @apply text-xs;
+}
+
+.view-switch {
+    @apply text-xs;
+}

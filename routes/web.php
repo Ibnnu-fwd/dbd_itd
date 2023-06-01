@@ -99,6 +99,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::prefix('variable-agent')->group(function () {
         Route::get('/', [VariableAgentController::class, 'index'])->name('admin.variable-agent.index');
         Route::get('show/{id}', [VariableAgentController::class, 'show'])->name('admin.variable-agent.show');
+        Route::post('show/{id}/filter-month', [VariableAgentController::class, 'showFilterMonth'])->name('admin.variable-agent.show.filter-month');
+        Route::post('show/{id}/filter-date-range', [VariableAgentController::class, 'showFilterDateRange'])->name('admin.variable-agent.show.filter-date-range');
     });
 });
 
