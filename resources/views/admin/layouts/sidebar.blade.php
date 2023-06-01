@@ -7,7 +7,7 @@
                 active="{{ request()->routeIs('admin.dashboard') }}" />
 
             <!-- Master Location -->
-            <x-sidebar-dropdown title="Master Lokasi" icon="fas fa-folder" toggle="master-location"
+            <x-sidebar-dropdown title="Master Lokasi" icon="fas fa-box-archive" toggle="master-location"
                 active="{{ request()->routeIs('admin.province.*') || request()->routeIs('admin.regency.*') || request()->routeIs('admin.district.*') || request()->routeIs('admin.village.*') }}">
                 <x-sidebar-item title="Provinsi" route="{{ route('admin.province.index') }}"
                     active="{{ request()->routeIs('admin.province.*') }}" />
@@ -20,7 +20,7 @@
             </x-sidebar-dropdown>
 
             <!-- Master Demography -->
-            <x-sidebar-dropdown title="Master Demografi" icon="fas fa-folder" toggle="master-type"
+            <x-sidebar-dropdown title="Master Demografi" icon="fas fa-box-archive" toggle="master-type"
                 active="{{ request()->routeIs('admin.tpa-type.*') || request()->routeIs('admin.floor-type.*') || request()->routeIs('admin.environment-type.*') || request()->routeIs('admin.location-type.*') || request()->routeIs('admin.settlement-type.*') || request()->routeIs('admin.building-type.*') }}">
                 <x-sidebar-item title="Jenis TPA" route="{{ route('admin.tpa-type.index') }}"
                     active="{{ request()->routeIs('admin.tpa-type.*') }}" />
@@ -37,7 +37,7 @@
             </x-sidebar-dropdown>
 
             <!-- Master Virus -->
-            <x-sidebar-dropdown title="Master Sampel" icon="fas fa-folder" toggle="master-virus"
+            <x-sidebar-dropdown title="Master Sampel" icon="fas fa-box-archive" toggle="master-virus"
                 active="{{ request()->routeIs('admin.serotype.*') || request()->routeIs('admin.virus.*') || request()->routeIs('admin.morphotype.*') || request()->routeIs('admin.sample-method.*') }}">
                 <x-sidebar-item title="Virus" route="{{ route('admin.virus.index') }}"
                     active="{{ request()->routeIs('admin.virus.*') }}" />
@@ -53,9 +53,11 @@
 
             <!-- Master Sample -->
             <x-sidebar-dropdown title="Sampel" icon="fas fa-mosquito" toggle="master-sample"
-                active="{{ request()->routeIs('admin.sample.*') }}">
+                active="{{ request()->routeIs('admin.sample.*') || request()->routeIs('admin.variable-agent.*') }}">
                 <x-sidebar-item title="Nyamuk" route="{{ route('admin.sample.index') }}"
                     active="{{ request()->routeIs('admin.sample.*') }}" />
+                <x-sidebar-item title="Agen Variabel" route="{{ route('admin.variable-agent.index') }}"
+                    active="{{ request()->routeIs('admin.variable-agent.*') }}" />
             </x-sidebar-dropdown>
         </ul>
     </div>

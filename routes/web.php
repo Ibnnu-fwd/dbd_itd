@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SampleMethodController;
 use App\Http\Controllers\Admin\SerotypeController;
 use App\Http\Controllers\Admin\SettlementTypeController;
 use App\Http\Controllers\Admin\TpaTypeController;
+use App\Http\Controllers\Admin\VariableAgentController;
 use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
 use Illuminate\Support\Facades\Route;
@@ -93,6 +94,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('sample/detail-sample/virus/{id}', [SampleController::class, 'detailSampleVirus'])->name('admin.sample.detail-sample.virus');
     Route::get('sample/detail-sample/{id}', [SampleController::class, 'detailSample'])->name('admin.sample.detail-sample');
     Route::resource('sample', SampleController::class, ['as' => 'admin']);
+
+    // Variable Agent
+    Route::prefix('variable-agent')->group(function () {
+        Route::get('/', [VariableAgentController::class, 'index'])->name('admin.variable-agent.index');
+        Route::get('show/{id}', [VariableAgentController::class, 'show'])->name('admin.variable-agent.show');
+    });
 });
 
 require __DIR__ . '/auth.php';

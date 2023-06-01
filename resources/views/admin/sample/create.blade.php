@@ -19,7 +19,7 @@
                             <option value="{{ $locationType->id }}">{{ $locationType->name }}</option>
                         @endforeach
                     </x-select>
-                    <x-textarea id="description" label="Keterangan" name="description" type="text" required />
+                    <x-textarea id="description" label="Keterangan" name="description" type="text" />
                 </div>
                 <div>
                     <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Lokasi</p>
@@ -83,6 +83,7 @@
     @push('js-internal')
         <!-- Detail Location -->
         <script>
+            $('#btnReloadCoordinate').trigger('click');
             let province;
             let regency;
             let district;
