@@ -20,4 +20,11 @@ class BuildingType extends Model
     {
         return $query->where('is_active', 1);
     }
+
+    // RELATIONSHIPS
+    public function larvae()
+    {
+        return $this->hasMany(Larvae::class);
+    }
+
 }

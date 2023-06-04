@@ -13,6 +13,7 @@ use App\Models\SampleMethod;
 use App\Models\Village;
 use App\Models\Virus;
 use App\Repositories\Interface\SampleInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SampleRepository implements SampleInterface
@@ -218,7 +219,8 @@ class SampleRepository implements SampleInterface
             $data[$key]['district_id'] = $value->district_id;
             $data[$key]['district'] = $value->district->name;
             $data[$key]['regency'] = $value->regency->name;
-            $data[$key]['location'] = $value->latitude . ', ' . $value->longitude;
+            $data[$key]['latitude'] = $value->latitude;
+            $data[$key]['longitude'] = $value->longitude;
             $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
                 $amount = 0;
                 $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
@@ -234,6 +236,7 @@ class SampleRepository implements SampleInterface
                     })->sum(),
                 ];
             });
+            $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
         }
 
         // sum amount of same district by index
@@ -246,9 +249,128 @@ class SampleRepository implements SampleInterface
                 'district_id' => $item[0]['district_id'],
                 'district' => $item[0]['district'],
                 'regency' => $item[0]['regency'],
-                'location' => $item[0]['location'],
+                'latitude' => $item[0]['latitude'],
+                'longitude' => $item[0]['longitude'],
                 'count' => $amount,
                 'type' => $item[0]['type'],
+                'created_at' => $item[0]['created_at'],
+            ];
+        });
+
+        // change index to number
+        $data = $data->values();
+
+        return $data;
+    }
+
+    public function getAllGroupByDistrictFilterByMonth($regency_id, $month)
+    {
+        $sample = $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes')->where([
+            ['regency_id', $regency_id],
+            [DB::raw('MONTH(created_at)'), $month],
+        ])->get();
+
+        // dd($sample);
+
+        $data = [];
+        foreach ($sample as $key => $value) {
+            $data[$key]['district_id'] = $value->district_id;
+            $data[$key]['district'] = $value->district->name;
+            $data[$key]['regency'] = $value->regency->name;
+            $data[$key]['latitude'] = $value->latitude;
+            $data[$key]['longitude'] = $value->longitude;
+            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
+                $amount = 0;
+                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                    $amount += $item->amount;
+                });
+                return $amount;
+            })->sum();
+            $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
+                return [
+                    'name' => $item->virus->name,
+                    'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum(),
+                ];
+            });
+            $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
+        }
+
+        // sum amount of same district by index
+        $data = collect($data)->groupBy('district')->map(function ($item) {
+            $amount = 0;
+            foreach ($item as $key => $value) {
+                $amount += $value['count'];
+            }
+            return [
+                'district_id' => $item[0]['district_id'],
+                'district' => $item[0]['district'],
+                'regency' => $item[0]['regency'],
+                'latitude' => $item[0]['latitude'],
+                'longitude' => $item[0]['longitude'],
+                'count' => $amount,
+                'type' => $item[0]['type'],
+                'created_at' => $item[0]['created_at'],
+            ];
+        });
+
+        // change index to number
+        $data = $data->values();
+
+        return $data;
+    }
+
+    public function getAllGroupByDistrictFilterByDateRange($regency_id, $start_date, $end_date)
+    {
+        $start_date = date('Y-m-d', strtotime($start_date));
+        $end_date = date('Y-m-d', strtotime($end_date));
+        $sample = $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes')->where([
+            ['regency_id', $regency_id],
+            ['created_at', '>=', $start_date],
+            ['created_at', '<=', $end_date],
+        ])->get();
+
+        $data = [];
+        foreach ($sample as $key => $value) {
+            $data[$key]['district_id'] = $value->district_id;
+            $data[$key]['district'] = $value->district->name;
+            $data[$key]['regency'] = $value->regency->name;
+            $data[$key]['latitude'] = $value->latitude;
+            $data[$key]['longitude'] = $value->longitude;
+            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
+                $amount = 0;
+                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                    $amount += $item->amount;
+                });
+                return $amount;
+            })->sum();
+            $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
+                return [
+                    'name' => $item->virus->name,
+                    'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum(),
+                ];
+            });
+            $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
+        }
+
+        // sum amount of same district by index
+        $data = collect($data)->groupBy('district')->map(function ($item) {
+            $amount = 0;
+            foreach ($item as $key => $value) {
+                $amount += $value['count'];
+            }
+            return [
+                'district_id' => $item[0]['district_id'],
+                'district' => $item[0]['district'],
+                'regency' => $item[0]['regency'],
+                'latitude' => $item[0]['latitude'],
+                'longitude' => $item[0]['longitude'],
+                'count' => $amount,
+                'type' => $item[0]['type'],
+                'created_at' => $item[0]['created_at'],
             ];
         });
 

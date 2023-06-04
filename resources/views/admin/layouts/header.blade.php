@@ -15,8 +15,8 @@
                 </button>
                 <a href="https://flowbite.com" class="flex ml-2 md:mr-24">
                     <img src="https://flowbite.com/docs/images/logo.svg" class="h-5 mr-3" alt="FlowBite Logo" />
-                    <span
-                        class="self-center text-xs font-semibold sm:text-sm whitespace-nowrap dark:text-white">DBD ITD</span>
+                    <span class="self-center text-xs font-semibold sm:text-sm whitespace-nowrap dark:text-white">DBD
+                        ITD</span>
                 </a>
             </div>
             <div class="flex items-center">
@@ -27,7 +27,10 @@
                             aria-expanded="false" data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
                             <img class="w-8 h-8 rounded-full"
-                                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                                src="{{ Auth::user()->profile_picture
+                                    ? Auth::user()->profile_picture
+                                    : 'https://ui-avatars.com/api/?name=' . Auth::user()->name }}"
+                                alt="user photo">
                         </button>
                     </div>
                     <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -36,7 +39,8 @@
                             <p class="text-xs 2xl:text-sm text-gray-900 dark:text-white" role="none">
                                 {{ Auth::user()->name }}
                             </p>
-                            <p class="text-xs 2xl:text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                            <p class="text-xs 2xl:text-sm font-medium text-gray-900 truncate dark:text-gray-300"
+                                role="none">
                                 {{ Auth::user()->email }}
                             </p>
                         </div>

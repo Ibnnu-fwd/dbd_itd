@@ -21,17 +21,9 @@ return new class extends Migration
             $table->foreignId('environment_type_id')->nullable()->constrained('environment_types');
             $table->foreignId('building_type_id')->nullable()->constrained('building_types');
             $table->foreignId('floor_type_id')->nullable()->constrained('floor_types');
-            $table->foreignId('tpa_type_id')->nullable()->constrained('tpa_types');
             $table->longText('address')->nullable();
             $table->string('latitude');
             $table->string('longitude');
-            $table->integer('amount_of_larva');
-            $table->integer('amount_of_egg');
-            $table->integer('number_of_adult');
-            $table->double('water_temperture');
-            $table->double('salinity');
-            $table->double('ph');
-            $table->enum('aquatic_plant', ['yes', 'no']);
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);

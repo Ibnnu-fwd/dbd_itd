@@ -284,3 +284,39 @@ Breadcrumbs::for('variable-agent.show', function (BreadcrumbTrail $trail, $data)
     $trail->parent('variable-agent');
     $trail->push($data->name, route('admin.variable-agent.show', $data->id));
 });
+
+// ------------ LARVAE ------------
+Breadcrumbs::for('larvae', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Larva', route('admin.larvae.index'));
+});
+
+// Larvae > Create
+Breadcrumbs::for('larvae.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('larvae');
+    $trail->push('Tambah', route('admin.larvae.create'));
+});
+
+// Larvae > Show
+Breadcrumbs::for('larvae.show', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('larvae');
+    $trail->push($data->larva_code, route('admin.larvae.show', $data->id));
+});
+
+// Larvae > Edit
+Breadcrumbs::for('larvae.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('larvae.show', $data);
+    $trail->push('Edit', route('admin.larvae.edit', $data->id));
+});
+
+// Larvae > Detail > Create
+Breadcrumbs::for('larvae.detail.create', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('larvae.show', $data);
+    $trail->push('Tambah', route('admin.larvae.detail.create', $data->id));
+});
+
+// Larvae > Detail > Edit
+Breadcrumbs::for('larvae.detail.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('larvae.show', $data);
+    $trail->push('Ubah', route('admin.larvae.detail.edit', $data->id));
+});

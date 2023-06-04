@@ -46,8 +46,13 @@
         }
     </style>
 
+    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Marker Cluster -->
+    <link rel="stylesheet" href="{{ asset('assets/css/MarkerCluster.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/MarkerCluster.Default.css') }}">
 
     @stack('css-internal')
 </head>
@@ -67,6 +72,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
         integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Datepicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
 
     <!-- Datatable -->
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
@@ -122,7 +130,6 @@
             ][count3floor];
         }
 
-        // set all tag <a> with cursor-pointer
         $('a').addClass('cursor-pointer');
 
         $('select').select2({
@@ -130,8 +137,12 @@
         });
     </script>
 
+    <!-- Leaflet -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Marker Cluster -->
+    <script src="{{ asset('assets/js/leaflet.markercluster.js') }}"></script>
 
     @stack('js-internal')
 </body>

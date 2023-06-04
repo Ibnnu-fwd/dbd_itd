@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(DetailSample::class, 'created_by');
     }
 
+    public function larvae()
+    {
+        return $this->hasMany(Larvae::class, 'created_by');
+    }
+
     // SCOPES
     public function scopeFilter($query, array $filters)
     {

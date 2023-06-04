@@ -6,7 +6,6 @@
                 <tr>
                     <th>#</th>
                     <th>Kabupaten/Kota</th>
-                    {{-- <th>Lokasi</th> --}}
                     <th>Jumlah Sampel</th>
                     <th>Tipe</th>
                     <th>Aksi</th>

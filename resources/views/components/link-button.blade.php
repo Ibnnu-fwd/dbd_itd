@@ -4,7 +4,7 @@
     {!! $attributes->merge([
         'class' =>
             $class .
-            ' inline-flex items-center px-6 py-2 border border-transparent rounded-md text-white bg-' .
+            ' inline-flex items-center px-6 py-2.5 border border-transparent rounded-md text-white bg-' .
             $color .
             '-800 hover:bg-' .
             $color .

@@ -15,4 +15,11 @@ class EnvironmentType extends Model
         'name',
         'is_active'
     ];
+
+    // RELATIONSHIPS
+
+    public function larvae()
+    {
+        return $this->hasMany(Larvae::class);
+    }
 }
