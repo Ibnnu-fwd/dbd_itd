@@ -61,11 +61,8 @@
             </x-sidebar-dropdown>
 
             <!-- Master Larvae -->
-            <x-sidebar-dropdown title="Larva" icon="fas fa-bug" toggle="master-larvae"
-                active="{{ request()->routeIs('admin.larvae.*') || request()->routeIs('admin.larvae.*') }}">
-                <x-sidebar-item title="Sampel" route="{{ route('admin.larvae.index') }}"
-                    active="{{ request()->routeIs('admin.larvae.*') }}" />
-            </x-sidebar-dropdown>
+            <x-sidebar-item title="Larva" route="{{ route('admin.larvae.index') }}"
+                    active="{{ request()->routeIs('admin.larvae.*') }}" icon="fas fa-bug" />
         </ul>
     </div>
 </aside>

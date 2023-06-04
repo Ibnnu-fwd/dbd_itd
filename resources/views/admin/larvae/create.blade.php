@@ -253,7 +253,7 @@
                     }
                 ).addTo(map);
 
-                let marker = L.marker([1.5167, 124.8333]).addTo(map);
+                let marker = L.marker([latitude, longitude]).addTo(map);
 
                 map.on("click", onMapClick);
 
@@ -433,6 +433,16 @@
                             latitude            : $('#latitude').val(),
                             longitude           : $('#longitude').val(),
                             detailLarva         : detailLarva,
+                        },
+                        // on processing
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Mohon Tunggu',
+                                html: 'Sedang memproses data',
+                                didOpen: () => {
+                                    Swal.showLoading()
+                                },
+                            });
                         },
                         success: function (response) {
                             if(response.status == 'success')

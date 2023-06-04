@@ -129,7 +129,12 @@
 
                 let larvae = @json($larvae);
 
-                let map = L.map('map').setView([larvae[0].latitude, larvae[0].longitude], 13);
+                // get center map
+                let centerCoordinate = [];
+                for (let i = 0; i < larvae.length; i++) {
+                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
+                }
+                let map = L.map('map').setView(centerCoordinate[0], 8);
 
                 let markers = L.markerClusterGroup();
 
@@ -143,11 +148,11 @@
                 for (let i = 0; i < larvae.length; i++) {
                     let marker = L.marker([larvae[i].latitude, larvae[i].longitude], {
                         icon: L.divIcon({
-                            html: `<div class="flex justify-center items-center rounded-full bg-primary text-white text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
-                            className: 'marker-cluster marker-cluster-small',
+                            // animate ping
+                            html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
+                            className: 'text-white bg-transparent',
                             iconSize: [40, 40],
-                            popupAnchor: [-20, -20]
-
+                            popupAnchor: [-20, -20],
                         })
                     });
 
@@ -274,11 +279,10 @@
                                 let marker = L.marker([response.larvae[i].latitude, response.larvae[
                                     i].longitude], {
                                     icon: L.divIcon({
-                                        html: `<div class="flex justify-center items-center rounded-full bg-primary text-white text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${response.larvae[i].detail_larvaes.length}</div>`,
-                                        className: 'marker-cluster marker-cluster-small',
+                                        html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
+                                        className: 'text-white bg-transparent',
                                         iconSize: [40, 40],
-                                        popupAnchor: [-20, -20]
-
+                                        popupAnchor: [-20, -20],
                                     })
                                 });
 
@@ -395,11 +399,10 @@
                                 let marker = L.marker([response.larvae[i].latitude, response.larvae[
                                     i].longitude], {
                                     icon: L.divIcon({
-                                        html: `<div class="flex justify-center items-center rounded-full bg-primary text-white text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${response.larvae[i].detail_larvaes.length}</div>`,
-                                        className: 'marker-cluster marker-cluster-small',
+                                        html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
+                                        className: 'text-white bg-transparent',
                                         iconSize: [40, 40],
-                                        popupAnchor: [-20, -20]
-
+                                        popupAnchor: [-20, -20],
                                     })
                                 });
 

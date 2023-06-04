@@ -449,3 +449,7 @@ select option {
     @apply h-[2.3rem];
     @apply min-h-0;
 }
+
+.leaflet-marker-icon div span, .leaflet-marker-icon div {
+    font-family: 'Lexend Deca', sans-serif;
+}
