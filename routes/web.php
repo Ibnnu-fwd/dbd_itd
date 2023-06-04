@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\EnvironmentTypeController;
 use App\Http\Controllers\Admin\FloorTypeController;
+use App\Http\Controllers\Admin\LarvaeController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\MorphotypeController;
 use App\Http\Controllers\Admin\ProvinceController;
@@ -102,6 +103,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::post('show/{id}/filter-month', [VariableAgentController::class, 'showFilterMonth'])->name('admin.variable-agent.show.filter-month');
         Route::post('show/{id}/filter-date-range', [VariableAgentController::class, 'showFilterDateRange'])->name('admin.variable-agent.show.filter-date-range');
     });
+
+    // Larvae
+    Route::post('larvae/detail/{id}/delete', [LarvaeController::class, 'deleteDetail'])->name('admin.larvae.detail.delete');
+    Route::get('larvae/{id}/detail/edit', [LarvaeController::class, 'editDetail'])->name('admin.larvae.detail.edit');
+    Route::post('larvae/{id}/detail/store', [LarvaeController::class, 'storeDetail'])->name('admin.larvae.detail.store');
+    Route::get('larvae/{id}/detail/create', [LarvaeController::class, 'createDetail'])->name('admin.larvae.detail.create');
+    Route::resource('larvae', LarvaeController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';

@@ -52,12 +52,19 @@
             <hr class="my-2 border-gray-200 dark:border-gray-700 mx-2" />
 
             <!-- Master Sample -->
-            <x-sidebar-dropdown title="Sampel" icon="fas fa-mosquito" toggle="master-sample"
+            <x-sidebar-dropdown title="Nyamuk" icon="fas fa-mosquito" toggle="master-sample"
                 active="{{ request()->routeIs('admin.sample.*') || request()->routeIs('admin.variable-agent.*') }}">
-                <x-sidebar-item title="Nyamuk" route="{{ route('admin.sample.index') }}"
+                <x-sidebar-item title="Sampel" route="{{ route('admin.sample.index') }}"
                     active="{{ request()->routeIs('admin.sample.*') }}" />
                 <x-sidebar-item title="Agen Variabel" route="{{ route('admin.variable-agent.index') }}"
                     active="{{ request()->routeIs('admin.variable-agent.*') }}" />
+            </x-sidebar-dropdown>
+
+            <!-- Master Larvae -->
+            <x-sidebar-dropdown title="Larva" icon="fas fa-bug" toggle="master-larvae"
+                active="{{ request()->routeIs('admin.larvae.*') || request()->routeIs('admin.larvae.*') }}">
+                <x-sidebar-item title="Sampel" route="{{ route('admin.larvae.index') }}"
+                    active="{{ request()->routeIs('admin.larvae.*') }}" />
             </x-sidebar-dropdown>
         </ul>
     </div>

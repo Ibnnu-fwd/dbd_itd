@@ -22,4 +22,15 @@ class FloorType extends Model
         'name',
         'is_active'
     ];
+
+    // RELATIONSHIPS
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
+
+    public function larvae()
+    {
+        return $this->hasMany(Larvae::class);
+    }
 }

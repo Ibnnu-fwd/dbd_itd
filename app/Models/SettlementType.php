@@ -20,4 +20,15 @@ class SettlementType extends Model
     {
         return $query->where('is_active', 1);
     }
+
+    // RELATIONSHIPS
+    public function samples()
+    {
+        return $this->hasMany(Sample::class);
+    }
+
+    public function larvae()
+    {
+        return $this->hasMany(Larvae::class);
+    }
 }

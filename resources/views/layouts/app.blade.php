@@ -130,7 +130,6 @@
             ][count3floor];
         }
 
-        // set all tag <a> with cursor-pointer
         $('a').addClass('cursor-pointer');
 
         $('select').select2({

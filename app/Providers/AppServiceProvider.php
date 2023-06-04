@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\DetailSample;
+use App\Models\Larvae;
 use App\Models\Sample;
 use App\Observers\DetailSampleObserver;
+use App\Observers\LarvaeObserver;
 use App\Observers\SampleObserver;
 use Illuminate\Support\ServiceProvider;
 
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interface\SampleMethodInterface::class, \App\Repositories\SampleMethodRepository::class);
         $this->app->bind(\App\Repositories\Interface\SampleInterface::class, \App\Repositories\SampleRepository::class);
         $this->app->bind(\App\Repositories\Interface\DetailSampleVirusInterface::class, \App\Repositories\DetailSampleVirusRepository::class);
+        $this->app->bind(\App\Repositories\Interface\LarvaeInterface::class, \App\Repositories\LarvaeRepository::class);
     }
 
     /**
@@ -39,5 +42,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Sample::observe(SampleObserver::class);
+        Larvae::observe(LarvaeObserver::class);
     }
 }

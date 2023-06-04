@@ -22,4 +22,12 @@ class TpaType extends Model
         'name',
         'is_active'
     ];
+
+    // RELATIONSHIPS
+    public function detailLarvae()
+    {
+        return $this->hasMany(DetailLarvae::class, 'tpa_type_id', 'id');
+    }
+
+
 }
