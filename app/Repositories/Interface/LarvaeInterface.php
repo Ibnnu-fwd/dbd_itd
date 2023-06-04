@@ -11,4 +11,8 @@ interface LarvaeInterface
 
     public function deleteDetail($id);
     public function createDetail($attributes, $id);
+    public function createDetailNew($attributes, $id);
+
+    public function filterMonth($month);
+    public function filterDateRange($startDate, $endDate);
 }

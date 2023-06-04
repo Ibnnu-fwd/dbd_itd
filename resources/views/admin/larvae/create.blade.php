@@ -253,7 +253,7 @@
                     }
                 ).addTo(map);
 
-                let marker = L.marker([latitude, longitude]).addTo(map);
+                let marker = L.marker([1.5167, 124.8333]).addTo(map);
 
                 map.on("click", onMapClick);
 

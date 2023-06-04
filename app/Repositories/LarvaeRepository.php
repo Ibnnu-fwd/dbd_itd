@@ -20,7 +20,7 @@ class LarvaeRepository implements LarvaeInterface
 
     public function getAll()
     {
-        return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy')->orderBy('larva_code', 'desc')->get();
+        return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy', 'detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->get();
     }
 
     public function getById($id)
@@ -133,5 +133,47 @@ class LarvaeRepository implements LarvaeInterface
         }
 
         DB::commit();
+    }
+
+    public function createDetailNew($attributes, $id)
+    {
+        DB::beginTransaction();
+        try {
+            foreach ($attributes['detailLarva'] as $detailLarva) {
+                $this->detailLarvae->create([
+                    'larva_id'          => $id,
+                    'tpa_type_id'       => $detailLarva['tpa_type_id'],
+                    'amount_larva'      => $detailLarva['amount_larva'],
+                    'amount_egg'        => $detailLarva['amount_egg'],
+                    'number_of_adults'  => $detailLarva['number_of_adults'],
+                    'water_temperature' => $detailLarva['water_temperature'],
+                    'salinity'          => $detailLarva['salinity'],
+                    'ph'                => $detailLarva['ph'],
+                    'aquatic_plant'    => $detailLarva['aquatic_plant'],
+                ]);
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+        DB::commit();
+    }
+
+    public function filterMonth($month)
+    {
+        return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy', 'detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->where([
+            [DB::raw('MONTH(created_at)'), $month]
+        ])->get();
+    }
+
+    public function filterDateRange($startDate, $endDate)
+    {
+        $startDate = date('Y-m-d', strtotime($startDate));
+        $endDate = date('Y-m-d', strtotime($endDate));
+        return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy', 'detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->where([
+            ['created_at', '>=', $startDate],
+            ['created_at', '<=', $endDate]
+        ])->get();
     }
 }
