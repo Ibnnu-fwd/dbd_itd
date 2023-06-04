@@ -16,11 +16,11 @@
                     <th rowspan="2">Aksi</th>
                 </tr>
                 <tr>
-                    <th>Tipe Lokasi</th>
-                    <th>Tipe Permukiman</th>
-                    <th>Tipe Lingkungan</th>
-                    <th>Tipe Bangunan</th>
-                    <th>Tipe Lantai</th>
+                    <th>Lokasi</th>
+                    <th>Permukiman</th>
+                    <th>Lingkungan</th>
+                    <th>Bangunan</th>
+                    <th>Lantai</th>
                 </tr>
             </thead>
         </table>
