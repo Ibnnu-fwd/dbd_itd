@@ -108,7 +108,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('larvae/detail/{id}/delete', [LarvaeController::class, 'deleteDetail'])->name('admin.larvae.detail.delete');
     Route::get('larvae/{id}/detail/edit', [LarvaeController::class, 'editDetail'])->name('admin.larvae.detail.edit');
     Route::post('larvae/{id}/detail/store', [LarvaeController::class, 'storeDetail'])->name('admin.larvae.detail.store');
+    Route::post('larvae/{id}/detail/store-new', [LarvaeController::class, 'storeDetailNew'])->name('admin.larvae.detail.store-new');
     Route::get('larvae/{id}/detail/create', [LarvaeController::class, 'createDetail'])->name('admin.larvae.detail.create');
+    Route::post('larvae/filter-month', [LarvaeController::class, 'filterMonth'])->name('admin.larvae.filter-month');
+    Route::post('larvae/filter-date-range', [LarvaeController::class, 'filterDateRange'])->name('admin.larvae.filter-date-range');
     Route::resource('larvae', LarvaeController::class, ['as' => 'admin']);
 });
 

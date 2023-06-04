@@ -84,7 +84,23 @@ class LarvaeController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('admin.larvae.index');
+        return view('admin.larvae.index', [
+            'larvae' => $this->larvae->getAll(),
+            'months' => [
+                '1' => 'Januari',
+                '2' => 'Februari',
+                '3' => 'Maret',
+                '4' => 'April',
+                '5' => 'Mei',
+                '6' => 'Juni',
+                '7' => 'Juli',
+                '8' => 'Agustus',
+                '9' => 'September',
+                '10' => 'Oktober',
+                '11' => 'November',
+                '12' => 'Desember',
+            ],
+        ]);
     }
 
     /**
@@ -263,6 +279,22 @@ class LarvaeController extends Controller
         }
     }
 
+    public function storeDetailNew(Request $request, string $id)
+    {
+        try {
+            $this->larvae->createDetailNew($request->all(), $id);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Detail larva berhasil ditambahkan'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ]);
+        }
+    }
+
     public function editDetail($id)
     {
         return view('admin.larvae.detail.edit', [
@@ -285,5 +317,49 @@ class LarvaeController extends Controller
                 'message' => $th->getMessage()
             ]);
         }
+    }
+
+    public function filterMonth(Request $request)
+    {
+        $larvae = $this->larvae->filterMonth($request->month);
+        $data = $larvae->map(function ($data) {
+            return [
+                'DT_RowIndex' => $data->id,
+                'larva_code' => $data->larva_code,
+                'district' => ucwords(strtolower($data->district->name)),
+                'location' => $data->locationType->name,
+                'settlement' => $data->settlementType->name,
+                'environment' => $data->environmentType->name,
+                'building' => $data->buildingType->name,
+                'floor' => $data->floorType->name,
+                'action' => view('admin.larvae.column.action', compact('data'))->render(),
+            ];
+        });
+        return response()->json([
+            'data' => $data,
+            'larvae' => $larvae,
+        ]);
+    }
+
+    public function filterDateRange(Request $request)
+    {
+        $larvae = $this->larvae->filterDateRange($request->start_date, $request->end_date);
+        $data = $larvae->map(function ($data) {
+            return [
+                'DT_RowIndex' => $data->id,
+                'larva_code' => $data->larva_code,
+                'district' => ucwords(strtolower($data->district->name)),
+                'location' => $data->locationType->name,
+                'settlement' => $data->settlementType->name,
+                'environment' => $data->environmentType->name,
+                'building' => $data->buildingType->name,
+                'floor' => $data->floorType->name,
+                'action' => view('admin.larvae.column.action', compact('data'))->render(),
+            ];
+        });
+        return response()->json([
+            'data' => $data,
+            'larvae' => $larvae,
+        ]);
     }
 }

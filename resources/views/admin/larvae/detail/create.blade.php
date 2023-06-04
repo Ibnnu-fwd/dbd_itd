@@ -128,7 +128,7 @@
                     }
 
                     $.ajax({
-                        url: "{{ route('admin.larvae.detail.store', ':id') }}".replace(':id',
+                        url: "{{ route('admin.larvae.detail.store-new', ':id') }}".replace(':id',
                         {{ $larva->id }}),
                         type: "POST",
                         data: {

@@ -434,6 +434,16 @@
                             longitude           : $('#longitude').val(),
                             detailLarva         : detailLarva,
                         },
+                        // on processing
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Mohon Tunggu',
+                                html: 'Sedang memproses data',
+                                didOpen: () => {
+                                    Swal.showLoading()
+                                },
+                            });
+                        },
                         success: function (response) {
                             if(response.status == 'success')
                             {
