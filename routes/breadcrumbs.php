@@ -357,8 +357,26 @@ Breadcrumbs::for('ksh.detail.edit', function (BreadcrumbTrail $trail, $data) {
     $trail->push('Ubah', route('admin.ksh.detail.edit', $data->id));
 });
 
+// KSH > Member
+Breadcrumbs::for('ksh.member', function (BreadcrumbTrail $trail) {
+    $trail->parent('ksh');
+    $trail->push('Anggota', route('admin.ksh.member'));
+});
+
+// KSH > Member > Create
+Breadcrumbs::for('ksh.member.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('ksh.member');
+    $trail->push('Tambah', route('admin.ksh.member.create'));
+});
+
 // ------------ ABJ ------------
 Breadcrumbs::for('abj', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('ABJ', route('admin.abj.index'));
+});
+
+// ------------ USER ------------
+Breadcrumbs::for('user', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Pengguna', route('admin.user.index'));
 });

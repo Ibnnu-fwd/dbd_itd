@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\SampleMethodController;
 use App\Http\Controllers\Admin\SerotypeController;
 use App\Http\Controllers\Admin\SettlementTypeController;
 use App\Http\Controllers\Admin\TpaTypeController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableAgentController;
 use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
@@ -51,7 +52,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // District
     Route::post('district/list', [DistrictController::class, 'list'])->name('admin.district.list');
     Route::resource('district', DistrictController::class, ['as' => 'admin']);
-
 
     // Village
     Route::post('village/list', [VillageController::class, 'list'])->name('admin.village.list');
@@ -117,9 +117,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('larvae/{id}/detail/create', [LarvaeController::class, 'createDetail'])->name('admin.larvae.detail.create');
     Route::post('larvae/filter-month', [LarvaeController::class, 'filterMonth'])->name('admin.larvae.filter-month');
     Route::post('larvae/filter-date-range', [LarvaeController::class, 'filterDateRange'])->name('admin.larvae.filter-date-range');
+    Route::post('larvae/import', [LarvaeController::class, 'import'])->name('admin.larvae.import');
     Route::resource('larvae', LarvaeController::class, ['as' => 'admin']);
 
     // KSH
+    Route::get('ksh/member/create', [KshController::class, 'createMember'])->name('admin.ksh.member.create');
+    Route::get('ksh/member', [KshController::class, 'member'])->name('admin.ksh.member');
     Route::put('ksh/detail/{id}/update', [KshController::class, 'updateDetail'])->name('admin.ksh.detail.update');
     Route::get('ksh/detail/{id}/edit', [KshController::class, 'editDetail'])->name('admin.ksh.detail.edit');
     Route::post('ksh/detail/{id}/store', [KshController::class, 'storeDetail'])->name('admin.ksh.detail.store');
@@ -129,6 +132,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // ABJ
     Route::get('abj/geojson', [AbjController::class, 'geojson'])->name('admin.abj.geojson');
     Route::resource('abj', AbjController::class, ['as' => 'admin'])->only(['index']);
+
+// User
+    Route::post('user/{id}/update-user-account', [UserController::class, 'updateUserAccount'])->name('admin.user.update-user-account');
+    Route::post('user/update-profile-picture', [UserController::class, 'updateProfilePicture'])->name('admin.user.update-profile-picture');
+    Route::resource('user', UserController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';

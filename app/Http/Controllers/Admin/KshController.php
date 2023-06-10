@@ -231,4 +231,14 @@ class KshController extends Controller
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
+
+    public function member(Request $request)
+    {
+        return view('admin.ksh.member');
+    }
+
+    public function createMember(Request $request)
+    {
+        return view('admin.ksh.member.create');
+    }
 }

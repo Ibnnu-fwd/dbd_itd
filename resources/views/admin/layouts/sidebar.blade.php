@@ -21,11 +21,14 @@
 
             <!-- KSH -->
             <x-sidebar-dropdown title="KSH" icon="fas fa-file-circle-check" toggle="ksh"
-                active="{{ request()->routeIs('admin.ksh.*') || request()->routeIs('admin.abj.*') }}">
+                active="{{ request()->routeIs('admin.ksh.*') || request()->routeIs('admin.abj.*') || request()->routeIs('admin.ksh.member') }}">
                 <x-sidebar-item title="Sampel" route="{{ route('admin.ksh.index') }}"
-                    active="{{ request()->routeIs('admin.ksh.*') }}" />
+                    active="{{ request()->routeIs('admin.ksh.index')
+                    || request()->routeIs('admin.ksh.create') || request()->routeIs('admin.ksh.edit') || request()->routeIs('admin.ksh.show') || request()->routeIs('admin.ksh.detail.*') }}" />
                 <x-sidebar-item title="Angka Bebas Jentik" route="{{ route('admin.abj.index') }}"
                     active="{{ request()->routeIs('admin.abj.*') }}" />
+                <x-sidebar-item title="Anggota" route="{{ route('admin.ksh.member') }}"
+                    active="{{ request()->routeIs('admin.ksh.member.*') }}" />
             </x-sidebar-dropdown>
 
             <hr class="my-2 border-gray-200 dark:border-gray-700 mx-2" />
@@ -72,6 +75,20 @@
                 <x-sidebar-item title="Metode Sampling" route="{{ route('admin.sample-method.index') }}"
                     active="{{ request()->routeIs('admin.sample-method.*') }}" />
             </x-sidebar-dropdown>
+
+            <hr class="my-2 border-gray-200 dark:border-gray-700 mx-2" />
+
+            <!-- Master User -->
+            <x-sidebar-item title="Pengaturan Pengguna" icon="fas fa-user-cog"
+                route="{{ route('admin.user.index') }}" active="{{ request()->routeIs('admin.user.*') }}" />
+
+            <!-- Log out -->
+            <x-sidebar-item title="Keluar" icon="fas fa-sign-out-alt" route="#"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" />
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                @csrf
+            </form>
         </ul>
     </div>
 </aside>
