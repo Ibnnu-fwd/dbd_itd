@@ -29,14 +29,6 @@ return new class extends Migration
             $table->foreign('village_id')->references('id')->on('villages');
         });
 
-        Schema::table('ksh', function (Blueprint $table) {
-            $table->foreign('village_id')->references('id')->on('villages');
-        });
-
-        Schema::table('abj', function (Blueprint $table) {
-            $table->foreign('village_id')->references('id')->on('villages');
-        });
-
         Schema::table('cases', function (Blueprint $table) {
             $table->foreign('village_id')->references('id')->on('villages');
         });
@@ -63,14 +55,6 @@ return new class extends Migration
         });
 
         Schema::table('broods', function (Blueprint $table) {
-            $table->dropForeign(['village_id']);
-        });
-
-        Schema::table('ksh', function (Blueprint $table) {
-            $table->dropForeign(['village_id']);
-        });
-
-        Schema::table('abj', function (Blueprint $table) {
             $table->dropForeign(['village_id']);
         });
 

@@ -44,6 +44,16 @@ class Village extends Model
         return $this->hasMany(Larvae::class);
     }
 
+    public function ksh()
+    {
+        return $this->hasMany(Ksh::class);
+    }
+
+    public function abj()
+    {
+        return $this->hasMany(Abj::class, 'village_id', 'id');
+    }
+
     // SCOPES
     public function scopeFilter($query, array $filters)
     {

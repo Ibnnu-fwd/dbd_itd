@@ -29,5 +29,16 @@ class TpaType extends Model
         return $this->hasMany(DetailLarvae::class, 'tpa_type_id', 'id');
     }
 
+    public function ksh()
+    {
+        return $this->hasMany(Ksh::class, 'tpa_type_id', 'id');
+    }
+
+    public function detailKsh()
+    {
+        return $this->hasMany(DetailKsh::class, 'tpa_type_id', 'id');
+    }
+
+
 
 }

@@ -99,10 +99,17 @@
                 let map = L.map('map').setView([-0.789275, 113.921327], 5);
                 let markers = L.markerClusterGroup();
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-                    maxZoom: 18,
-                }).addTo(map);
+                // tile layer using mapbox light
+                L.tileLayer(
+                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                        attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                        maxZoom: 18,
+                        id: 'mapbox/light-v11',
+                        tileSize: 512,
+                        zoomOffset: -1,
+                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                    }
+                ).addTo(map);
 
                 // disable zoomIn and zoomOut button
                 map.zoomControl.remove();
@@ -144,12 +151,12 @@
                                         ${
                                             sample.type.map(type => {
                                                 return `
-                                                                                                                    <tr>
-                                                                                                                        <td>${type.name}</td>
-                                                                                                                        <td>:</td>
-                                                                                                                        <td>${type.amount}</td>
-                                                                                                                    </tr>
-                                                                                                                `;
+                                                    <tr>
+                                                        <td>${type.name}</td>
+                                                        <td>:</td>
+                                                        <td>${type.amount}</td>
+                                                    </tr>
+                                                `;
                                             }).join('')
                                         }
                                     </table>
@@ -157,13 +164,22 @@
                             </tr>
                         </table>
                     `);
+
+                    // zoom to marker
+                    marker.on('click', function(e) {
+                        map.setView(e.latlng, 10, {
+                            animate: true,
+                            duration: 1
+                        });
+                    });
+
                     markers.addLayer(marker);
                 });
 
                 map.addLayer(markers);
 
-                // pan to last marker
-                map.panTo(markers.getLayers()[markers.getLayers().length - 1].getLatLng(), {
+                // set view marker
+                map.setView(markers.getLayers()[0].getLatLng(), 10, {
                     animate: true,
                     duration: 1
                 });
@@ -262,12 +278,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                                <tr>
-                                                                                    <td>${type.name}</td>
-                                                                                    <td>:</td>
-                                                                                    <td>${type.amount}</td>
-                                                                                </tr>
-                                                                            `;
+                                                                <tr>
+                                                                    <td>${type.name}</td>
+                                                                    <td>:</td>
+                                                                    <td>${type.amount}</td>
+                                                                </tr>
+                                                            `;
                                                         }).join('')
                                                     }
                                                 </table>
@@ -277,11 +293,12 @@
                                 `);
                                 markers.addLayer(marker);
 
-                                // pan to last marker
-                                map.panTo(markers.getLayers()[markers.getLayers().length -
-                                    1].getLatLng(), {
-                                    animate: true,
-                                    duration: 1
+                                // zoom to marker
+                                marker.on('click', function(e) {
+                                    map.setView(e.latlng, 10, {
+                                        animate: true,
+                                        duration: 1
+                                    });
                                 });
                             });
                             map.addLayer(markers);
@@ -375,12 +392,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                                <tr>
-                                                                                    <td>${type.name}</td>
-                                                                                    <td>:</td>
-                                                                                    <td>${type.amount}</td>
-                                                                                </tr>
-                                                                            `;
+                                                                <tr>
+                                                                    <td>${type.name}</td>
+                                                                    <td>:</td>
+                                                                    <td>${type.amount}</td>
+                                                                </tr>
+                                                            `;
                                                         }).join('')
                                                     }
                                                 </table>
@@ -390,11 +407,12 @@
                                 `);
                                 markers.addLayer(marker);
 
-                                // pan to last marker
-                                map.panTo(markers.getLayers()[markers.getLayers().length -
-                                    1].getLatLng(), {
-                                    animate: true,
-                                    duration: 1
+                                // zoom to marker
+                                marker.on('click', function(e) {
+                                    map.setView(e.latlng, 10, {
+                                        animate: true,
+                                        duration: 1
+                                    });
                                 });
                             });
                             map.addLayer(markers);

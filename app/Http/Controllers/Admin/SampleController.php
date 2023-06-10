@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\DetailSampleExport;
 use App\Http\Controllers\Controller;
+use App\Imports\DetailSampleImport;
+use App\Imports\SampleImport;
 use App\Repositories\Interface\DetailSampleVirusInterface;
 use App\Repositories\Interface\DistrictInterface;
 use App\Repositories\Interface\LocationTypeInterface;
@@ -15,6 +18,8 @@ use App\Repositories\Interface\SerotypeInterface;
 use App\Repositories\Interface\VillageInterface;
 use App\Repositories\Interface\VirusInterface;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class SampleController extends Controller
 {
@@ -77,6 +82,9 @@ class SampleController extends Controller
                     //     'address' => $data->village->name . ', ' . $data->district->name . ', ' . $data->regency->name . ', ' . $data->province->name,
                     //     'coordinate' => $data->latitude . ', ' . $data->longitude
                     // ]);
+                })
+                ->addColumn('sample_count', function ($data) {
+                    return $data->total_sample;
                 })
                 ->addColumn('location', function ($data) {
                     return $data->location_name ?? '-';
@@ -272,5 +280,52 @@ class SampleController extends Controller
             dd($th->getMessage());
             return response()->json(false);
         }
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'import_file' => ['required', 'mimes:xls,xlsx']
+        ]);
+
+        try {
+            $fileCode = uniqid();
+            Excel::import(new SampleImport($fileCode), $request->file('import_file'));
+            $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
+            $request->file('import_file')->storeAs('public/sample-imported', $filename);
+            return redirect()->route('admin.sample.index')->with('success', 'Data berhasil diimport.');
+        } catch (ValidationException $th) {
+            return view('admin.sample.index', [
+                'failures' => $th->failures() ?? null
+            ]);
+        }
+    }
+
+    public function importDetailSample(Request $request)
+    {
+        $request->validate([
+            'import_file' => ['required', 'mimes:xls,xlsx'],
+            'sample_id' => ['required']
+        ]);
+
+        try {
+            $fileCode = uniqid();
+            Excel::import(new DetailSampleImport($request->sample_id), $request->file('import_file'));
+            // $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
+            // $request->file('import_file')->storeAs('public/detail-sample-imported', $filename);
+            return redirect()->back()->with('success', 'Data berhasil diimport.');
+        } catch (ValidationException $th) {
+            dd($th->getMessage());
+            return view('admin.sample.detail-sample', [
+                'failures' => $th->failures() ?? null,
+                'sample' => $this->sample->detailSample($request->sample_id),
+            ]);
+        }
+    }
+
+    public function exportDetailSample($id)
+    {
+        $sample = $this->sample->getById($id);
+        return Excel::download(new DetailSampleExport($id), 'DETAIL SAMPLE_' . $sample->sample_code . uniqid() . '.xlsx');
     }
 }

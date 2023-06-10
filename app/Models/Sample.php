@@ -12,6 +12,8 @@ class Sample extends Model
     public $table = "samples";
     protected $fillable = [
         'sample_code',
+        'file_code',
+        'public_health_name',
         'sample_method_id',
         'latitude',
         'longitude',

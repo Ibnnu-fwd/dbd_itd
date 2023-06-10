@@ -43,6 +43,16 @@ class District extends Model
         return $this->hasMany(Larvae::class);
     }
 
+    public function ksh()
+    {
+        return $this->hasMany(Ksh::class, 'ksh_id', 'id');
+    }
+
+    public function abj()
+    {
+        return $this->hasMany(Abj::class);
+    }
+
     // SCOPES
     public function scopeFilter($query, array $filters)
     {

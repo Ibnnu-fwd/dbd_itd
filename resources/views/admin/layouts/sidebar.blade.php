@@ -6,6 +6,30 @@
             <x-sidebar-item title="Dashboard" icon="fas fa-tachometer-alt" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
 
+            <!-- Master Sample -->
+            <x-sidebar-dropdown title="Nyamuk" icon="fas fa-mosquito" toggle="master-sample"
+                active="{{ request()->routeIs('admin.sample.*') || request()->routeIs('admin.variable-agent.*') }}">
+                <x-sidebar-item title="Sampel" route="{{ route('admin.sample.index') }}"
+                    active="{{ request()->routeIs('admin.sample.*') }}" />
+                <x-sidebar-item title="Agen Variabel" route="{{ route('admin.variable-agent.index') }}"
+                    active="{{ request()->routeIs('admin.variable-agent.*') }}" />
+            </x-sidebar-dropdown>
+
+            <!-- Master Larvae -->
+            <x-sidebar-item title="Larva" route="{{ route('admin.larvae.index') }}"
+                active="{{ request()->routeIs('admin.larvae.*') }}" icon="fas fa-bug" />
+
+            <!-- KSH -->
+            <x-sidebar-dropdown title="KSH" icon="fas fa-file-circle-check" toggle="ksh"
+                active="{{ request()->routeIs('admin.ksh.*') || request()->routeIs('admin.abj.*') }}">
+                <x-sidebar-item title="Sampel" route="{{ route('admin.ksh.index') }}"
+                    active="{{ request()->routeIs('admin.ksh.*') }}" />
+                <x-sidebar-item title="Angka Bebas Jentik" route="{{ route('admin.abj.index') }}"
+                    active="{{ request()->routeIs('admin.abj.*') }}" />
+            </x-sidebar-dropdown>
+
+            <hr class="my-2 border-gray-200 dark:border-gray-700 mx-2" />
+
             <!-- Master Location -->
             <x-sidebar-dropdown title="Master Lokasi" icon="fas fa-box-archive" toggle="master-location"
                 active="{{ request()->routeIs('admin.province.*') || request()->routeIs('admin.regency.*') || request()->routeIs('admin.district.*') || request()->routeIs('admin.village.*') }}">
@@ -48,21 +72,6 @@
                 <x-sidebar-item title="Metode Sampling" route="{{ route('admin.sample-method.index') }}"
                     active="{{ request()->routeIs('admin.sample-method.*') }}" />
             </x-sidebar-dropdown>
-
-            <hr class="my-2 border-gray-200 dark:border-gray-700 mx-2" />
-
-            <!-- Master Sample -->
-            <x-sidebar-dropdown title="Nyamuk" icon="fas fa-mosquito" toggle="master-sample"
-                active="{{ request()->routeIs('admin.sample.*') || request()->routeIs('admin.variable-agent.*') }}">
-                <x-sidebar-item title="Sampel" route="{{ route('admin.sample.index') }}"
-                    active="{{ request()->routeIs('admin.sample.*') }}" />
-                <x-sidebar-item title="Agen Variabel" route="{{ route('admin.variable-agent.index') }}"
-                    active="{{ request()->routeIs('admin.variable-agent.*') }}" />
-            </x-sidebar-dropdown>
-
-            <!-- Master Larvae -->
-            <x-sidebar-item title="Larva" route="{{ route('admin.larvae.index') }}"
-                    active="{{ request()->routeIs('admin.larvae.*') }}" icon="fas fa-bug" />
         </ul>
     </div>
 </aside>

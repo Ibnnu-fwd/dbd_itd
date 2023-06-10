@@ -12,6 +12,7 @@
                             <option value="{{ $sampleMethod->id }}">{{ $sampleMethod->name }}</option>
                         @endforeach
                     </x-select>
+                    <x-input id="public_health_name" label="Pukesmas" name="public_health_name" type="text" />
                     <x-input id="location_name" label="Nama Lokasi" name="location_name" type="text" required />
                     <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true"
                         required>
@@ -72,8 +73,8 @@
                 <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
             @enderror
 
-            <div class="text-end mt-3">
-                <x-button class="bg-primary">
+            <div class="text-end mt-6">
+                <x-button class="bg-primary w-full md:w-auto justify-center">
                     Tambah Sampel
                 </x-button>
             </div>
@@ -110,10 +111,14 @@
                 let map = L.map("map").setView([latitude, longitude], 13);
 
                 // tile google maps source
-                let googleMaps = L.tileLayer(
-                    "https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
-                        maxZoom: 20,
-                        subdomains: ["mt0", "mt1", "mt2", "mt3"],
+                L.tileLayer(
+                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                        attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                        maxZoom: 18,
+                        id: 'mapbox/light-v11',
+                        tileSize: 512,
+                        zoomOffset: -1,
+                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                     }
                 ).addTo(map);
 

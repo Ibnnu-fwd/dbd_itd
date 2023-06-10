@@ -21,8 +21,6 @@ return new class extends Migration
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-
-            $table->foreign('district_id')->references('id')->on('districts');
         });
     }
 

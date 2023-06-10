@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\DetailSample;
+use App\Models\DetailKsh;
+use App\Models\Ksh;
 use App\Models\Larvae;
 use App\Models\Sample;
-use App\Observers\DetailSampleObserver;
+use App\Observers\DetailKshObserver;
+use App\Observers\KshObserver;
 use App\Observers\LarvaeObserver;
 use App\Observers\SampleObserver;
 use Illuminate\Support\ServiceProvider;
@@ -34,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interface\SampleInterface::class, \App\Repositories\SampleRepository::class);
         $this->app->bind(\App\Repositories\Interface\DetailSampleVirusInterface::class, \App\Repositories\DetailSampleVirusRepository::class);
         $this->app->bind(\App\Repositories\Interface\LarvaeInterface::class, \App\Repositories\LarvaeRepository::class);
+        $this->app->bind(\App\Repositories\Interface\KshInterface::class, \App\Repositories\KshRepository::class);
+        $this->app->bind(\App\Repositories\Interface\DetailKshInterface::class, \App\Repositories\DetailKshRepository::class);
+        $this->app->bind(\App\Repositories\Interface\AbjInterface::class, \App\Repositories\AbjRepository::class);
     }
 
     /**
@@ -43,5 +48,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Sample::observe(SampleObserver::class);
         Larvae::observe(LarvaeObserver::class);
+        Ksh::observe(KshObserver::class);
+        DetailKsh::observe(DetailKshObserver::class);
     }
 }
