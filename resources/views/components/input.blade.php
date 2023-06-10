@@ -6,7 +6,7 @@
     </label>
     <input type="{{ $type }}" name="{{ $name }}" id="{{ $id }}" {!! $attributes->merge([
         'class' =>
-            'bg-none border border-gray-300 text-gray-900 text-xs 2xl:text-sm rounded-md focus:ring-primary-600 focus:border-primary-600 block w-full px-2.5 py-2.5' .
+            'bg-none border border-gray-300 text-gray-900 text-xs 2xl:text-sm rounded-md focus:ring-purple-600 focus:border-purple-600 block w-full px-2.5 py-2.5' .
             ($class ? ' ' . $class : ''),
     ]) !!}
         placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }} autocomplete="off" value="{{ $value }}">

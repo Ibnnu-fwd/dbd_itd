@@ -362,4 +362,8 @@ class LarvaeController extends Controller
             'larvae' => $larvae,
         ]);
     }
+
+    public function import(Request $request)
+    {
+    }
 }
