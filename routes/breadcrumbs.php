@@ -320,3 +320,45 @@ Breadcrumbs::for('larvae.detail.edit', function (BreadcrumbTrail $trail, $data) 
     $trail->parent('larvae.show', $data);
     $trail->push('Ubah', route('admin.larvae.detail.edit', $data->id));
 });
+
+// ------------ KSH ------------
+Breadcrumbs::for('ksh', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('KSH', route('admin.ksh.index'));
+});
+
+// KSH > Create
+Breadcrumbs::for('ksh.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('ksh');
+    $trail->push('Tambah', route('admin.ksh.create'));
+});
+
+// KSH > Show
+Breadcrumbs::for('ksh.show', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('ksh');
+    $trail->push('Detail', route('admin.ksh.show', $data->id));
+});
+
+// KSH > Edit
+Breadcrumbs::for('ksh.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('ksh.show', $data);
+    $trail->push('Edit', route('admin.ksh.edit', $data->id));
+});
+
+// KSH > Detail > Create
+Breadcrumbs::for('ksh.detail.create', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('ksh.show', $data);
+    $trail->push('Tambah', route('admin.ksh.detail.create', $data->id));
+});
+
+// KSH > Detail > Edit
+Breadcrumbs::for('ksh.detail.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('ksh.show', $data->ksh);
+    $trail->push('Ubah', route('admin.ksh.detail.edit', $data->id));
+});
+
+// ------------ ABJ ------------
+Breadcrumbs::for('abj', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('ABJ', route('admin.abj.index'));
+});

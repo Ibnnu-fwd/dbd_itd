@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\AbjController;
 use App\Http\Controllers\Admin\BuildingTypeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\EnvironmentTypeController;
 use App\Http\Controllers\Admin\FloorTypeController;
+use App\Http\Controllers\Admin\KshController;
 use App\Http\Controllers\Admin\LarvaeController;
 use App\Http\Controllers\Admin\LocationTypeController;
 use App\Http\Controllers\Admin\MorphotypeController;
@@ -89,6 +91,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('sample-method', SampleMethodController::class, ['as' => 'admin']);
 
     // Sample
+    Route::get('sample/detail-sample/{id}/export', [SampleController::class, 'exportDetailSample'])->name('admin.sample.detail-sample.export');
+    Route::post('sample/detail-sample/import', [SampleController::class, 'importDetailSample'])->name('admin.sample.detail-sample.import');
+    Route::post('sample/import', [SampleController::class, 'import'])->name('admin.sample.import');
     Route::post('sample/detail-sample/virus/morphotype/delete', [SampleController::class, 'deleteDetailSampleVirusMorphotype'])->name('admin.sample.detail-sample.virus.morphotype.delete');
     Route::post('sample/detail-sample/virus/{id}/delete', [SampleController::class, 'deleteDetailSampleVirus'])->name('admin.sample.detail-sample.virus.delete');
     Route::post('sample/detail-sample/virus/{id}/store', [SampleController::class, 'storeDetailSampleVirus'])->name('admin.sample.detail-sample.virus.store');
@@ -113,6 +118,17 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('larvae/filter-month', [LarvaeController::class, 'filterMonth'])->name('admin.larvae.filter-month');
     Route::post('larvae/filter-date-range', [LarvaeController::class, 'filterDateRange'])->name('admin.larvae.filter-date-range');
     Route::resource('larvae', LarvaeController::class, ['as' => 'admin']);
+
+    // KSH
+    Route::put('ksh/detail/{id}/update', [KshController::class, 'updateDetail'])->name('admin.ksh.detail.update');
+    Route::get('ksh/detail/{id}/edit', [KshController::class, 'editDetail'])->name('admin.ksh.detail.edit');
+    Route::post('ksh/detail/{id}/store', [KshController::class, 'storeDetail'])->name('admin.ksh.detail.store');
+    Route::get('ksh/{id}/detail/create', [KshController::class, 'createDetail'])->name('admin.ksh.detail.create');
+    Route::resource('ksh', KshController::class, ['as' => 'admin']);
+
+    // ABJ
+    Route::get('abj/geojson', [AbjController::class, 'geojson'])->name('admin.abj.geojson');
+    Route::resource('abj', AbjController::class, ['as' => 'admin'])->only(['index']);
 });
 
 require __DIR__ . '/auth.php';

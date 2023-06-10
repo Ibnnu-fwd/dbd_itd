@@ -1,5 +1,16 @@
 <x-app-layout>
     <x-breadcrumb name="sample.detail-sample" :data="$sample" />
+
+    <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
+        <x-link-button route="{{ route('admin.sample.detail-sample.export', $sample->id) }}"
+            class="justify-center bg-gray-500" type="button" target="_blank">
+            Unduh Template Import
+        </x-link-button>
+        <x-button id="btnImport" class="justify-center bg-primary" type="button">
+            Import
+        </x-button>
+    </div>
+
     <div class="sm:grid grid-cols-3 gap-x-4">
         @foreach ($sample->detailSampleViruses as $detailSample)
             <x-card-container>
@@ -52,6 +63,14 @@
         @endforeach
     </div>
 
+    <form action="{{ route('admin.sample.detail-sample.import') }}" method="POST" hidden id="formImport"
+        enctype="multipart/form-data">
+        @csrf
+        <input type="sample_id" name="sample_id" value="{{ $sample->id }}">
+        <input type="file" name="import_file" id="import_file">
+        <button type="submit" id="btnSubmit"></button>
+    </form>
+
     @push('js-internal')
         <script>
             function confirmDelete(id) {
@@ -84,6 +103,57 @@
                     }
                 })
             }
+
+            $(function() {
+                $('#btnImport').click(function() {
+                    $('#import_file').click();
+
+                    $('#import_file').change(function() {
+                        Swal.fire({
+                            title: 'Konfirmasi',
+                            text: 'Apakah anda yakin ingin mengimpor data ini?',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya',
+                            cancelButtonText: 'Tidak',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#btnSubmit').click();
+                            }
+                        });
+                    });
+                });
+
+                $('#formImport').on('submit', function() {
+                    Swal.fire({
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        allowEnterKey: false,
+                        showConfirmButton: false,
+                        title: 'Loading',
+                        html: 'Mohon menunggu sebentar',
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    });
+                });
+
+                @if (Session::has('success'))
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: '{{ Session::get('success') }}'
+                    })
+                @endif
+
+                @if (Session::has('error'))
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: '{{ Session::get('error') }}'
+                    })
+                @endif
+            });
         </script>
     @endpush
 </x-app-layout>

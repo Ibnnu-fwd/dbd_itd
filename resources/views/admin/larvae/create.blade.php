@@ -245,11 +245,14 @@
 
                 let map = L.map("map").setView([latitude, longitude], 13);
 
-                // tile google maps source
-                let googleMaps = L.tileLayer(
-                    "https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
-                        maxZoom: 20,
-                        subdomains: ["mt0", "mt1", "mt2", "mt3"],
+                L.tileLayer(
+                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                        attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                        maxZoom: 18,
+                        id: 'mapbox/light-v11',
+                        tileSize: 512,
+                        zoomOffset: -1,
+                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                     }
                 ).addTo(map);
 
@@ -308,14 +311,15 @@
                             // pop up set in above marker
                             .bindPopup(
                                 `<table class="table-auto">
-                            <tr>
-                                <td class="px-2 py-1">Latitude</td>
-                                <td class="px-2 py-1">${latitude}</td>
-                            </tr>
-                            <tr>
-                                <td class="px-2 py-1">Longitude</td>
-                                <td class="px-2 py-1">${longitude}</td>
-                            </tr>`
+                                    <tr>
+                                        <td class="px-2 py-1">Latitude</td>
+                                        <td class="px-2 py-1">${latitude}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1">Longitude</td>
+                                        <td class="px-2 py-1">${longitude}</td>
+                                    </tr>
+                                </table>`
                             )
                             .openPopup();
                     });
@@ -342,14 +346,15 @@
                             // pop up set in above marker
                             .bindPopup(
                                 `<table class="table-auto">
-                            <tr>
-                                <td class="px-2 py-1">Latitude</td>
-                                <td class="px-2 py-1">${lat}</td>
-                            </tr>
-                            <tr>
-                                <td class="px-2 py-1">Longitude</td>
-                                <td class="px-2 py-1">${lng}</td>
-                            </tr>`
+                                    <tr>
+                                        <td class="px-2 py-1">Latitude</td>
+                                        <td class="px-2 py-1">${lat}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1">Longitude</td>
+                                        <td class="px-2 py-1">${lng}</td>
+                                    </tr>
+                                </table>`
                             )
                             .openPopup();
                     }
@@ -376,14 +381,15 @@
                             // pop up set in above marker
                             .bindPopup(
                                 `<table class="table-auto">
-                            <tr>
-                                <td class="px-2 py-1">Latitude</td>
-                                <td class="px-2 py-1">${lat}</td>
-                            </tr>
-                            <tr>
-                                <td class="px-2 py-1">Longitude</td>
-                                <td class="px-2 py-1">${lng}</td>
-                            </tr>`
+                                    <tr>
+                                        <td class="px-2 py-1">Latitude</td>
+                                        <td class="px-2 py-1">${lat}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-2 py-1">Longitude</td>
+                                        <td class="px-2 py-1">${lng}</td>
+                                    </tr>
+                                </table>`
                             )
                             .openPopup();
                     }

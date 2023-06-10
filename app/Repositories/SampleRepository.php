@@ -37,19 +37,34 @@ class SampleRepository implements SampleInterface
         DetailSampleVirus $detailSampleVirus,
         DetailSampleMorphotype $detailSampleMorphotype
     ) {
-        $this->sample = $sample;
-        $this->sampleMethod = $sampleMethod;
-        $this->province = $province;
-        $this->regency = $regency;
-        $this->district = $district;
-        $this->village = $village;
-        $this->detailSampleVirus = $detailSampleVirus;
-        $this->detailSampleMorophotype = $detailSampleMorphotype;
+        $this->sample                     = $sample;
+        $this->sampleMethod               = $sampleMethod;
+        $this->province                   = $province;
+        $this->regency                    = $regency;
+        $this->district                   = $district;
+        $this->village                    = $village;
+        $this->detailSampleVirus          = $detailSampleVirus;
+        $this->detailSampleMorophotype    = $detailSampleMorphotype;
     }
 
     public function getAll()
     {
-        return $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village', 'createdBy', 'updatedBy')->active()->orderBy('created_at', 'desc')->get();
+        $samples = $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()->get();
+
+        $samples = $samples->map(function ($item) {
+            $item['total_sample'] = $item->detailSampleViruses->map(function ($item) {
+                $amount = 0;
+                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
+                });
+                return $amount;
+            })->sum();
+            return $item;
+        });
+
+        return $samples;
     }
 
     public function getById($id)
@@ -70,6 +85,7 @@ class SampleRepository implements SampleInterface
                 'regency_id' => $attributes['regency_id'],
                 'district_id' => $attributes['district_id'],
                 'village_id' => $attributes['village_id'],
+                'public_health_name' => $attributes['public_health_name'] ?? null,
                 'location_name' => $attributes['location_name'] ?? null,
                 'location_type_id' => $attributes['location_type_id'] ?? null,
                 'description' => $attributes['description'] ?? null,
@@ -100,6 +116,7 @@ class SampleRepository implements SampleInterface
         try {
             $sample = $this->sample->find($id)->update([
                 'sample_method_id' => $attributes['sample_method_id'],
+                'public_health_name' => $attributes['public_health_name'],
                 'location_name' => $attributes['location_name'],
                 'location_type_id' => $attributes['location_type_id'],
                 'description' => $attributes['description'] ?? null,
@@ -156,7 +173,10 @@ class SampleRepository implements SampleInterface
             $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
                 $amount = 0;
                 $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                    $amount += $item->amount;
+                    // sum serotype amount
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
                 });
                 return $amount;
             })->sum();
@@ -164,7 +184,10 @@ class SampleRepository implements SampleInterface
                 return [
                     'name' => $item->virus->name,
                     'amount' => $item->detailSampleMorphotypes->map(function ($item) {
-                        return $item->amount;
+                        // sum serotype amount
+                        return $item->detailSampleSerotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum();
                     })->sum(),
                 ];
             });
@@ -224,14 +247,21 @@ class SampleRepository implements SampleInterface
             $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
                 $amount = 0;
                 $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                    $amount += $item->amount;
+                    // sum serotype amount
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
                 });
                 return $amount;
             })->sum();
             $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
                 return [
                     'name' => $item->virus->name,
+                    // sum amount of same morphotype and even thought there're more than
                     'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                        return $item->detailSampleSerotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum();
                         return $item->amount;
                     })->sum(),
                 ];
@@ -282,7 +312,9 @@ class SampleRepository implements SampleInterface
             $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
                 $amount = 0;
                 $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                    $amount += $item->amount;
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
                 });
                 return $amount;
             })->sum();
@@ -290,7 +322,10 @@ class SampleRepository implements SampleInterface
                 return [
                     'name' => $item->virus->name,
                     'amount' => $item->detailSampleMorphotypes->map(function ($item) {
-                        return $item->amount;
+                        // sum serotype amount
+                        return $item->detailSampleSerotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum();
                     })->sum(),
                 ];
             });
@@ -341,7 +376,9 @@ class SampleRepository implements SampleInterface
             $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
                 $amount = 0;
                 $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                    $amount += $item->amount;
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
                 });
                 return $amount;
             })->sum();

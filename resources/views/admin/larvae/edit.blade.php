@@ -61,7 +61,7 @@
                 </x-select>
             </div>
             <div>
-                <p class="text-xs 2xl:text-sm font-semibold mb-4">Detail Koordinat</p>
+                <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Koordinat</p>
                 <div class="sm:grid grid-cols-2 gap-x-4">
                     <x-input id="latitude" label="Latitude" name="latitude" type="text" required
                         :value="$larva->latitude" />
@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-3 md:flex-row md:justify-between mt-6">
+        <div class="flex flex-col gap-3 md:flex-row md:justify-between mt-6 items-end">
             <x-link-button color="gray" route="{{ route('admin.larvae.show', $larva->id) }}" class="justify-center">
                 Kelola Detail Pemeriksaan
             </x-link-button>
@@ -181,10 +181,14 @@
                 let map = L.map("map").setView([latitude, longitude], 13);
 
                 // tile google maps source
-                let googleMaps = L.tileLayer(
-                    "https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
-                        maxZoom: 20,
-                        subdomains: ["mt0", "mt1", "mt2", "mt3"],
+                L.tileLayer(
+                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                        attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                        maxZoom: 18,
+                        id: 'mapbox/light-v11',
+                        tileSize: 512,
+                        zoomOffset: -1,
+                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                     }
                 ).addTo(map);
 

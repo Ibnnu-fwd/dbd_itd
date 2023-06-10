@@ -43,6 +43,11 @@ class Regency extends Model
         return $this->hasMany(Larvae::class, 'regency_id', 'id');
     }
 
+    public function ksh()
+    {
+        return $this->hasMany(Ksh::class, 'regency_id', 'id');
+    }
+
     // SCOPES
     public function scopeFilter($query, array $filters)
     {

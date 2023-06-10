@@ -64,6 +64,16 @@ class User extends Authenticatable
         return $this->hasMany(Larvae::class, 'created_by');
     }
 
+    public function ksh()
+    {
+        return $this->hasMany(Ksh::class, 'created_by');
+    }
+
+    public function detailKsh()
+    {
+        return $this->hasMany(DetailKsh::class, 'created_by');
+    }
+
     // SCOPES
     public function scopeFilter($query, array $filters)
     {
