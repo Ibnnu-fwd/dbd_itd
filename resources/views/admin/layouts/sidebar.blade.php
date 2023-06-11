@@ -27,8 +27,8 @@
                     || request()->routeIs('admin.ksh.create') || request()->routeIs('admin.ksh.edit') || request()->routeIs('admin.ksh.show') || request()->routeIs('admin.ksh.detail.*') }}" />
                 <x-sidebar-item title="Angka Bebas Jentik" route="{{ route('admin.abj.index') }}"
                     active="{{ request()->routeIs('admin.abj.*') }}" />
-                <x-sidebar-item title="Anggota" route="{{ route('admin.ksh.member') }}"
-                    active="{{ request()->routeIs('admin.ksh.member.*') }}" />
+                <x-sidebar-item title="Anggota Aktif" route="{{ route('admin.ksh.member') }}"
+                    active="{{ request()->routeIs('admin.ksh.member') || request()->routeIs('admin.ksh.member.create') }}" />
             </x-sidebar-dropdown>
 
             <hr class="my-2 border-gray-200 dark:border-gray-700 mx-2" />
@@ -79,7 +79,7 @@
             <hr class="my-2 border-gray-200 dark:border-gray-700 mx-2" />
 
             <!-- Master User -->
-            <x-sidebar-item title="Pengaturan Pengguna" icon="fas fa-user-cog"
+            <x-sidebar-item title="Profil" icon="fas fa-user"
                 route="{{ route('admin.user.index') }}" active="{{ request()->routeIs('admin.user.*') }}" />
 
             <!-- Log out -->
