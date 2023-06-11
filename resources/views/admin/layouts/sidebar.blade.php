@@ -27,7 +27,7 @@
                     || request()->routeIs('admin.ksh.create') || request()->routeIs('admin.ksh.edit') || request()->routeIs('admin.ksh.show') || request()->routeIs('admin.ksh.detail.*') }}" />
                 <x-sidebar-item title="Angka Bebas Jentik" route="{{ route('admin.abj.index') }}"
                     active="{{ request()->routeIs('admin.abj.*') }}" />
-                <x-sidebar-item title="Anggota Aktif" route="{{ route('admin.ksh.member') }}"
+                <x-sidebar-item title="Anggota" route="{{ route('admin.ksh.member') }}"
                     active="{{ request()->routeIs('admin.ksh.member') || request()->routeIs('admin.ksh.member.create') }}" />
             </x-sidebar-dropdown>
 

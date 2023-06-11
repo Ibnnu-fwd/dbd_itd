@@ -176,4 +176,15 @@ class LarvaeRepository implements LarvaeInterface
             ['created_at', '<=', $endDate]
         ])->get();
     }
+
+    public function getTotalLarva()
+    {
+        $detailLarva = $this->detailLarvae->all();
+        $totalLarva = 0;
+        foreach ($detailLarva as $detail) {
+            $totalLarva += $detail->amount_larva;
+        }
+
+        return $totalLarva;
+    }
 }
