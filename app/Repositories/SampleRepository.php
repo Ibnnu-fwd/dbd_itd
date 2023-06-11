@@ -416,4 +416,98 @@ class SampleRepository implements SampleInterface
 
         return $data;
     }
+
+    public function getSamplePerYear($year = null)
+    {
+        $sample = $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes')->whereYear('created_at', $year)->get();
+
+        // get sample per month in a year, sum amount of same month, sum each virus in a month, keep enter virus type even the amount is 0
+        $data = [];
+        foreach ($sample as $key => $value) {
+            $data[$key]['month'] = $value->created_at->format('m');
+            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
+                $amount = 0;
+                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
+                });
+                return $amount;
+            })->sum();
+            $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
+                return [
+                    'name' => $item->virus->name,
+                    'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum(),
+                ];
+            });
+        }
+
+        // add virus type even the amount is 0
+        $virus = Virus::all();
+        foreach ($virus as $key => $value) {
+            $data = collect($data)->map(function ($item) use ($value) {
+                // check if virus type is already exist, enter another virus type
+                if ($item['type']->contains('name', $value->name)) {
+                    return $item;
+                } else {
+                    $item['type']->push([
+                        'name' => $value->name,
+                        'amount' => 0,
+                    ]);
+                    return $item;
+                }
+            });
+        }
+
+        // sum amount of same month by index
+        $data = collect($data)->groupBy('month')->map(function ($item) {
+            $amount = 0;
+            foreach ($item as $key => $value) {
+                $amount += $value['count'];
+            }
+            return [
+                'month' => $item[0]['month'],
+                'count' => $amount,
+                'type' => $item[0]['type'],
+            ];
+        });
+
+        // change index to number
+        $data = $data->values();
+
+        // change month number to month name
+        $data = $data->map(function ($item) {
+            $item['month'] = Carbon::createFromFormat('m', $item['month'])->locale('id')->monthName;
+            return $item;
+        });
+
+        return $data;
+    }
+
+    public function getTotalSample()
+    {
+        return $this->sample->active()->count();
+    }
+
+    public function getTotalMosquito()
+    {
+        $sample = $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes')->get();
+
+        $data = [];
+        foreach ($sample as $key => $value) {
+            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
+                $amount = 0;
+                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
+                });
+                return $amount;
+            })->sum();
+        }
+
+        return collect($data)->sum('count');
+    }
 }

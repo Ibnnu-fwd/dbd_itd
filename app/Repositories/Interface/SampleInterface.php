@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Interface;
 
-use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
-
 interface SampleInterface
 {
     public function getAll();
@@ -17,4 +15,8 @@ interface SampleInterface
     public function getAllGroupByDistrict($regency_id);
     public function getAllGroupByDistrictFilterByMonth($regency_id, $month);
     public function getAllGroupByDistrictFilterByDateRange($regency_id, $start_date, $end_date);
+
+    public function getSamplePerYear($year = null);
+    public function getTotalSample();
+    public function getTotalMosquito();
 }

@@ -15,4 +15,6 @@ interface LarvaeInterface
 
     public function filterMonth($month);
     public function filterDateRange($startDate, $endDate);
+
+    public function getTotalLarva();
 }
