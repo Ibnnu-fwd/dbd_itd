@@ -46,6 +46,7 @@
                 },
                 features: []
             };
+
             let abj = Object.values(@json($abj));
 
             // get geojson in local public folder
@@ -60,19 +61,7 @@
                                     geometry: {
                                         type: 'Polygon',
                                         // make sure the first and last coordinates are the same and between 90 and -90
-                                        coordinates: dataItem.border.map((coordinate) => {
-                                            if (coordinate[0] > 90) {
-                                                coordinate[0] = 90;
-                                            } else if (coordinate[0] < -90) {
-                                                coordinate[0] = -90;
-                                            }
-                                            if (coordinate[1] > 90) {
-                                                coordinate[1] = 90;
-                                            } else if (coordinate[1] < -90) {
-                                                coordinate[1] = -90;
-                                            }
-                                            return coordinate;
-                                        })
+                                        coordinates: dataItem.border
                                     },
                                     properties: {
                                         color: getColor(abjItem.abj_total),

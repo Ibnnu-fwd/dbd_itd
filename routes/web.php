@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableAgentController;
 use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
+use App\Http\Controllers\User\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('auth.login');
 });
+
+// Forgot Password (AuthController)
+Route::post('user/reset-password', [AuthController::class, 'resetPassword'])->name('admin.user.reset-password');
+Route::get('user/reset-password-form', [AuthController::class, 'resetPasswordForm'])->name('admin.user.reset-password-form');
+Route::post('user/check-email', [AuthController::class, 'checkEmail'])->name('admin.user.check-email');
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
@@ -121,7 +127,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('larvae', LarvaeController::class, ['as' => 'admin']);
 
     // KSH
-    Route::get('ksh/member/create', [KshController::class, 'createMember'])->name('admin.ksh.member.create');
+    Route::post('ksh/member/change-status', [KshController::class, 'changeStatusMember'])->name('admin.ksh.member.change-status');
+    Route::post('ksh/member/store', [KshController::class, 'storeMember'])->name('admin.ksh.member.store');
     Route::get('ksh/member', [KshController::class, 'member'])->name('admin.ksh.member');
     Route::put('ksh/detail/{id}/update', [KshController::class, 'updateDetail'])->name('admin.ksh.detail.update');
     Route::get('ksh/detail/{id}/edit', [KshController::class, 'editDetail'])->name('admin.ksh.detail.edit');
@@ -133,7 +140,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('abj/geojson', [AbjController::class, 'geojson'])->name('admin.abj.geojson');
     Route::resource('abj', AbjController::class, ['as' => 'admin'])->only(['index']);
 
-// User
+    // User
     Route::post('user/{id}/update-user-account', [UserController::class, 'updateUserAccount'])->name('admin.user.update-user-account');
     Route::post('user/update-profile-picture', [UserController::class, 'updateProfilePicture'])->name('admin.user.update-profile-picture');
     Route::resource('user', UserController::class, ['as' => 'admin']);
