@@ -53,62 +53,98 @@
                 fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
                     .then((response) => response.json())
                     .then((data) => {
-                        const geojson = {
-                            type: 'FeatureCollection',
-                            features: []
-                        };
+                            const geojson = {
+                                type: 'FeatureCollection',
+                                features: []
+                            };
 
-                        data.forEach((dataItem) => {
-                            abj.forEach((abjItem) => {
-                                if (abjItem.district === dataItem.sub_district) {
-                                    geojson.features.push({
-                                        type: 'Feature',
-                                        geometry: {
-                                            type: 'Polygon',
-                                            coordinates: [dataItem.border]
-                                        },
-                                        properties: {
-                                            color: getColor(abjItem.abj_total),
-                                            regency: dataItem.district,
-                                            district: dataItem.sub_district,
-                                            village: dataItem.name,
-                                            abj: abjItem.abj_total,
-                                            total_sample: abjItem.total_sample,
-                                            total_check: abjItem.total_check
+                            data.forEach((dataItem) => {
+                                        abj.forEach((abjItem) => {
+                                            if (abjItem.district === dataItem.sub_district) {
+                                                geojson.features.push({
+                                                    type: 'Feature',
+                                                    geometry: {
+                                                        type: 'Polygon',
+                                                        coordinates: [dataItem.border]
+                                                    },
+                                                    properties: {
+                                                        color: getColor(abjItem.abj_total),
+                                                        regency: dataItem.district,
+                                                        district: dataItem.sub_district,
+                                                        village: dataItem.name,
+                                                        abj: abjItem.abj_total,
+                                                        total_sample: abjItem.total_sample,
+                                                        total_check: abjItem.total_check
+                                                    }
+                                                });
+                                            }
+                                        });
+
+                                    };
+                                    let abj = Object.values(@json($abj));
+
+                                    fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
+                                    .then((response) => response.json())
+                                    .then((data) => {
+                                            const geojson = {
+                                                type: 'FeatureCollection',
+                                                features: []
+                                            };
+
+                                            data.forEach((dataItem) => {
+                                                abj.forEach((abjItem) => {
+                                                    if (abjItem.district === dataItem.sub_district) {
+                                                        geojson.features.push({
+                                                            type: 'Feature',
+                                                            geometry: {
+                                                                type: 'Polygon',
+                                                                coordinates: [dataItem.border]
+                                                                // make sure the first and last coordinates are the same and between 90 and -90
+                                                                coordinates: dataItem.border
+                                                            },
+                                                            properties: {
+                                                                color: getColor(abjItem.abj_total),
+                                                                regency: dataItem.district,
+                                                                district: dataItem.sub_district,
+                                                                village: dataItem.name,
+                                                                abj: abjItem.abj_total,
+                                                                total_sample: abjItem.total_sample,
+                                                                total_check: abjItem.total_check
+                                                            }
+                                                        });
+                                                    } >>>
+                                                    >>> > 4 f2caffad8e35621b56f541ad39a037a8f1acb31
+                                                });
+                                                console.log(geojson);
+
+                                                map.getSource('geojson-data').setData(geojson);
+                                            }); <<
+                                            << << < HEAD
                                         }
-                                    });
-                                }
-                            });
-                        });
-                        console.log(geojson);
 
-                        map.getSource('geojson-data').setData(geojson);
-                    });
-            }
+                                        map.on('load', () => {
+                                            map.addSource('geojson-data', {
+                                                type: 'geojson',
+                                                data: geojson
+                                            });
 
-            map.on('load', () => {
-                map.addSource('geojson-data', {
-                    type: 'geojson',
-                    data: geojson
-                });
+                                            map.addLayer({
+                                                id: 'geojson-layer',
+                                                type: 'fill',
+                                                source: 'geojson-data',
+                                                paint: {
+                                                    'fill-color': ['get', 'color'],
+                                                    'fill-opacity': 0.5
+                                                }
+                                            });
 
-                map.addLayer({
-                    id: 'geojson-layer',
-                    type: 'fill',
-                    source: 'geojson-data',
-                    paint: {
-                        'fill-color': ['get', 'color'],
-                        'fill-opacity': 0.5
-                    }
-                });
+                                            map.on('click', 'geojson-layer', (e) => {
+                                                const coordinates = e.lngLat;
+                                                const properties = e.features[0].properties;
 
-                map.on('click', 'geojson-layer', (e) => {
-                    const coordinates = e.lngLat;
-                    const properties = e.features[0].properties;
-
-                    const popup = new mapboxgl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(`
+                                                const popup = new mapboxgl.Popup()
+                                                    .setLngLat(coordinates)
+                                                    .setHTML(`
 
                         <p><strong>Kabupaten:</strong> ${properties.regency}</p>
                         <p><strong>Kecamatan:</strong> ${properties.district}</p>
@@ -116,20 +152,72 @@
                         <p><strong>Total Sampling:</strong> ${properties.total_sample}</p>
                         <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
                     `)
-                        .addTo(map);
-                });
-                //ketika mouse masuk ke area
-                map.on('mouseenter', 'geojson-layer', () => {
-                    map.getCanvas().style.cursor = 'pointer';
-                });
-                // ketika mouse tidak di dalam area
-                map.on('mouseleave', 'geojson-layer', () => {
-                    map.getCanvas().style.cursor = '';
-                });
+                                                    .addTo(map);
+                                            });
+                                            //ketika mouse masuk ke area
+                                            map.on('mouseenter', 'geojson-layer', () => {
+                                                map.getCanvas().style.cursor = 'pointer';
+                                            });
+                                            // ketika mouse tidak di dalam area
+                                            map.on('mouseleave', 'geojson-layer', () => {
+                                                map.getCanvas().style.cursor = '';
+                                            });
 
-                updateMapData(); // map update
-            });
+                                            updateMapData(); // map update
+                                        });
         </script>
+        =======
+        console.log(geojson);
+
+        map.getSource('geojson-data').setData(geojson);
+        });
+        }
+
+        map.on('load', () => {
+        map.addSource('geojson-data', {
+        type: 'geojson',
+        data: geojson
+        });
+
+        map.addLayer({
+        id: 'geojson-layer',
+        type: 'fill',
+        source: 'geojson-data',
+        paint: {
+        'fill-color': ['get', 'color'],
+        'fill-opacity': 0.5
+        }
+        });
+
+        map.on('click', 'geojson-layer', (e) => {
+        const coordinates = e.lngLat;
+        const properties = e.features[0].properties;
+
+        const popup = new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(`
+
+        <p><strong>Regency:</strong> ${properties.regency}</p>
+        <p><strong>District:</strong> ${properties.district}</p>
+        <p><strong>ABJ:</strong> ${properties.abj}%</p>
+        <p><strong>Total Sample:</strong> ${properties.total_sample}</p>
+        <p><strong>Total Check:</strong> ${properties.total_check}</p>
+        `)
+        .addTo(map);
+        });
+        //ketika mouse masuk ke area
+        map.on('mouseenter', 'geojson-layer', () => {
+        map.getCanvas().style.cursor = 'pointer';
+        });
+        // ketika mouse tidak di dalam area
+        map.on('mouseleave', 'geojson-layer', () => {
+        map.getCanvas().style.cursor = '';
+        });
+
+        updateMapData(); // map update
+        });
+        </script>
+        >>>>>>> 4f2caffad8e35621b56f541ad39a037a8f1acb31
 
 
         <script>

@@ -16,6 +16,7 @@
                     <th rowspan="2">Desa</th>
                     <th colspan="2">Lokasi</th>
                     <th rowspan="2">Jumlah Sampel</th>
+                    <th rowspan="2">Oleh</th>
                     <th rowspan="2">Aksi</th>
                 </tr>
                 <tr>
@@ -61,6 +62,10 @@
                         {
                             data: 'total_sample',
                             name: 'total_sample'
+                        },
+                        {
+                            data: 'created_by',
+                            name: 'created_by'
                         },
                         {
                             data: 'action',
