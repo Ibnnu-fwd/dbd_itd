@@ -33,7 +33,7 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/light-v11', // URL gaya peta
             center: [113.717332, -8.1624029], // koordinat Jember
-            zoom: 16 // zoom awal
+            zoom: 8 // zoom awal
         });
 
         let geojson = {
@@ -98,7 +98,7 @@
                 source: 'geojson-data',
                 paint: {
                     'fill-color': ['get', 'color'],
-                    'fill-opacity': 0.5
+                    'fill-opacity': 0.5,
                 }
             });
 
@@ -118,6 +118,7 @@
                     `)
                     .addTo(map);
             });
+
             //ketika mouse masuk ke area
             map.on('mouseenter', 'geojson-layer', () => {
                 map.getCanvas().style.cursor = 'pointer';
@@ -128,6 +129,15 @@
             });
 
             updateMapData(); // map update
+
+            // ketika area di klik maka akan zoom in ke area tersebut
+            map.on('click', 'geojson-layer', (e) => {
+                const coordinates = e.features[0].geometry.coordinates[0][0];
+                map.flyTo({
+                    center: coordinates,
+                    zoom: 12
+                });
+            });
         });
     </script>
 

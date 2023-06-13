@@ -27,7 +27,7 @@
                             {{number_format($totalSample, 0, ',', '.')}}
                         </h5>
                     </a>
-                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Sampel</p>
+                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Sampel Nyamuk</p>
                 </div>
             </div>
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
@@ -38,7 +38,7 @@
                             {{number_format($totalMosquito, 0, ',', '.')}}
                         </h5>
                     </a>
-                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Nyamuk</p>
+                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Total Nyamuk</p>
                 </div>
             </div>
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
@@ -49,7 +49,7 @@
                             {{number_format($totalLarva, 0, ',', '.')}}
                         </h5>
                     </a>
-                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Larva</p>
+                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Total Larva</p>
                 </div>
             </div>
         </div>
