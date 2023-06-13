@@ -165,7 +165,7 @@
                         </table>
                     `);
 
-                    // zoom to marker
+                    // zoom to marker and center
                     marker.on('click', function(e) {
                         map.setView(e.latlng, 10, {
                             animate: true,
@@ -293,7 +293,7 @@
                                 `);
                                 markers.addLayer(marker);
 
-                                // zoom to marker
+                                // zoom to marker and center view
                                 marker.on('click', function(e) {
                                     map.setView(e.latlng, 10, {
                                         animate: true,
@@ -407,7 +407,6 @@
                                 `);
                                 markers.addLayer(marker);
 
-                                // zoom to marker
                                 marker.on('click', function(e) {
                                     map.setView(e.latlng, 10, {
                                         animate: true,
