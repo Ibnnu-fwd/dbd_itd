@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewKshMemberRegistered;
 use App\Repositories\Interface\DetailKshInterface;
 use App\Repositories\Interface\KshInterface;
 use App\Repositories\Interface\RegencyInterface;
 use App\Repositories\Interface\TpaTypeInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class KshController extends Controller
 {
@@ -49,6 +51,9 @@ class KshController extends Controller
                 })
                 ->addColumn('total_sample', function ($data) {
                     return $data->total_sample ?? 0;
+                })
+                ->addColumn('created_by', function($data) {
+                    return explode(' ', $data->createdBy->name)[1];
                 })
                 ->addColumn('action', function ($data) {
                     return view('admin.ksh.column.action', compact('data'));
@@ -234,11 +239,77 @@ class KshController extends Controller
 
     public function member(Request $request)
     {
+        if($request->ajax())
+        {
+            return datatables()
+            ->of($this->ksh->getAllMember())
+            ->addColumn('name', function($data){
+                return $data->name;
+            })
+            ->addColumn('sex', function($data) {
+                return $data->sex == 1 ? 'Laki-laki' : 'Perempuan';
+            })
+            ->addColumn('phone', function($data) {
+                return $data->phone;
+            })
+            ->addColumn('email', function($data) {
+                return $data->email;
+            })
+            ->addColumn('role', function($data) {
+                return strtoupper($data->role);
+            })
+            ->addColumn('created_at', function($data) {
+                return date('d-m-Y', strtotime($data->created_at));
+            })
+            ->addColumn('action', function($data) {
+                return view('admin.ksh.column.action-member', compact('data'));
+            })
+            ->addIndexColumn()
+            ->make(true);
+        }
+
         return view('admin.ksh.member');
     }
 
-    public function createMember(Request $request)
+    public function storeMember(Request $request)
     {
-        return view('admin.ksh.member.create');
+        $request->validate([
+            'name' => ['required'],
+            'sex' => ['required'],
+            'phone' => ['required'],
+            'birthday' => ['required'],
+            'phone' => ['required'],
+            'address' => ['required'],
+            'email' => ['required'],
+        ]);
+
+        try {
+            $password = uniqid();
+            $request->merge([
+                'password' => $password,
+            ]);
+
+            Mail::send(new NewKshMemberRegistered($request->all()));
+            $this->ksh->createMember($request->all());
+            return redirect()->route('admin.ksh.member')->with('success', 'Data berhasil disimpan');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function changeStatusMember(Request $request)
+    {
+        try {
+            $this->ksh->changeStatusMember($request->all());
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Status berhasil diubah'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ]);
+        }
     }
 }

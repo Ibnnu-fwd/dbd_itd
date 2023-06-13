@@ -14,9 +14,7 @@
                     </svg>
                 </button>
                 <a href="https://flowbite.com" class="flex ml-2 md:mr-24">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-5 mr-3" alt="FlowBite Logo" />
-                    <span class="self-center text-xs font-semibold sm:text-sm whitespace-nowrap dark:text-white">DBD
-                        ITD</span>
+                    <img src="{{asset('assets/images/logo.png')}}" class="h-8 mr-3" alt="FlowBite Logo" />
                 </a>
             </div>
             <div class="flex items-center">

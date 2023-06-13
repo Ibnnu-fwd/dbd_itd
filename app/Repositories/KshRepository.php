@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Abj;
 use App\Models\Ksh;
+use App\Models\User;
 use App\Repositories\Interface\KshInterface;
 use Illuminate\Support\Facades\DB;
 
@@ -55,6 +56,32 @@ class KshRepository implements KshInterface
             'village_id' => $attributes['village_id'],
             'latitude' => $attributes['latitude'],
             'longitude' => $attributes['longitude'],
+        ]);
+    }
+
+    public function createMember($attributes)
+    {
+        return User::create([
+            'name' => $attributes['name'],
+            'sex' => $attributes['sex'],
+            'birthday' => date('Y-m-d', strtotime($attributes['birthday'])),
+            'phone' => $attributes['phone'],
+            'email' => $attributes['email'],
+            'address' => $attributes['address'],
+            'password' => password_hash($attributes['password'], PASSWORD_DEFAULT),
+            'role_id' => User::KHS_ROLE,
+        ]);
+    }
+
+    public function getAllMember()
+    {
+        return User::where('role', 'ksh')->get();
+    }
+
+    public function changeStatusMember($attributes)
+    {
+        return User::find($attributes['id'])->update([
+            'is_active' => $attributes['status'],
         ]);
     }
 }

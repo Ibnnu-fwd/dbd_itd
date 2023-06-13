@@ -48,6 +48,16 @@
         };
 
         function updateMapData() {
+            let geojson = {
+                type: 'FeatureCollection',
+                crs: {
+                    type: 'name',
+                    properties: {
+                        name: 'urn:ogc:def:crs:OGC:1.3:CRS84'
+                    }
+                },
+                features: []
+            }; 
             let abj = Object.values(@json($abj));
 
             fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
@@ -66,6 +76,8 @@
                                     geometry: {
                                         type: 'Polygon',
                                         coordinates: [dataItem.border]
+                                        // make sure the first and last coordinates are the same and between 90 and -90
+                                        coordinates: dataItem.border
                                     },
                                     properties: {
                                         color: getColor(abjItem.abj_total),

@@ -104,6 +104,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 
     <script>
+        Chart.defaults.font.family = 'Lexend Deca, Plus Jakarta Sans, sans-serif';
+        Chart.defaults.scale.grid.display = false;
+        Chart.defaults.scale.ticks.beginAtZero = true;
+        Chart.defaults.scale.ticks.precision = 0;
+
+
         $('input[type="search"]').addClass('text-sm');
 
         function formatTanggal(tanggal) {
