@@ -10,6 +10,9 @@
 
     <link href="https://fonts.cdnfonts.com/css/lexend-deca" rel="stylesheet">
 
+    <!-- Tab Icon -->
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo mini.png') }}" type="image/x-icon">
+
     <!-- Alert -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 

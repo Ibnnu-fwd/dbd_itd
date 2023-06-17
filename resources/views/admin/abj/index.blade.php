@@ -96,7 +96,7 @@
                 id: 'geojson-layer',
                 type: 'fill',
                 source: 'geojson-data',
-                paint: {
+            paint: {
                     'fill-color': ['get', 'color'],
                     'fill-opacity': 0.5,
                 }

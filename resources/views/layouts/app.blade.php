@@ -8,6 +8,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Tab Icon -->
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo mini.png') }}" type="image/x-icon">
+
     <link href="https://fonts.cdnfonts.com/css/lexend-deca" rel="stylesheet">
 
     <!-- Datatable -->
@@ -108,7 +111,6 @@
         Chart.defaults.scale.grid.display = false;
         Chart.defaults.scale.ticks.beginAtZero = true;
         Chart.defaults.scale.ticks.precision = 0;
-
 
         $('input[type="search"]').addClass('text-sm');
 
