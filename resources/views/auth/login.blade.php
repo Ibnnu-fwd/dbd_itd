@@ -19,10 +19,10 @@
                             <x-button type="submit" class="bg-primary justify-center w-full md:w-full">
                                 Masuk
                             </x-button>
-                            <div class="block md:flex items-center justify-between mt-4">
-                                <a href="{{ route('register') }}"
+                            <div class="block md:flex items-center justify-end mt-4">
+                                {{-- <a href="{{ route('register') }}"
                                     class="text-xs 2xl:text-sm font-medium text-gray-500 hover:underline">Belum punya
-                                    akun?</a>
+                                    akun?</a> --}}
                                 <a href="{{ route('password.request') }}"
                                     class="text-xs 2xl:text-sm font-medium text-gray-500 hover:underline">Lupa kata
                                     sandi?</a>
