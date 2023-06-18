@@ -21,6 +21,21 @@
     <!-- Flowbite -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
 
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Marker Cluster -->
+    <link rel="stylesheet" href="{{ asset('assets/css/MarkerCluster.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/MarkerCluster.Default.css') }}">
+
+    <!-- Fullscreen -->
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'
+        rel='stylesheet' />
+
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -117,27 +132,19 @@
                         <ul class="flex flex-col mt-4 lg:flex-row lg:space-x-8 lg:mt-0">
                             <li>
                                 <a href="/"
-                                    class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.index') ? 'text-primary font-semibold' : 'text-gray-700'
-                                    }} rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 text-xs 2xl:text-sm">Beranda</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.index') ? 'text-primary font-medium' : 'text-gray-700' }} rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 text-xs 2xl:text-sm">Beranda</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.vector') }}"
-                                    class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.vector') ? 'text-primary font-semibold' : 'text-gray-700'
-                                    }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Vector</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.vector') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Vector</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.larvae') }}"
-                                    class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.larvae') ? 'text-primary font-semibold' : 'text-gray-700'
-                                    }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Larvae</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.larvae') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Larvae</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.ksh') }}"
-                                    class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.ksh') ? 'text-primary font-semibold' : 'text-gray-700'
-                                    }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">KSH</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.ksh') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">KSH</a>
                             </li>
                             <li class="lg:hidden">
                                 @if (auth()->check())
@@ -236,6 +243,29 @@
 
     <!-- Flowbite -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Marker Cluster -->
+    <script src="{{ asset('assets/js/leaflet.markercluster.js') }}"></script>
+
+    <!-- Fullscreen -->
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Chart Js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+
+    <script>
+        Chart.defaults.font.family = 'Poppins, Lexend Deca, Plus Jakarta Sans, sans-serif';
+        Chart.defaults.scale.grid.display = false;
+        Chart.defaults.scale.ticks.beginAtZero = true;
+        Chart.defaults.scale.ticks.precision = 0;
+    </script>
 
     @stack('js-internal')
 </body>

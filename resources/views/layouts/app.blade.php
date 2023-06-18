@@ -57,6 +57,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/MarkerCluster.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/MarkerCluster.Default.css') }}">
 
+    <!-- Fullscreen -->
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'
+        rel='stylesheet' />
+
     @stack('css-internal')
 </head>
 
@@ -151,6 +155,9 @@
 
     <!-- Marker Cluster -->
     <script src="{{ asset('assets/js/leaflet.markercluster.js') }}"></script>
+
+    <!-- Fullscreen -->
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
 
     @stack('js-internal')
 </body>

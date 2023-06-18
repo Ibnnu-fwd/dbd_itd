@@ -100,6 +100,9 @@
 
                 let markers = L.markerClusterGroup();
 
+                // full screen
+                map.addControl(new L.Control.Fullscreen());
+
                 L.tileLayer(
                     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                         attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -110,6 +113,7 @@
                         accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                     }
                 ).addTo(map);
+
                 map.zoomControl.remove();
                 samples.map((sample) => {
                     let marker = L.marker([sample.latitude, sample.longitude], {
@@ -157,12 +161,12 @@
                                         ${
                                             sample.type.map(type => {
                                                 return `
-                                                                                                    <tr>
-                                                                                                        <td>${type.name}</td>
-                                                                                                        <td>:</td>
-                                                                                                        <td>${type.amount}</td>
-                                                                                                    </tr>
-                                                                                                `;
+                                                                                                                    <tr>
+                                                                                                                        <td>${type.name}</td>
+                                                                                                                        <td>:</td>
+                                                                                                                        <td>${type.amount}</td>
+                                                                                                                    </tr>
+                                                                                                                `;
                                             }).join('')
                                         }
                                     </table>
@@ -170,12 +174,13 @@
                             </tr>
                         </table>
                     `);
-                    markers.addLayer(marker);
+
                     // on click
                     marker.on('click', function(e) {
                         map.setView(e.latlng, 12);
-                        map.panTo(e.latlng);
                     });
+
+                    markers.addLayer(marker);
                 });
 
                 map.addLayer(markers);
@@ -234,39 +239,40 @@
                                 ]
                             });
 
-                            if(response.data.length > 0)
-                            {
+                            if (response.data.length > 0) {
                                 // remove layer marker
-                            map.removeLayer(markers);
-                            markers = L.markerClusterGroup();
-                            samples = Object.values(response.samples);
-                            console.log(response.samples);
+                                map.removeLayer(markers);
+                                markers = L.markerClusterGroup();
+                                samples = Object.values(response.samples);
+                                console.log(response.samples);
 
-                            L.tileLayer(
-                                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                                    attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-                                    maxZoom: 18,
-                                    id: 'mapbox/light-v11',
-                                    tileSize: 512,
-                                    zoomOffset: -1,
-                                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
-                                }
-                            ).addTo(map);
+                                L.tileLayer(
+                                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                                        attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                                        maxZoom: 18,
+                                        id: 'mapbox/light-v11',
+                                        tileSize: 512,
+                                        zoomOffset: -1,
+                                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                                    }
+                                ).addTo(map);
 
-                            map.zoomControl.remove();
+                                map.zoomControl.remove();
 
-                            samples.map((sample) => {
-                                let marker = L.marker([sample.latitude, sample.longitude], {
-                                    icon: L.divIcon({
-                                        // using image
-                                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
-                                        backgroundSize: 'contain',
-                                        className: 'marker bg-transparent',
-                                        iconAnchor: [15, 15],
-                                        popupAnchor: [0, -15]
-                                    })
-                                });
-                                marker.bindPopup(`
+                                samples.map((sample) => {
+                                    let marker = L.marker([sample.latitude, sample
+                                        .longitude
+                                    ], {
+                                        icon: L.divIcon({
+                                            // using image
+                                            html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                                            backgroundSize: 'contain',
+                                            className: 'marker bg-transparent',
+                                            iconAnchor: [15, 15],
+                                            popupAnchor: [0, -15]
+                                        })
+                                    });
+                                    marker.bindPopup(`
                                     <table class="table-auto">
                                         <tr>
                                             <td>Kabupaten/Kota</td>
@@ -301,12 +307,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                <tr>
-                                                                    <td>${type.name}</td>
-                                                                    <td>:</td>
-                                                                    <td>${type.amount}</td>
-                                                                </tr>
-                                                            `;
+                                                                                <tr>
+                                                                                    <td>${type.name}</td>
+                                                                                    <td>:</td>
+                                                                                    <td>${type.amount}</td>
+                                                                                </tr>
+                                                                            `;
                                                         }).join('')
                                                     }
                                                 </table>
@@ -314,15 +320,15 @@
                                         </tr>
                                     </table>
                                 `);
-                                markers.addLayer(marker);
-                                // on click
-                                marker.on('click', function(e) {
-                                    map.setView(e.latlng, 12);
-                                    map.panTo(e.latlng);
+                                    markers.addLayer(marker);
+                                    // on click
+                                    marker.on('click', function(e) {
+                                        map.setView(e.latlng, 12);
+                                        map.panTo(e.latlng);
+                                    });
                                 });
-                            });
 
-                            map.addLayer(markers);
+                                map.addLayer(markers);
                             } else {
                                 map.removeLayer(markers);
                             }
@@ -376,24 +382,25 @@
                                 ]
                             });
 
-                            if(response.data.length > 0)
-                            {
-                            map.removeLayer(markers);
-                            markers = L.markerClusterGroup();
-                            samples = Object.values(response.samples);
+                            if (response.data.length > 0) {
+                                map.removeLayer(markers);
+                                markers = L.markerClusterGroup();
+                                samples = Object.values(response.samples);
 
-                            samples.map((sample) => {
-                                let marker = L.marker([sample.latitude, sample.longitude], {
-                                    icon: L.divIcon({
-                                        // using image
-                                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
-                                        backgroundSize: 'contain',
-                                        className: 'marker bg-transparent',
-                                        iconAnchor: [15, 15],
-                                        popupAnchor: [0, -15]
-                                    })
-                                });
-                                marker.bindPopup(`
+                                samples.map((sample) => {
+                                    let marker = L.marker([sample.latitude, sample
+                                        .longitude
+                                    ], {
+                                        icon: L.divIcon({
+                                            // using image
+                                            html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                                            backgroundSize: 'contain',
+                                            className: 'marker bg-transparent',
+                                            iconAnchor: [15, 15],
+                                            popupAnchor: [0, -15]
+                                        })
+                                    });
+                                    marker.bindPopup(`
                                     <table class="table-auto">
                                         <tr>
                                             <td>Kabupaten/Kota</td>
@@ -428,12 +435,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                <tr>
-                                                                    <td>${type.name}</td>
-                                                                    <td>:</td>
-                                                                    <td>${type.amount}</td>
-                                                                </tr>
-                                                            `;
+                                                                                <tr>
+                                                                                    <td>${type.name}</td>
+                                                                                    <td>:</td>
+                                                                                    <td>${type.amount}</td>
+                                                                                </tr>
+                                                                            `;
                                                         }).join('')
                                                     }
                                                 </table>
@@ -441,15 +448,15 @@
                                         </tr>
                                     </table>
                                 `);
-                                markers.addLayer(marker);
-                                // on click
-                                marker.on('click', function(e) {
-                                    map.setView(e.latlng, 12);
-                                    map.panTo(e.latlng);
+                                    markers.addLayer(marker);
+                                    // on click
+                                    marker.on('click', function(e) {
+                                        map.setView(e.latlng, 12);
+                                        map.panTo(e.latlng);
+                                    });
                                 });
-                            });
 
-                            map.addLayer(markers);
+                                map.addLayer(markers);
                             } else {
                                 map.removeLayer(markers);
                             }
