@@ -447,4 +447,98 @@ class SampleRepository implements SampleInterface
 
         return collect($data)->sum('count');
     }
+
+    public function getAllForUser()
+    {
+        $samples = $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()->get();
+        $data = [];
+        foreach ($samples as $sample) {
+            $data[] = [
+                // 'sample_code' => $sample->sample_code,
+                'public_health_name' => $sample->public_health_name,
+                'sample_method' => $sample->sampleMethod->name,
+                'latitude' => $sample->latitude,
+                'longitude' => $sample->longitude,
+                'province' => $sample->province->name,
+                'regency' => $sample->regency->name,
+                'district' => $sample->district->name,
+                'location_name' => $sample->location_name,
+                'created_by' => $sample->createdBy->name,
+                'created_at' => Carbon::parse($sample->created_at)->isoFormat('D MMMM Y'),
+                'count' => $sample->detailSampleViruses->map(function ($item) {
+                    $amount = 0;
+                    $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                        $amount += $item->detailSampleSerotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum();
+                    });
+                    return $amount;
+                })->sum(),
+                'type' => $sample->detailSampleViruses->map(function ($item) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum(),
+                    ];
+                }),
+            ];
+        }
+
+        return collect($data);
+    }
+
+    public function getHighestSampleInDistrictPerYear($year = null)
+    {
+        $sample = $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes')->whereYear('created_at', $year)->get();
+
+        $data = [];
+        foreach ($sample as $key => $value) {
+            $data[$key]['district'] = $value->district->name;
+            $data[$key]['regency'] = $value->regency->name;
+            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
+                $amount = 0;
+                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
+                });
+                return $amount;
+            })->sum();
+            $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
+                return [
+                    'name' => $item->virus->name,
+                    'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum(),
+                ];
+            });
+            $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
+        }
+
+        // sum amount of same district by index
+        $data = collect($data)->groupBy('district')->map(function ($item) {
+            $amount = 0;
+            foreach ($item as $key => $value) {
+                $amount += $value['count'];
+            }
+            return [
+                'district' => $item[0]['district'],
+                'regency' => $item[0]['regency'],
+                'count' => $amount,
+                'type' => $item[0]['type'],
+            ];
+        });
+
+        // change index to number
+        $data = $data->values();
+
+        // sort by count of sample
+        $data = $data->sortByDesc('count');
+
+        // get top 10
+        $data = $data->take(10);
+
+        return $data;
+    }
 }

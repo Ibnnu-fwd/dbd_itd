@@ -104,10 +104,10 @@
             <img class="w-full dark:hidden object-cover h-72 rounded-lg" src="{{ asset('assets/images/mosquito.jpg') }}"
                 alt="abj image">
             <div class="mt-4 md:mt-0">
-                <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                <h2 class="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                     Mosquito Vector <br>Distribution Data
                 </h2>
-                <p class="mb-6 text-gray-500 md:text-sm leading-6">
+                <p class="mb-6 text-gray-500 md:text-xs leading-5">
                     We already have a database of mosquito distribution data in the area that was collected by our team
                     and the community. Hope you can know the distribution of mosquitoes based on type, location and
                     other variables.
@@ -124,10 +124,10 @@
         <div
             class="gap-8 items-center py-8 px-4 mx-auto max-w-screen-xl xl:gap-16 md:grid md:grid-cols-2 sm:py-16 lg:px-6">
             <div class="mt-4 md:mt-0">
-                <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                <h2 class="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                     Larval Dispersal <br>Data
                 </h2>
-                <p class="mb-6 text-gray-500 md:text-sm leading-6">
+                <p class="mb-6 text-gray-500 md:text-xs leading-5">
                     We have been collecting the existence of larvae in the area grouped by the type of larvae, district,
                     and village. So you can know the number of larvae in your area and take action to eradicate them.
                 </p>
@@ -147,10 +147,10 @@
             <img class="w-full dark:hidden object-cover h-72 rounded-lg" src="{{ asset('assets/images/abj.jpg') }}"
                 alt="abj image">
             <div class="mt-4 md:mt-0">
-                <h2 class="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                <h2 class="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                     Visualization of <br>Larva-Free Counts
                 </h2>
-                <p class="mb-6 text-gray-500 md:text-sm leading-6">
+                <p class="mb-6 text-gray-500 md:text-xs leading-5">
                     We have been collecting the existence of mosquitoes in the area grouped by the type of mosquitoes,
                     and counted the number of mosquitoes that are free of larvae
                 </p>

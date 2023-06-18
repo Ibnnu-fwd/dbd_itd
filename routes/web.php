@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\VectorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +39,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('ksh', [HomeController::class, 'ksh'])->name('user.ksh');
 Route::get('larvae', [HomeController::class, 'larvae'])->name('user.larvae');
-Route::get('vector', [HomeController::class, 'vector'])->name('user.vector');
+Route::prefix('vector')->group(function () {
+    Route::post('/filter-year', [VectorController::class, 'filterYear'])->name('user.vector.filter-year');
+    Route::get('/', [VectorController::class, 'index'])->name('user.vector');
+});
 Route::get('/', [HomeController::class, 'index'])->name('user.index');
 
 // Forgot Password (AuthController)

@@ -136,6 +136,9 @@
                 }
                 let map = L.map('map').setView(centerCoordinate[0], 8);
 
+                // full screen
+                map.addControl(new L.Control.Fullscreen());
+
                 let markers = L.markerClusterGroup();
 
                 L.tileLayer(
@@ -154,8 +157,8 @@
                 for (let i = 0; i < larvae.length; i++) {
                     let marker = L.marker([larvae[i].latitude, larvae[i].longitude], {
                         icon: L.divIcon({
-                            // animate ping
-                            html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
+                            // image
+                            html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
                             className: 'text-white bg-transparent',
                             iconAnchor: [15, 15],
                             popupAnchor: [0, -15]
@@ -199,6 +202,11 @@
                         $('.leaflet-popup-content').width('auto');
                     });
 
+                    // on click pan to marker
+                    marker.on('click', function() {
+                        map.setZoom(15);
+                        map.panTo(marker.getLatLng());
+                    });
 
                     markers.addLayer(marker);
                 }
@@ -285,8 +293,9 @@
                                 let marker = L.marker([response.larvae[i].latitude, response.larvae[
                                     i].longitude], {
                                     icon: L.divIcon({
-                                        html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
+                                        html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
                                         className: 'text-white bg-transparent',
+                                        // put popup on top of marker
                                         iconAnchor: [15, 15],
                                         popupAnchor: [0, -15]
                                     })
@@ -328,6 +337,7 @@
                                 ).on('popupopen', function() {
                                     $('.leaflet-popup-content').width('auto');
                                 });
+
                                 markers.addLayer(marker);
                             }
                             map.addLayer(markers);
@@ -405,7 +415,7 @@
                                 let marker = L.marker([response.larvae[i].latitude, response.larvae[
                                     i].longitude], {
                                     icon: L.divIcon({
-                                        html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
+                                        html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
                                         className: 'text-white bg-transparent',
                                         iconAnchor: [15, 15],
                                         popupAnchor: [0, -15]
