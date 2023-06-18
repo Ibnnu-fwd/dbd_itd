@@ -6,7 +6,7 @@
                 <div class="text-xs 2xl:text-sm">
                     <div class="xl:flex items-start justify-between gap-x-16">
                         <div>
-                            <h2 class="from-blue-400 to-purple-700 bg-gradient-to-r bg-clip-text text-transparent">Vector Information</h3>
+                            <h2 class="bg-clip-text bg-gradient-to-r to-purple-500 from-purple-700 text-transparent">Vector Information</h3>
                                 <p class="leading-7">
                                     Vectors, as defined by the California Department of Public Health, are “any insect
                                     or other

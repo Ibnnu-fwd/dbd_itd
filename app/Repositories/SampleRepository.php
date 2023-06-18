@@ -269,27 +269,6 @@ class SampleRepository implements SampleInterface
             $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
         }
 
-        // sum amount of same district by index
-        $data = collect($data)->groupBy('district')->map(function ($item) {
-            $amount = 0;
-            foreach ($item as $key => $value) {
-                $amount += $value['count'];
-            }
-            return [
-                'district_id' => $item[0]['district_id'],
-                'district' => $item[0]['district'],
-                'regency' => $item[0]['regency'],
-                'latitude' => $item[0]['latitude'],
-                'longitude' => $item[0]['longitude'],
-                'count' => $amount,
-                'type' => $item[0]['type'],
-                'created_at' => $item[0]['created_at'],
-            ];
-        });
-
-        // change index to number
-        $data = $data->values();
-
         return $data;
     }
 
@@ -332,28 +311,7 @@ class SampleRepository implements SampleInterface
             $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
         }
 
-        // sum amount of same district by index
-        $data = collect($data)->groupBy('district')->map(function ($item) {
-            $amount = 0;
-            foreach ($item as $key => $value) {
-                $amount += $value['count'];
-            }
-            return [
-                'district_id' => $item[0]['district_id'],
-                'district' => $item[0]['district'],
-                'regency' => $item[0]['regency'],
-                'latitude' => $item[0]['latitude'],
-                'longitude' => $item[0]['longitude'],
-                'count' => $amount,
-                'type' => $item[0]['type'],
-                'created_at' => $item[0]['created_at'],
-            ];
-        });
-
-        // change index to number
-        $data = $data->values();
-
-        return $data;
+        return collect($data);
     }
 
     public function getAllGroupByDistrictFilterByDateRange($regency_id, $start_date, $end_date)
@@ -393,28 +351,7 @@ class SampleRepository implements SampleInterface
             $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
         }
 
-        // sum amount of same district by index
-        $data = collect($data)->groupBy('district')->map(function ($item) {
-            $amount = 0;
-            foreach ($item as $key => $value) {
-                $amount += $value['count'];
-            }
-            return [
-                'district_id' => $item[0]['district_id'],
-                'district' => $item[0]['district'],
-                'regency' => $item[0]['regency'],
-                'latitude' => $item[0]['latitude'],
-                'longitude' => $item[0]['longitude'],
-                'count' => $amount,
-                'type' => $item[0]['type'],
-                'created_at' => $item[0]['created_at'],
-            ];
-        });
-
-        // change index to number
-        $data = $data->values();
-
-        return $data;
+        return collect($data);
     }
 
     public function getSamplePerYear($year = null)

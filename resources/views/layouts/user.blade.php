@@ -118,25 +118,25 @@
                             <li>
                                 <a href="/"
                                     class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.index') ? 'text-primary' : 'text-gray-700'
+                                        request()->routeIs('user.index') ? 'text-primary font-semibold' : 'text-gray-700'
                                     }} rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 text-xs 2xl:text-sm">Beranda</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.vector') }}"
                                     class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.vector') ? 'text-primary' : 'text-gray-700'
+                                        request()->routeIs('user.vector') ? 'text-primary font-semibold' : 'text-gray-700'
                                     }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Vector</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.larvae') }}"
                                     class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.larvae') ? 'text-primary' : 'text-gray-700'
+                                        request()->routeIs('user.larvae') ? 'text-primary font-semibold' : 'text-gray-700'
                                     }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Larvae</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.ksh') }}"
                                     class="block py-2 pr-4 pl-3 {{
-                                        request()->routeIs('user.ksh') ? 'text-primary' : 'text-gray-700'
+                                        request()->routeIs('user.ksh') ? 'text-primary font-semibold' : 'text-gray-700'
                                     }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">KSH</a>
                             </li>
                             <li class="lg:hidden">
