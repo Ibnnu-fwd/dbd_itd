@@ -36,6 +36,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('ksh', [HomeController::class, 'ksh'])->name('user.ksh');
+Route::get('larvae', [HomeController::class, 'larvae'])->name('user.larvae');
+Route::get('vector', [HomeController::class, 'vector'])->name('user.vector');
 Route::get('/', [HomeController::class, 'index'])->name('user.index');
 
 // Forgot Password (AuthController)

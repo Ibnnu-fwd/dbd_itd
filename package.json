@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "daisyui": "^2.51.6",
-        "flowbite": "^1.6.5"
+        "flowbite": "^1.6.5",
+        "flowbite-typography": "^1.0.3"
     }
 }

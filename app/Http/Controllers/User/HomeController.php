@@ -11,4 +11,19 @@ class HomeController extends Controller
     {
         return view('user.index');
     }
+
+    public function vector()
+    {
+        return view('user.vector');
+    }
+
+    public function larvae()
+    {
+        return view('user.larvae');
+    }
+
+    public function ksh()
+    {
+        return view('user.ksh');
+    }
 }
