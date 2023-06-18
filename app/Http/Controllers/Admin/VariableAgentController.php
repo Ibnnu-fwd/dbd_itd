@@ -48,6 +48,7 @@ class VariableAgentController extends Controller
 
     public function show($id, Request $request)
     {
+        // return $this->sample->getAllGroupByDistrict($id);
         if ($request->ajax()) {
             return datatables()
                 ->of($this->sample->getAllGroupByDistrict($id))
@@ -63,9 +64,9 @@ class VariableAgentController extends Controller
                 ->addColumn('type', function ($data) {
                     return view('admin.variable-agent.column.type', compact('data'));
                 })
-                // ->addColumn('action', function ($data) {
-                //     return view('admin.variable-agent.column.action', compact('data'));
-                // })
+                ->addColumn('created_at', function($data) {
+                    return Carbon::parse($data['created_at'])->locale('id')->isoFormat('D MMMM Y');
+                })
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -100,6 +101,7 @@ class VariableAgentController extends Controller
                 'location' => $data['latitude'] . ', ' . $data['longitude'],
                 'count' => $data['count'] ?? 0,
                 'type' => view('admin.variable-agent.column.type', compact('data'))->render(),
+                'created_at' => Carbon::parse($data['created_at'])->locale('id')->isoFormat('D MMMM Y'),
             ];
         });
 
@@ -118,6 +120,7 @@ class VariableAgentController extends Controller
                 'location' => $data['latitude'] . ', ' . $data['longitude'],
                 'count' => $data['count'] ?? 0,
                 'type' => view('admin.variable-agent.column.type', compact('data'))->render(),
+                'created_at' => Carbon::parse($data['created_at'])->locale('id')->isoFormat('D MMMM Y'),
             ];
         });
 

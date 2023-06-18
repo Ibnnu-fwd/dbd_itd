@@ -157,8 +157,8 @@
                             // animate ping
                             html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
                             className: 'text-white bg-transparent',
-                            iconSize: [40, 40],
-                            popupAnchor: [-20, -20],
+                            iconAnchor: [15, 15],
+                            popupAnchor: [0, -15]
                         })
                     });
 
@@ -287,8 +287,8 @@
                                     icon: L.divIcon({
                                         html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
                                         className: 'text-white bg-transparent',
-                                        iconSize: [40, 40],
-                                        popupAnchor: [-20, -20],
+                                        iconAnchor: [15, 15],
+                                        popupAnchor: [0, -15]
                                     })
                                 });
 
@@ -407,8 +407,8 @@
                                     icon: L.divIcon({
                                         html: `<div class="flex justify-center items-center rounded-full bg-yellow-400 ring-2 ring-yellow-400 outline-0 ring-offset-2 ring-offset-slate-50 font-medium text-xs 2xl:text-sm" style="width: 30px; height: 30px;">${larvae[i].detail_larvaes.length}</div>`,
                                         className: 'text-white bg-transparent',
-                                        iconSize: [40, 40],
-                                        popupAnchor: [-20, -20],
+                                        iconAnchor: [15, 15],
+                                        popupAnchor: [0, -15]
                                     })
                                 });
 

@@ -57,6 +57,7 @@
                     <th>Lokasi</th>
                     <th>Jumlah</th>
                     <th>Tipe</th>
+                    <th>Tanggal</th>
                 </tr>
             </thead>
         </table>
@@ -87,19 +88,18 @@
                             data: 'type',
                             name: 'type'
                         },
-                        // {
-                        //     data: 'action',
-                        //     name: 'action'
-                        // }
+                        {
+                            data: 'created_at',
+                            name: 'created_at'
+                        },
                     ]
                 });
 
+                let samples = Object.values(@json($samples));
+                let map = L.map('map').setView([-8.172357, 113.699948], 10);
 
-                let samples = @json($samples);
-                let map = L.map('map').setView([-0.789275, 113.921327], 5);
                 let markers = L.markerClusterGroup();
 
-                // tile layer using mapbox light
                 L.tileLayer(
                     'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                         attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -110,12 +110,18 @@
                         accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                     }
                 ).addTo(map);
-
-                // disable zoomIn and zoomOut button
                 map.zoomControl.remove();
-
-                samples.forEach(sample => {
-                    let marker = L.marker([sample.latitude, sample.longitude]);
+                samples.map((sample) => {
+                    let marker = L.marker([sample.latitude, sample.longitude], {
+                        icon: L.divIcon({
+                            // using image
+                            html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                            backgroundSize: 'contain',
+                            className: 'marker bg-transparent',
+                            iconAnchor: [15, 15],
+                            popupAnchor: [0, -15]
+                        })
+                    });
                     marker.bindPopup(`
                         <table class="table-auto">
                             <tr>
@@ -151,12 +157,12 @@
                                         ${
                                             sample.type.map(type => {
                                                 return `
-                                                    <tr>
-                                                        <td>${type.name}</td>
-                                                        <td>:</td>
-                                                        <td>${type.amount}</td>
-                                                    </tr>
-                                                `;
+                                                                                                    <tr>
+                                                                                                        <td>${type.name}</td>
+                                                                                                        <td>:</td>
+                                                                                                        <td>${type.amount}</td>
+                                                                                                    </tr>
+                                                                                                `;
                                             }).join('')
                                         }
                                     </table>
@@ -164,25 +170,15 @@
                             </tr>
                         </table>
                     `);
-
-                    // zoom to marker and center
-                    marker.on('click', function(e) {
-                        map.setView(e.latlng, 10, {
-                            animate: true,
-                            duration: 1
-                        });
-                    });
-
                     markers.addLayer(marker);
+                    // on click
+                    marker.on('click', function(e) {
+                        map.setView(e.latlng, 12);
+                        map.panTo(e.latlng);
+                    });
                 });
 
                 map.addLayer(markers);
-
-                // set view marker
-                map.setView(markers.getLayers()[0].getLatLng(), 10, {
-                    animate: true,
-                    duration: 1
-                });
 
                 // filter
                 $('#filterType').on('change', function() {
@@ -214,7 +210,7 @@
                                 processing: true,
                                 responsive: true,
                                 autoWidth: false,
-                                data: response.data ?? [],
+                                data: response.data,
                                 columns: [{
                                         data: 'district',
                                         name: 'district'
@@ -231,18 +227,45 @@
                                         data: 'type',
                                         name: 'type'
                                     },
-                                    // {
-                                    //     data: 'action',
-                                    //     name: 'action'
-                                    // }
+                                    {
+                                        data: 'created_at',
+                                        name: 'created_at'
+                                    },
                                 ]
                             });
 
-                            // map
+                            if(response.data.length > 0)
+                            {
+                                // remove layer marker
                             map.removeLayer(markers);
                             markers = L.markerClusterGroup();
-                            response.samples.forEach(sample => {
-                                let marker = L.marker([sample.latitude, sample.longitude]);
+                            samples = Object.values(response.samples);
+                            console.log(response.samples);
+
+                            L.tileLayer(
+                                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                                    attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                                    maxZoom: 18,
+                                    id: 'mapbox/light-v11',
+                                    tileSize: 512,
+                                    zoomOffset: -1,
+                                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                                }
+                            ).addTo(map);
+
+                            map.zoomControl.remove();
+
+                            samples.map((sample) => {
+                                let marker = L.marker([sample.latitude, sample.longitude], {
+                                    icon: L.divIcon({
+                                        // using image
+                                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                                        backgroundSize: 'contain',
+                                        className: 'marker bg-transparent',
+                                        iconAnchor: [15, 15],
+                                        popupAnchor: [0, -15]
+                                    })
+                                });
                                 marker.bindPopup(`
                                     <table class="table-auto">
                                         <tr>
@@ -292,16 +315,17 @@
                                     </table>
                                 `);
                                 markers.addLayer(marker);
-
-                                // zoom to marker and center view
+                                // on click
                                 marker.on('click', function(e) {
-                                    map.setView(e.latlng, 10, {
-                                        animate: true,
-                                        duration: 1
-                                    });
+                                    map.setView(e.latlng, 12);
+                                    map.panTo(e.latlng);
                                 });
                             });
+
                             map.addLayer(markers);
+                            } else {
+                                map.removeLayer(markers);
+                            }
                         }
                     });
                 });
@@ -328,7 +352,7 @@
                                 processing: true,
                                 responsive: true,
                                 autoWidth: false,
-                                data: response.data ?? [],
+                                data: response.data,
                                 columns: [{
                                         data: 'district',
                                         name: 'district'
@@ -345,18 +369,30 @@
                                         data: 'type',
                                         name: 'type'
                                     },
-                                    // {
-                                    //     data: 'action',
-                                    //     name: 'action'
-                                    // }
+                                    {
+                                        data: 'created_at',
+                                        name: 'created_at'
+                                    }
                                 ]
                             });
 
-                            // map
+                            if(response.data.length > 0)
+                            {
                             map.removeLayer(markers);
                             markers = L.markerClusterGroup();
-                            response.samples.forEach(sample => {
-                                let marker = L.marker([sample.latitude, sample.longitude]);
+                            samples = Object.values(response.samples);
+
+                            samples.map((sample) => {
+                                let marker = L.marker([sample.latitude, sample.longitude], {
+                                    icon: L.divIcon({
+                                        // using image
+                                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                                        backgroundSize: 'contain',
+                                        className: 'marker bg-transparent',
+                                        iconAnchor: [15, 15],
+                                        popupAnchor: [0, -15]
+                                    })
+                                });
                                 marker.bindPopup(`
                                     <table class="table-auto">
                                         <tr>
@@ -406,15 +442,17 @@
                                     </table>
                                 `);
                                 markers.addLayer(marker);
-
+                                // on click
                                 marker.on('click', function(e) {
-                                    map.setView(e.latlng, 10, {
-                                        animate: true,
-                                        duration: 1
-                                    });
+                                    map.setView(e.latlng, 12);
+                                    map.panTo(e.latlng);
                                 });
                             });
+
                             map.addLayer(markers);
+                            } else {
+                                map.removeLayer(markers);
+                            }
                         }
                     })
                 });
