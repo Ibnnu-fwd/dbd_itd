@@ -537,7 +537,7 @@ class SampleRepository implements SampleInterface
         $data = $data->sortByDesc('count');
 
         // get top 10
-        $data = $data->take(10);
+        $data = $data->take(20);
 
         return $data;
     }
