@@ -455,15 +455,15 @@ class SampleRepository implements SampleInterface
         foreach ($samples as $sample) {
             $data[] = [
                 // 'sample_code' => $sample->sample_code,
-                'public_health_name' => $sample->public_health_name,
+                'public_health_name' => ucwords(strtolower($sample->public_health_name)),
                 'sample_method' => $sample->sampleMethod->name,
                 'latitude' => $sample->latitude,
                 'longitude' => $sample->longitude,
-                'province' => $sample->province->name,
-                'regency' => $sample->regency->name,
-                'district' => $sample->district->name,
-                'location_name' => $sample->location_name,
-                'created_by' => $sample->createdBy->name,
+                'province' => ucwords(strtolower($sample->province->name)),
+                'regency' => ucwords(strtolower($sample->regency->name)),
+                'district' => ucwords(strtolower($sample->district->name)),
+                'location_name' => ucwords(strtolower($sample->location_name)),
+                'created_by' => ucwords(strtolower($sample->createdBy->name)),
                 'created_at' => Carbon::parse($sample->created_at)->isoFormat('D MMMM Y'),
                 'count' => $sample->detailSampleViruses->map(function ($item) {
                     $amount = 0;
@@ -523,7 +523,7 @@ class SampleRepository implements SampleInterface
                 $amount += $value['count'];
             }
             return [
-                'district' => $item[0]['district'],
+                'district' => ucwords(strtolower($item[0]['district'])),
                 'regency' => $item[0]['regency'],
                 'count' => $amount,
                 'type' => $item[0]['type'],

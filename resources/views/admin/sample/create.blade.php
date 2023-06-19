@@ -108,6 +108,17 @@
 
             // Map
             $(function() {
+
+                $('form').on('submit', function() {
+                    $('#latitude').prop('disabled', false);
+                    $('#longitude').prop('disabled', false);
+
+                    $('button[type="submit"]').prop('disabled', true);
+                    $('button[type="submit"]').html(
+                        `<i class="fas fa-circle-notch fa-spin mr-2"></i> Loading...`
+                    );
+                });
+
                 let map = L.map("map").setView([latitude, longitude], 13);
 
                 // tile google maps source
