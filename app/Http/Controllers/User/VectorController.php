@@ -16,6 +16,7 @@ class VectorController extends Controller
 
     public function index()
     {
+        // return $this->sample->getHighestSampleInDistrictPerYear(date('Y'));
         return view('user.vector', [
             'samples' => $this->sample->getAllForUser(),
             'samplePerYear' => $this->sample->getSamplePerYear(date('Y')),

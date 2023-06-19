@@ -173,6 +173,16 @@
                                     <td class="p-0">:</td>
                                     <td class="p-0">${sample.district}</td>
                                 </tr>
+                                <tr>
+                                    <td>Lokasi</td>
+                                    <td>:</td>
+                                    <td>${sample.location_name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Rumah Sakit</td>
+                                    <td>:</td>
+                                    <td>${sample.public_health_name}</td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -409,7 +419,7 @@
 
         <!-- Sample Per District -->
         <script>
-            let data = @json($samplePerDistrict);
+            let data = Object.values(@json($samplePerDistrict));
             $(function() {
                 // Prepare data for the chart
                 var labels = [];

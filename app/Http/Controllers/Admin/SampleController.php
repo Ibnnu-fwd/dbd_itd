@@ -228,7 +228,11 @@ class SampleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->sample->delete($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Data berhasil dihapus.'
+        ]);
     }
 
     // CUSTOM FUNCTION
