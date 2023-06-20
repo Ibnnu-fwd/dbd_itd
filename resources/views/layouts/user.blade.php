@@ -13,7 +13,11 @@
 
     <!-- Fonts -->
     {{-- <link href="https://fonts.cdnfonts.com/css/lexend-deca" rel="stylesheet"> --}}
-    <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet">
+    {{-- <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet"> --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <!-- Alert -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -168,7 +172,7 @@
 
         <footer class="sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 ">
             <p class="mb-4 text-xs 2xl:text-sm font-light text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-                &copy; 2023 <a href="https://flowbite.com/" class="hover:underline" target="_blank">Sivemo.com</a>.
+                &copy; 2023 <a href="/" class="hover:underline" target="_blank">Sivemo.com</a>.
                 All
                 rights reserved.
             </p>
@@ -261,10 +265,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 
     <script>
-        Chart.defaults.font.family = 'Poppins, Lexend Deca, Plus Jakarta Sans, sans-serif';
+        Chart.defaults.font.family = 'Lexend Deca, Outfit, Plus Jakarta Sans, sans-serif';
         Chart.defaults.scale.grid.display = false;
         Chart.defaults.scale.ticks.beginAtZero = true;
         Chart.defaults.scale.ticks.precision = 0;
+
+        $('select').select2();
     </script>
 
     @stack('js-internal')

@@ -448,9 +448,19 @@ class SampleRepository implements SampleInterface
         return collect($data)->sum('count');
     }
 
-    public function getAllForUser()
+    public function getAllForUser($year = null, $regency_id = null)
     {
-        $samples = $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()->get();
+        $samples = $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()
+        ->when($year, function ($query, $year) {
+            return $query->whereYear('created_at', $year);
+        })
+        ->when($regency_id, function ($query, $regency_id) {
+            return $query->whereHas('regency', function ($query) use ($regency_id) {
+                return $query->where('id', $regency_id);
+            });
+        })
+        ->get();
+
         $data = [];
         foreach ($samples as $sample) {
             $data[] = [
@@ -491,6 +501,60 @@ class SampleRepository implements SampleInterface
     public function getHighestSampleInDistrictPerYear($year = null)
     {
         $sample = $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes')->whereYear('created_at', $year)->get();
+
+        $data = [];
+        foreach ($sample as $key => $value) {
+            $data[$key]['district'] = $value->district->name;
+            $data[$key]['regency'] = $value->regency->name;
+            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
+                $amount = 0;
+                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
+                    $amount += $item->detailSampleSerotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum();
+                });
+                return $amount;
+            })->sum();
+            $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
+                return [
+                    'name' => $item->virus->name,
+                    'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                        return $item->amount;
+                    })->sum(),
+                ];
+            });
+            $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
+        }
+
+        // sum amount of same district by index
+        $data = collect($data)->groupBy('district')->map(function ($item) {
+            $amount = 0;
+            foreach ($item as $key => $value) {
+                $amount += $value['count'];
+            }
+            return [
+                'district' => ucwords(strtolower($item[0]['district'])),
+                'regency' => $item[0]['regency'],
+                'count' => $amount,
+                'type' => $item[0]['type'],
+            ];
+        });
+
+        // change index to number
+        $data = $data->values();
+
+        // sort by count of sample
+        $data = $data->sortByDesc('count');
+
+        // get top 10
+        $data = $data->take(20);
+
+        return $data;
+    }
+
+    public function getAllSampleByRegency($regency_id)
+    {
+        $sample = $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes')->where('regency_id', $regency_id)->get();
 
         $data = [];
         foreach ($sample as $key => $value) {

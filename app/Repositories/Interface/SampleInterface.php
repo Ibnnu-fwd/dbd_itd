@@ -20,6 +20,7 @@ interface SampleInterface
     public function getTotalSample();
     public function getTotalMosquito();
 
-    public function getAllForUser();
+    public function getAllForUser($year = null, $regency_id = null);
     public function getHighestSampleInDistrictPerYear($year = null);
+    public function getAllSampleByRegency($regency_id);
 }
