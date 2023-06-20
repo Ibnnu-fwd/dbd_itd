@@ -21,10 +21,6 @@ return new class extends Migration
             $table->foreign('district_id')->references('id')->on('districts');
         });
 
-        Schema::table('samples', function (Blueprint $table) {
-            $table->foreign('village_id')->references('id')->on('villages');
-        });
-
         Schema::table('broods', function (Blueprint $table) {
             $table->foreign('village_id')->references('id')->on('villages');
         });
