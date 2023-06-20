@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('latitude');
             $table->string('longitude');
-            $table->char('regency_id', 4)->nullable();
-            $table->char('district_id', 7)->nullable();
-            $table->char('village_id', 10)->nullable();
+            $table->char('regency_id')->nullable();
+            $table->char('district_id')->nullable();
+            $table->char('village_id')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);

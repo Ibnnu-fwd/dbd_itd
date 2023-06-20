@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('abj', function (Blueprint $table) {
             $table->id();
-            $table->char('district_id', 7)->nullable();
-            $table->char('village_id', 10)->nullable();
+            $table->char('district_id')->nullable();
+            $table->char('village_id')->nullable();
             $table->foreignId('ksh_id')->nullable()->constrained('ksh');
             $table->integer('abj_total');
             $table->foreignId('created_by')->nullable()->constrained('users');
