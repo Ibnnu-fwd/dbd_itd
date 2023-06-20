@@ -164,8 +164,9 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
     public function village($param)
     {
         $param = strtoupper($param);
-        $village = Village::where('name', $param)->first();
-        return $village->id ?? null;
+        $village = Village::pluck('name', 'id')->toArray();
+        $village = array_search($param, $village);
+        return $village;
     }
 
     // public function sampleMethodId($param)
