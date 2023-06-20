@@ -165,7 +165,6 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
     {
         $param = strtoupper($param);
         $village = Village::where('name', $param)->first();
-        // dd($village);
         return $village->id ?? null;
     }
 
