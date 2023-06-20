@@ -9,7 +9,7 @@ use App\Models\Morphotype;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
-use App\Models\SampleMethod;
+// use App\Models\SampleMethod;
 use App\Models\Village;
 use App\Models\Virus;
 use App\Repositories\Interface\SampleInterface;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 class SampleRepository implements SampleInterface
 {
     private $sample;
-    private $sampleMethod;
+    // private $sampleMethod;
     private $province;
     private $regency;
     private $district;
@@ -29,7 +29,7 @@ class SampleRepository implements SampleInterface
 
     public function __construct(
         Sample $sample,
-        SampleMethod $sampleMethod,
+        // SampleMethod $sampleMethod,
         Province $province,
         Regency $regency,
         District $district,
@@ -38,7 +38,7 @@ class SampleRepository implements SampleInterface
         DetailSampleMorphotype $detailSampleMorphotype
     ) {
         $this->sample                     = $sample;
-        $this->sampleMethod               = $sampleMethod;
+        // $this->sampleMethod               = $sampleMethod;
         $this->province                   = $province;
         $this->regency                    = $regency;
         $this->district                   = $district;
@@ -49,7 +49,7 @@ class SampleRepository implements SampleInterface
 
     public function getAll()
     {
-        $samples = $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()->get();
+        $samples = $this->sample->with('province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()->get();
 
         $samples = $samples->map(function ($item) {
             $item['total_sample'] = $item->detailSampleViruses->map(function ($item) {
@@ -69,7 +69,7 @@ class SampleRepository implements SampleInterface
 
     public function getById($id)
     {
-        return $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village')->active()->find($id);
+        return $this->sample->with('province', 'regency', 'district', 'village')->active()->find($id);
     }
 
     public function create(array $attributes)
@@ -78,7 +78,7 @@ class SampleRepository implements SampleInterface
         try {
             $sample = $this->sample->create([
                 'sample_code' => $this->sample->generateSampleCode(),
-                'sample_method_id' => $attributes['sample_method_id'],
+                // 'sample_method_id' => $attributes['sample_method_id'],
                 'latitude' => $attributes['latitude'],
                 'longitude' => $attributes['longitude'],
                 'province_id' => $attributes['province_id'],
@@ -115,7 +115,7 @@ class SampleRepository implements SampleInterface
         DB::beginTransaction();
         try {
             $sample = $this->sample->find($id)->update([
-                'sample_method_id' => $attributes['sample_method_id'],
+                // 'sample_method_id' => $attributes['sample_method_id'],
                 'public_health_name' => $attributes['public_health_name'],
                 'location_name' => $attributes['location_name'],
                 'location_type_id' => $attributes['location_type_id'],
@@ -450,7 +450,7 @@ class SampleRepository implements SampleInterface
 
     public function getAllForUser($year = null, $regency_id = null)
     {
-        $samples = $this->sample->with('sampleMethod', 'province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()
+        $samples = $this->sample->with('province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()
         ->when($year, function ($query, $year) {
             return $query->whereYear('created_at', $year);
         })
@@ -466,7 +466,7 @@ class SampleRepository implements SampleInterface
             $data[] = [
                 // 'sample_code' => $sample->sample_code,
                 'public_health_name' => ucwords(strtolower($sample->public_health_name)),
-                'sample_method' => $sample->sampleMethod->name,
+                // 'sample_method' => $sample->sampleMethod->name,
                 'latitude' => $sample->latitude,
                 'longitude' => $sample->longitude,
                 'province' => ucwords(strtolower($sample->province->name)),

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('samples', function (Blueprint $table) {
             $table->id();
             $table->string('sample_code')->unique();
-            $table->foreignId('sample_method_id')->nullable()->constrained('sample_methods');
+            // $table->foreignId('sample_method_id')->nullable()->constrained('sample_methods');
             $table->string('latitude');
             $table->string('longitude');
             $table->char('province_id', 2)->nullable();

@@ -14,7 +14,7 @@ class Sample extends Model
         'sample_code',
         'file_code',
         'public_health_name',
-        'sample_method_id',
+        // 'sample_method_id',
         'latitude',
         'longitude',
         'province_id',
@@ -46,10 +46,10 @@ class Sample extends Model
         return $this->belongsTo(LocationType::class);
     }
 
-    public function sampleMethod()
-    {
-        return $this->belongsTo(SampleMethod::class);
-    }
+    // public function sampleMethod()
+    // {
+    //     return $this->belongsTo(SampleMethod::class);
+    // }
 
     public function province()
     {
