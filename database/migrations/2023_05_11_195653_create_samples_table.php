@@ -17,10 +17,10 @@ return new class extends Migration
             // $table->foreignId('sample_method_id')->nullable()->constrained('sample_methods');
             $table->string('latitude');
             $table->string('longitude');
-            $table->char('province_id', 2)->nullable();
-            $table->char('regency_id', 4)->nullable();
-            $table->char('district_id', 7)->nullable();
-            $table->char('village_id', 10)->nullable();
+            $table->char('province_id')->nullable();
+            $table->char('regency_id')->nullable();
+            $table->char('district_id')->nullable();
+            $table->char('village_id')->nullable();
             $table->text('location_name')->nullable(); // rumah sakit, puskesmas, dll
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
