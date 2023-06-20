@@ -69,9 +69,9 @@ class SampleController extends Controller
                 ->addColumn('sample_code', function ($data) {
                     return $data->sample_code;
                 })
-                ->addColumn('sample_method', function ($data) {
-                    return $data->sampleMethod->name;
-                })
+                // ->addColumn('sample_method', function ($data) {
+                //     return $data->sampleMethod->name;
+                // })
                 ->addColumn('address', function ($data) {
                     $address = $data->village->name . ', ' . $data->district->name . ', ' . $data->regency->name . ', ' . $data->province->name;
 
@@ -126,7 +126,7 @@ class SampleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'sample_method_id' => ['required'],
+            // 'sample_method_id' => ['required'],
             'location_name' => ['required'],
             'location_type_id' => ['required'],
             'description' => ['nullable'],
@@ -138,7 +138,7 @@ class SampleController extends Controller
             'longitude' => ['required'],
             'viruses' => ['required', 'array'],
         ], [
-            'sample_method_id.required' => 'Metode pengambilan sampel harus diisi.',
+            // 'sample_method_id.required' => 'Metode pengambilan sampel harus diisi.',
             'location_name.required' => 'Nama lokasi harus diisi.',
             'location_type_id.required' => 'Tipe lokasi harus diisi.',
             'province_id.required' => 'Provinsi harus diisi.',
@@ -191,7 +191,7 @@ class SampleController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'sample_method_id' => ['required'],
+            // 'sample_method_id' => ['required'],
             'location_name' => ['required'],
             'location_type_id' => ['required'],
             'description' => ['nullable'],
@@ -203,7 +203,7 @@ class SampleController extends Controller
             'longitude' => ['required'],
             'viruses' => ['nullable', 'array'],
         ], [
-            'sample_method_id.required' => 'Metode pengambilan sampel harus diisi.',
+            // 'sample_method_id.required' => 'Metode pengambilan sampel harus diisi.',
             'location_name.required' => 'Nama lokasi harus diisi.',
             'location_type_id.required' => 'Tipe lokasi harus diisi.',
             'province_id.required' => 'Provinsi harus diisi.',

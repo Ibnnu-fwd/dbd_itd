@@ -7,7 +7,7 @@ use App\Models\LocationType;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
-use App\Models\SampleMethod;
+// use App\Models\SampleMethod;
 use App\Models\Village;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -57,7 +57,7 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
             '*.7' => ['required', 'string'],
             '*.8' => ['required'],
             '*.9' => ['required'],
-            '*.10' => ['required', 'string'],
+            // '*.10' => ['required', 'string'],
         ];
     }
 
@@ -83,8 +83,8 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
             '*.8.string' => 'Latitude harus berupa string',
             '*.9.required' => 'Longitude tidak boleh kosong',
             '*.9.string' => 'Longitude harus berupa string',
-            '*.10.required' => 'Metode Pengambilan Sampel tidak boleh kosong',
-            '*.10.string' => 'Metode Pengambilan Sampel harus berupa string',
+            // '*.10.required' => 'Metode Pengambilan Sampel tidak boleh kosong',
+            // '*.10.string' => 'Metode Pengambilan Sampel harus berupa string',
         ];
     }
 
@@ -101,7 +101,7 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
         $publicHealthName   = $row[7];
         $latitude           = str_replace(',', '.', $row[8]);
         $longitude          = str_replace(',', '.', $row[9]);
-        $sampleMethodId     = $this->sampleMethodId($row[10]);
+        // $sampleMethodId     = $this->sampleMethodId($row[10]);
         $sampleCode         = $this->generateSampleCode();
         $sample             = Sample::where('sample_code', $sampleCode)->first();
 
@@ -109,7 +109,7 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
             $sampleCode = $this->generateSampleCode();
         }
 
-        if ($createdAt == null || $province == null || $regency == null || $district == null || $village == null || $locationType == null || $locationName == null || $publicHealthName == null || $latitude == null || $longitude == null || $sampleMethodId == null) {
+        if ($createdAt == null || $province == null || $regency == null || $district == null || $village == null || $locationType == null || $locationName == null || $publicHealthName == null || $latitude == null || $longitude == null ) {
             return null;
         } else {
             return Sample::create([
@@ -125,7 +125,7 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
                 'public_health_name' => $publicHealthName,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                'sample_method_id' => $sampleMethodId
+                // 'sample_method_id' => $sampleMethodId
             ]);
         }
     }
@@ -168,18 +168,18 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
         return $village->id ?? null;
     }
 
-    public function sampleMethodId($param)
-    {
-        $sampleMethodId = SampleMethod::where('name', 'like', '%' . $param . '%')->first();
-        if ($sampleMethodId == null) {
-            $sampleMethodId = SampleMethod::create([
-                'name' => ucwords($param)
-            ]);
-            return $sampleMethodId->id;
-        }
+    // public function sampleMethodId($param)
+    // {
+    //     $sampleMethodId = SampleMethod::where('name', 'like', '%' . $param . '%')->first();
+    //     if ($sampleMethodId == null) {
+    //         $sampleMethodId = SampleMethod::create([
+    //             'name' => ucwords($param)
+    //         ]);
+    //         return $sampleMethodId->id;
+    //     }
 
-        return $sampleMethodId->id;
-    }
+    //     return $sampleMethodId->id;
+    // }
 
     public function locationType($param)
     {
