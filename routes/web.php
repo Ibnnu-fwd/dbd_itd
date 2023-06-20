@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\LarvaeController as UserLarvaeController;
 use App\Http\Controllers\User\VectorController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,9 +39,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('ksh', [HomeController::class, 'ksh'])->name('user.ksh');
-Route::get('larvae', [HomeController::class, 'larvae'])->name('user.larvae');
+
+Route::prefix('larvae')->group(function(){
+    Route::post('filter-map-regency', [UserLarvaeController::class, 'filterMapRegency'])->name('user.larvae.filter-map-regency');
+    Route::post('filter-map-year', [UserLarvaeController::class, 'filterMapYear'])->name('user.larvae.filter-map-year');
+    Route::get('/', [UserLarvaeController::class, 'index'])->name('user.larvae');
+});
+
+// Vector
 Route::prefix('vector')->group(function () {
-    Route::post('/filter-year', [VectorController::class, 'filterYear'])->name('user.vector.filter-year');
+    Route::post('filter-map-regency', [VectorController::class, 'filterMapRegency'])->name('user.vector.filter-map-regency');
+    Route::post('filter-map-year', [VectorController::class, 'filterMapYear'])->name('user.vector.filter-map-year');
+    Route::post('filter-regency', [VectorController::class, 'filterRegency'])->name('user.vector.filter-regency');
+    Route::post('filter-year-district', [VectorController::class, 'filterYearDistrict'])->name('user.vector.filter-year-district');
+    Route::post('filter-year', [VectorController::class, 'filterYear'])->name('user.vector.filter-year');
     Route::get('/', [VectorController::class, 'index'])->name('user.vector');
 });
 Route::get('/', [HomeController::class, 'index'])->name('user.index');

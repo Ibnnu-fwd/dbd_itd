@@ -17,4 +17,7 @@ interface LarvaeInterface
     public function filterDateRange($startDate, $endDate);
 
     public function getTotalLarva();
+
+    public function filterMapYear($year);
+    public function filterMapRegency($regency_id);
 }

@@ -187,4 +187,18 @@ class LarvaeRepository implements LarvaeInterface
 
         return $totalLarva;
     }
+
+    public function filterMapYear($year)
+    {
+        return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy', 'detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->where([
+            [DB::raw('YEAR(created_at)'), $year]
+        ])->get();
+    }
+
+    public function filterMapRegency($regency_id)
+    {
+        return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy', 'detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->where([
+            ['regency_id', $regency_id]
+        ])->get();
+    }
 }
