@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\Interface\LarvaeInterface;
 use App\Repositories\Interface\SampleInterface;
 use App\Repositories\Interface\AbjInterface;
+use App\Models\Sample;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -38,6 +39,7 @@ class DashboardController extends Controller
             'totalLarva' => $this->larva->getTotalLarva(),
             'abj' => $this->abj->getAllGroupByDistrict(),
             'larvae' => $this->larvae->getAll(),
+            'sample' => $this->sample->getAll(),
         ]);
     }
 }

@@ -80,12 +80,30 @@
                 zoom: 8
             });
                 let larvae = Object.values(@json($larvae));
-                
+                let sample = Object.values(@json($sample));
+                let centerCoordinateSample =[];
+                for (let i = 0; i < sample.length; i++) {
+                    centerCoordinateSample.push([sample[i].latitude, sample[i].longitude]);
+                }
+                console.log(centerCoordinateSample);
                 let centerCoordinate = [];
                 for (let i = 0; i < larvae.length; i++) {
                     centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
                 }
 
+                centerCoordinateSample.forEach(coordinate => {
+                    var el = document.createElement('div');
+                    el.className = 'custom-marker';
+                    el.innerHTML = '<<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">';
+
+                    // Membuat marker dengan ikon kustom
+                    var marker = new mapboxgl.Marker({
+                        element: el,
+                        anchor: 'center'
+                    })
+                        .setLngLat([parseFloat(coordinate[1]), parseFloat(coordinate[0])])
+                        .addTo(map);
+                    });
                 centerCoordinate.forEach(coordinate => {
                     var el = document.createElement('div');
                     el.className = 'custom-marker';
@@ -101,22 +119,7 @@
                     });
                     
             map.on('load', () => {
-                map.addLayer({
-                    id: 'tile-layer',
-                    type: 'raster',
-                    source: {
-                        type: 'raster',
-                        tiles: [
-                            'https://api.mapbox.com/styles/v1/mapbox/light-v11/tiles/{z}/{x}/{y}?access_token={accessToken}'
-                        ],
-                        tileSize: 256,
-                        attribution:
-                            '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-                        accessToken: mapboxgl.accessToken
-                    },
-                    minzoom: 0,
-                    maxzoom: 18
-                });
+               
 
                 // Other map-related code...
 
