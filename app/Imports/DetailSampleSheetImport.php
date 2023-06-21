@@ -30,9 +30,11 @@ class DetailSampleSheetImport implements ToModel, WithStartRow
 
     public function model(array $row)
     {
+        $morphotypeName = 'Morfotipe ' . $row[0];
+
         $data = [];
         $data = [
-            'morphotype_id' => Morphotype::where('name', $row[0])->first()->id,
+            'morphotype_id' => Morphotype::where('name', $morphotypeName)->first()->id,
             'amount' => $row[1],
             'serotypes' => [
                 0 => $row[2],
