@@ -246,7 +246,7 @@ class SampleController extends Controller
         try {
             $this->detailSampleVirus->store($request->all(), $id);
             $sample = $this->sample->getById($id);
-            return redirect()->route('admin.sample.detail-sample.virus', $sample)->with('success', 'Data berhasil disimpan.');
+            return redirect()->route('admin.sample.detail-sample.virus.edit', $sample)->with('success', 'Data berhasil disimpan.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }

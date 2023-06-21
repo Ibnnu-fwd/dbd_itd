@@ -21,15 +21,13 @@ class VariableAgentController extends Controller
 
     public function index(Request $request)
     {
+        // return $this->sample->getAllRegency();
         if ($request->ajax()) {
             return datatables()
                 ->of($this->sample->getAllRegency())
                 ->addColumn('regency', function ($data) {
                     return $data['regency'];
                 })
-                // ->addColumn('location', function ($data) {
-                //     return $data['location'];
-                // })
                 ->addColumn('count', function ($data) {
                     return $data['count'] ?? 0;
                 })

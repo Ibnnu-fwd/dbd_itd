@@ -210,27 +210,45 @@
                 var counts = samplePerYear.map(entry => entry.count);
 
                 // Mengambil jenis nyamuk dari setiap entri samplePerYear
-                var mosquitoTypes = samplePerYear[0].type.map(entry => entry.name);
+                var mosquitoTypes = Object.keys(samplePerYear[0].type);
 
                 // Mengambil jumlah nyamuk dari setiap entri samplePerYear
-                var mosquitoAmounts = samplePerYear.map(entry => entry.type.map(type => type.amount));
+                var mosquitoAmounts = samplePerYear.map(entry => Object.values(entry.type));
 
                 // Membuat chart dengan Chart.js
                 var ctx = document.getElementById('samplePerYear').getContext('2d');
                 // width 100%
                 ctx.canvas.width = '100%';
+
+                let purplePallete = [
+                    '#4e73df',
+                    '#6f42c1',
+                    '#9c27b0',
+                ]
+
+                var datasets = mosquitoTypes.map((type, index) => {
+                    return {
+                        label: type,
+                        data: mosquitoAmounts.map(amounts => amounts[index]),
+                        backgroundColor: purplePallete[index],
+                        borderColor: purplePallete[index],
+                        borderWidth: 1,
+                        fill: false,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointHitRadius: 10,
+                        pointBackgroundColor: purplePallete[index],
+                        pointBorderColor: purplePallete[index],
+                        pointHoverBackgroundColor: purplePallete[index],
+                        pointHoverBorderColor: purplePallete[index],
+                    };
+                });
+
                 var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: labels,
-                        datasets: mosquitoTypes.map((type, index) => ({
-                            label: type,
-                            data: mosquitoAmounts.map(amounts => amounts[index]),
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true,
-                            stack: 'stack'
-                        }))
+                        datasets: datasets
                     },
                     options: {
                         responsive: true,
@@ -279,6 +297,7 @@
                         },
                     }
                 });
+
             });
         </script>
     @endpush
