@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('broods', function (Blueprint $table) {
             $table->id();
-            $table->char('district_id', 7)->nullable();
-            $table->char('village_id', 10)->nullable();
+            $table->char('district_id')->nullable();
+            $table->char('village_id')->nullable();
             $table->string('latitude');
             $table->string('longitude');
             $table->string('houseowner_name', 100);

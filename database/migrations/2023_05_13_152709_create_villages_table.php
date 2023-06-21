@@ -12,17 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('villages', function (Blueprint $table) {
-            $table->char('id', 10)->primary();
-            $table->char('district_id', 7)->nullable();
-            $table->string('name', 100);
+            $table->char('id')->primary();
+            $table->char('district_id')->nullable();
+            $table->string('name');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->foreign('district_id')->references('id')->on('districts');
-        });
-
-        Schema::table('samples', function (Blueprint $table) {
-            $table->foreign('village_id')->references('id')->on('villages');
         });
 
         Schema::table('broods', function (Blueprint $table) {

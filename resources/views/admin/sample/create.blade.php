@@ -6,12 +6,12 @@
             <div class="sm:grid grid-cols-3 gap-x-4">
                 <div>
                     <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Sampling</p>
-                    <x-select id="sample_method_id" label="Metode Pengambilan Sampel" name="sample_method_id" isFit="true"
+                    {{-- <x-select id="sample_method_id" label="Metode Pengambilan Sampel" name="sample_method_id" isFit="true"
                         required>
                         @foreach ($sampleMethods as $sampleMethod)
                             <option value="{{ $sampleMethod->id }}">{{ $sampleMethod->name }}</option>
                         @endforeach
-                    </x-select>
+                    </x-select> --}}
                     <x-input id="public_health_name" label="Pukesmas" name="public_health_name" type="text" />
                     <x-input id="location_name" label="Nama Lokasi" name="location_name" type="text" required />
                     <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true"
@@ -108,6 +108,17 @@
 
             // Map
             $(function() {
+
+                $('form').on('submit', function() {
+                    $('#latitude').prop('disabled', false);
+                    $('#longitude').prop('disabled', false);
+
+                    $('button[type="submit"]').prop('disabled', true);
+                    $('button[type="submit"]').html(
+                        `<i class="fas fa-circle-notch fa-spin mr-2"></i> Loading...`
+                    );
+                });
+
                 let map = L.map("map").setView([latitude, longitude], 13);
 
                 // tile google maps source

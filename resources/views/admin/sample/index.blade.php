@@ -46,7 +46,7 @@
                 <tr>
                     <th>#</th>
                     <th>Kode sampel</th>
-                    <th>Metode</th>
+                    {{-- <th>Metode</th> --}}
                     <th>Kecamatan</th>
                     <th>Alamat</th>
                     <th>Jumlah Sampel</th>
@@ -130,10 +130,10 @@
                             data: 'sample_code',
                             name: 'sample_code'
                         },
-                        {
-                            data: 'sample_method',
-                            name: 'sample_method'
-                        },
+                        // {
+                        //     data: 'sample_method',
+                        //     name: 'sample_method'
+                        // },
                         {
                             data: 'location',
                             name: 'location'

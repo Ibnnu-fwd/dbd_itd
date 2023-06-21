@@ -1,8 +1,8 @@
 <x-user-layout>
     <!-- Hero -->
-    <section class="mt-12">
-        <div class="grid max-w-screen-xl px-4 py-7 mx-auto lg:gap-8 xl:gap-14 lg:py-16 lg:grid-cols-12">
-            <div class="mr-auto place-self-center lg:col-span-7">
+    <section class="">
+        <div class="grid max-w-screen-xl py-7 mx-auto lg:gap-8 xl:gap-14 lg:py-16 lg:grid-cols-12">
+            <div class="mr-auto place-self-center lg:col-span-6">
                 <h1
                     class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-4xl xl:text-5xl dark:text-white">
                     <span
@@ -17,8 +17,8 @@
                     Get Started
                 </x-link-button>
             </div>
-            <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                <img src="{{ asset('assets/images/hero.png') }}" alt="mockup">
+            <div class="hidden lg:mt-0 lg:col-span-6 lg:flex">
+                <img src="{{ asset('assets/images/hero2.png') }}" class="h-full w-full" alt="mockup">
             </div>
         </div>
     </section>
@@ -112,7 +112,7 @@
                     and the community. Hope you can know the distribution of mosquitoes based on type, location and
                     other variables.
                 </p>
-                <x-link-button route="#" color="gray">
+                <x-link-button route="{{ route('user.vector') }}" color="gray">
                     Learn More
                 </x-link-button>
             </div>

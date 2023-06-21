@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('districts', function (Blueprint $table) {
-            $table->char('id', 7)->primary();
-            $table->char('regency_id', 4);
-            $table->string('name', 100);
+            $table->char('id')->primary();
+            $table->char('regency_id');
+            $table->string('name');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 

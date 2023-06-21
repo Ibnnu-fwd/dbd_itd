@@ -5,26 +5,45 @@
             <article class="mx-auto w-full max-w-3xl format format-sm sm:format-base lg:format-lg">
                 <div class="text-xs 2xl:text-sm">
                     <div class="text-xs 2xl:text-sm">
-                        <h3>
-                            Visualizations of Vector Data
-                        </h3>
+                        <div class="xl:grid grid-cols-3 items-center">
+                            <h2 class="col-span-2">
+                                Visualizations of Vector Data
+                            </h2>
+                            <div class="grid grid-cols-2 gap-x-4">
+                                <x-select name="filterMapYear" id="filterMapYear" label="Tahun">
+                                    @foreach (range(2002, date('Y')) as $year)
+                                        <option value="{{ $year }}"
+                                            @if ($year == date('Y')) selected @endif>
+                                            {{ $year }}</option>
+                                    @endforeach
+                                </x-select>
+                                <x-select name="filterMapRegency" id="filterMapRegency" label="Kabupaten/Kota">
+                                    <option disabled selected value="">Pilih</option>
+                                    @foreach ($regencies as $regency)
+                                        <option value="{{ $regency->id }}">{{ $regency->name }}</option>
+                                    @endforeach
+                                </x-select>
+                            </div>
+                        </div>
                         <p class="leading-6 text-xs 2xl:text-sm mb-4">
                             We have collected samples of vector presence, and we have found that the most common vector
                             in our
                             area is the mosquito. You can see the data we have collected below.
                         </p>
-                        <div id="map" class="z-0 mb-4" style="height: 300px; border-radius: 6px"></div>
+                        <div id="mapContainer">
+                            <div id="map" class="z-0 mb-4" style="height: 300px; border-radius: 6px"></div>
+                        </div>
                         <p class="text-center text-xs 2xl:text-sm italic">
                             <span class="text-error">*</span>
                             This map shows the location of the samples collected by the user and it all have been
                             clustered to make it easier to see
                         </p>
                         <div class="mb-8">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xs 2xl:text-sm">
+                            <div class="xl:grid grid-cols-3 items-center">
+                                <h3 class="text-xs 2xl:text-sm col-span-2">
                                     Sample of Year: <span class="font-bold" id="labelYear">{{ date('Y') }}</span>
                                 </h3>
-                                <x-select name="year" id="year">
+                                <x-select name="samplePerYearFilter" id="samplePerYearFilter" label="Tahun">
                                     @foreach (range(2002, date('Y')) as $year)
                                         <option value="{{ $year }}"
                                             @if ($year == date('Y')) selected @endif>
@@ -41,12 +60,30 @@
                             </p>
                         </div>
                         <div>
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-xs 2xl:text-sm">
-                                    Sample Per District
+                            <div class="xl:grid grid-cols-3 gap-x-4 items-center">
+                                <h3 class="text-xs 2xl:text-sm col-span-2">
+                                    Sample Per District: <span class="font-bold"
+                                        id="labelYearDistrict">{{ date('Y') }}</span>
                                 </h3>
+                                <div class="grid grid-cols-2 gap-x-4">
+                                    <x-select name="samplePerYearDistrictFilter" id="samplePerYearDistrictFilter"
+                                        label="Tahun">
+                                        @foreach (range(2002, date('Y')) as $year)
+                                            <option value="{{ $year }}"
+                                                @if ($year == date('Y')) selected @endif>
+                                                {{ $year }}</option>
+                                        @endforeach
+                                    </x-select>
+                                    <x-select name="samplePerYearFilterRegency" id="samplePerYearFilterRegency"
+                                        label="Kabupaten/Kota">
+                                        <option disabled selected value="">Pilih</option>
+                                        @foreach ($regencies as $regency)
+                                            <option value="{{ $regency->id }}">{{ $regency->name }}</option>
+                                        @endforeach
+                                    </x-select>
+                                </div>
                             </div>
-                            <div style="height: 220px" id="samplePerYearContainer">
+                            <div style="height: 220px" id="samplePerYearDistrictContainer">
                                 <canvas id="samplePerDistrict"></canvas>
                             </div>
                             <p class="text-center text-xs 2xl:text-sm italic">
@@ -58,7 +95,7 @@
                     <div class="xl:flex items-start justify-between gap-x-16 mt-10">
                         <div>
                             <h2 class="bg-clip-text bg-gradient-to-r to-purple-500 from-purple-700 text-transparent">
-                                Vector Information</h3>
+                                Vector Information</h2>
                                 <p class="leading-7">
                                     Vectors, as defined by the California Department of Public Health, are “any insect
                                     or other
@@ -119,40 +156,40 @@
     @push('js-internal')
         <!-- Map -->
         <script>
-            $(function() {
-                let samples = Object.values(@json($samples));
-                // set last lat long of sample
-                let lastSample = samples[samples.length - 1];
-                let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 8);
+            let samples = Object.values(@json($samples));
+            console.log(samples);
+            // set last lat long of sample
+            let lastSample = samples[samples.length - 1];
+            let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 8);
 
-                L.tileLayer(
-                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                        maxZoom: 18,
-                        id: 'mapbox/light-v11',
-                        tileSize: 512,
-                        zoomOffset: -1,
-                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
-                    }
-                ).addTo(map);
+            L.tileLayer(
+                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                    maxZoom: 18,
+                    id: 'mapbox/light-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                }
+            ).addTo(map);
 
-                map.attributionControl.setPrefix(false);
-                map.zoomControl.remove();
+            map.attributionControl.setPrefix(false);
+            map.zoomControl.remove();
 
-                let markers = L.markerClusterGroup();
+            let markers = L.markerClusterGroup();
 
-                samples.forEach(function(sample) {
-                    let marker = L.marker([sample.latitude, sample.longitude], {
-                        icon: L.divIcon({
-                            // using image
-                            html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
-                            backgroundSize: 'contain',
-                            className: 'marker bg-transparent',
-                            iconAnchor: [15, 15],
-                            popupAnchor: [0, -15]
-                        })
-                    });
-                    marker.bindPopup(
-                        `
+            samples.forEach(function(sample) {
+                let marker = L.marker([sample.latitude, sample.longitude], {
+                    icon: L.divIcon({
+                        // using image
+                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                        backgroundSize: 'contain',
+                        className: 'marker bg-transparent',
+                        iconAnchor: [15, 15],
+                        popupAnchor: [0, -15]
+                    })
+                });
+                marker.bindPopup(
+                    `
                         <table class="border-collapse border-none">
                             <tbody>
                                 <tr>
@@ -173,6 +210,16 @@
                                     <td class="p-0">:</td>
                                     <td class="p-0">${sample.district}</td>
                                 </tr>
+                                <tr>
+                                    <td>Lokasi</td>
+                                    <td>:</td>
+                                    <td>${sample.location_name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Rumah Sakit</td>
+                                    <td>:</td>
+                                    <td>${sample.public_health_name}</td>
+                                </tr>
                             </tbody>
                         </table>
 
@@ -186,27 +233,241 @@
                                     <td class="p-0">Jumlah</td>
                                 </tr>
                                 ` +
-                        sample.type.map(function(type) {
-                            return `
+                    sample.type.map(function(type) {
+                        return `
                                         <tr>
                                             <td class="p-0">${type.name}</td>
                                             <td class="p-0">${type.amount}</td>
                                         </tr>
                                     `;
-                        }).join('') +
-                        `
+                    }).join('') +
+                    `
                             </tbody>
                         </table>
+                    `
+                );
+                markers.addLayer(marker);
+            });
 
-                        `
-                    );
-                    markers.addLayer(marker);
+            // add fullscreen button
+            map.addControl(new L.Control.Fullscreen());
+
+            map.addLayer(markers);
+
+            $(function() {
+                $('#filterMapYear').change(function(e) {
+                    e.preventDefault();
+                    // $('#filterMapRegency').val($('#filterMapRegency option:first').val()).change();
+                    let year = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('user.vector.filter-map-year') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            year: year
+                        },
+                        success: function(response) {
+                            console.log(response.samples);
+                            if (response.samples.length == 0) {
+                                map.removeLayer(markers);
+                                return;
+                            }
+
+                            // change marker position
+                            markers.clearLayers();
+                            let samples = Object.values(response.samples);
+                            let lastSample = samples[samples.length - 1];
+                            map.setView([lastSample.latitude, lastSample.longitude], 8);
+
+                            samples.forEach(function(sample) {
+                                let marker = L.marker([sample.latitude, sample.longitude], {
+                                    icon: L.divIcon({
+                                        // using image
+                                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                                        backgroundSize: 'contain',
+                                        className: 'marker bg-transparent',
+                                        iconAnchor: [15, 15],
+                                        popupAnchor: [0, -15]
+                                    })
+                                });
+                                marker.bindPopup(
+                                    `
+                                    <table class="border-collapse border-none">
+                                        <tbody>
+                                            <tr>
+                                                <th colspan="3" class="p-0">Detail Lokasi</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Provinsi</td>
+                                                <td class="p-0">:</td>
+                                                <td class="p-0">${sample.province}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Kabupaten</td>
+                                                <td class="p-0">:</td>
+                                                <td class="p-0">${sample.regency}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Kecamatan</td>
+                                                <td class="p-0">:</td>
+                                                <td class="p-0">${sample.district}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lokasi</td>
+                                                <td>:</td>
+                                                <td>${sample.location_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Rumah Sakit</td>
+                                                <td>:</td>
+                                                <td>${sample.public_health_name}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="border-collapse border-none">
+                                        <tbody>
+                                            <tr>
+                                                <th colspan="2" class="p-0">Detail Sampling</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Jenis Virus</td>
+                                                <td class="p-0">Jumlah</td>
+                                            </tr>
+                                            ` +
+                                    sample.type.map(function(type) {
+                                        return `
+                                                    <tr>
+                                                        <td class="p-0">${type.name}</td>
+                                                        <td class="p-0">${type.amount}</td>
+                                                    </tr>
+                                                `;
+                                    }).join('') +
+                                    `
+                                        </tbody>
+                                    </table>
+
+                                    `
+                                );
+                                markers.addLayer(marker);
+                            });
+
+                            // Update marker position
+                            let newLastSample = samples[samples.length - 1];
+                            let newLatLng = L.latLng(newLastSample.latitude, newLastSample
+                                .longitude);
+
+                            map.addLayer(markers);
+                        }
+                    });
                 });
 
-                // add fullscreen button
-                map.addControl(new L.Control.Fullscreen());
+                $('#filterMapRegency').change(function(e) {
+                    e.preventDefault();
+                    // $('#filterMapYear').val($('#filterMapYear option:first').val()).change();
+                    let regency = $(this).find(':selected').text();
+                    let regency_id = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('user.vector.filter-map-regency') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            regency_id: regency_id
+                        },
+                        success: function(response) {
+                            if (response.samples.length == 0) {
+                                map.removeLayer(markers);
+                                return;
+                            }
 
-                map.addLayer(markers);
+                            // change marker position
+                            markers.clearLayers();
+                            let samples = Object.values(response.samples);
+                            let lastSample = samples[samples.length - 1];
+                            map.setView([lastSample.latitude, lastSample.longitude], 8);
+
+                            samples.forEach(function(sample) {
+                                let marker = L.marker([sample.latitude, sample.longitude], {
+                                    icon: L.divIcon({
+                                        // using image
+                                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                                        backgroundSize: 'contain',
+                                        className: 'marker bg-transparent',
+                                        iconAnchor: [15, 15],
+                                        popupAnchor: [0, -15]
+                                    })
+                                });
+                                marker.bindPopup(
+                                    `
+                                    <table class="border-collapse border-none">
+                                        <tbody>
+                                            <tr>
+                                                <th colspan="3" class="p-0">Detail Lokasi</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Provinsi</td>
+                                                <td class="p-0">:</td>
+                                                <td class="p-0">${sample.province}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Kabupaten</td>
+                                                <td class="p-0">:</td>
+                                                <td class="p-0">${sample.regency}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Kecamatan</td>
+                                                <td class="p-0">:</td>
+                                                <td class="p-0">${sample.district}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lokasi</td>
+                                                <td>:</td>
+                                                <td>${sample.location_name}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Rumah Sakit</td>
+                                                <td>:</td>
+                                                <td>${sample.public_health_name}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table class="border-collapse border-none">
+                                        <tbody>
+                                            <tr>
+                                                <th colspan="2" class="p-0">Detail Sampling</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="p-0">Jenis Virus</td>
+                                                <td class="p-0">Jumlah</td>
+                                            </tr>
+                                            ` +
+                                    sample.type.map(function(type) {
+                                        return `
+                                                    <tr>
+                                                        <td class="p-0">${type.name}</td>
+                                                        <td class="p-0">${type.amount}</td>
+                                                    </tr>
+                                                `;
+                                    }).join('') +
+                                    `
+                                        </tbody>
+                                    </table>
+
+                                    `
+                                );
+                                markers.addLayer(marker);
+                            });
+
+                            // Update marker position
+                            let newLastSample = samples[samples.length - 1];
+                            let newLatLng = L.latLng(newLastSample.latitude, newLastSample
+                                .longitude);
+
+                            map.addLayer(markers);
+                        }
+                    });
+                })
             });
         </script>
 
@@ -299,7 +560,7 @@
 
             $(function() {
                 // Update chart when year is changed
-                $('#year').change(function(e) {
+                $('#samplePerYearFilter').change(function(e) {
                     e.preventDefault();
                     let year = $(this).val();
                     $.ajax({
@@ -310,13 +571,13 @@
                             year: year
                         },
                         success: function(response) {
-                            console.log(response);
+                            let samplePerYear = response.samplePerYear;
                             myChart.destroy();
                             $('#samplePerYear').remove();
                             $('#samplePerYearContainer').attr('style', 'height: 220px');
                             $('#samplePerYearContainer').html(
                                 '<canvas id="samplePerYear"></canvas>');
-                            if (response.length == 0) {
+                            if (samplePerYear.length == 0) {
                                 // remove style
                                 $('#samplePerYearContainer').removeAttr('style');
                                 $('#samplePerYearContainer').html(
@@ -324,7 +585,7 @@
                                 $('#labelYear').html(year);
                                 return;
                             }
-                            samplePerYear = response
+                            samplePerYear = samplePerYear
                             labels = samplePerYear.map((entry) => entry.month);
                             counts = samplePerYear.map((entry) => entry.count);
                             mosquitoTypes = samplePerYear[0].type.map((entry) => entry.name);
@@ -409,75 +670,300 @@
 
         <!-- Sample Per District -->
         <script>
-            let data = @json($samplePerDistrict);
-            $(function() {
-                // Prepare data for the chart
-                var labels = [];
-                var datasets = [];
-                var virusTypes = {};
+            let data = Object.values(@json($samplePerDistrict));
+            // Prepare data for the chart
+            let sampleDistrictLabel = [];
+            let datasetsDistrict = [];
+            let virusTypes = {};
 
-                data.forEach(function(item) {
-                    labels.push(item.district);
-                    var districtData = {};
+            data.forEach(function(item) {
+                sampleDistrictLabel.push(item.district);
+                let districtData = {};
 
-                    item.type.forEach(function(type) {
-                        districtData[type.name] = type.amount;
-                        if (!virusTypes[type.name]) {
-                            virusTypes[type.name] = [];
-                        }
-                    });
-
-                    for (var key in virusTypes) {
-                        if (virusTypes.hasOwnProperty(key)) {
-                            if (districtData.hasOwnProperty(key)) {
-                                virusTypes[key].push(districtData[key]);
-                            } else {
-                                virusTypes[key].push(0);
-                            }
-                        }
+                item.type.forEach(function(type) {
+                    districtData[type.name] = type.amount;
+                    if (!virusTypes[type.name]) {
+                        virusTypes[type.name] = [];
                     }
                 });
 
-                let purplePalette = ["#B799FF", "#ACBCFF", "#AEE2FF"];
-
-                for (var key in virusTypes) {
+                for (let key in virusTypes) {
                     if (virusTypes.hasOwnProperty(key)) {
-                        datasets.push({
-                            label: key,
-                            data: virusTypes[key],
-                            backgroundColor: purplePalette[datasets.length % purplePalette.length],
-                            borderColor: purplePalette[datasets.length % purplePalette.length],
-                        });
+                        if (districtData.hasOwnProperty(key)) {
+                            virusTypes[key].push(districtData[key]);
+                        } else {
+                            virusTypes[key].push(0);
+                        }
                     }
                 }
+            });
 
-                // Create the chart
-                var ctx = document.getElementById('samplePerDistrict').getContext('2d');
-                ctx.canvas.width = '100%';
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: datasets
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                stacked: true
-                            },
-                            y: {
-                                stacked: true,
-                                beginAtZero: true
-                            }
+            // let purplePalette = ["#B799FF", "#ACBCFF", "#AEE2FF"];
+
+            for (let key in virusTypes) {
+                if (virusTypes.hasOwnProperty(key)) {
+                    datasetsDistrict.push({
+                        label: key,
+                        data: virusTypes[key],
+                        backgroundColor: purplePalette[datasetsDistrict.length % purplePalette.length],
+                        borderColor: purplePalette[datasetsDistrict.length % purplePalette.length],
+                    });
+                }
+            }
+
+            // Create the chart
+            let sampleChartCtx = document.getElementById('samplePerDistrict').getContext('2d');
+            sampleChartCtx.canvas.width = '100%';
+            let sampleChart = new Chart(sampleChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: sampleDistrictLabel,
+                    datasets: datasetsDistrict
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true
                         },
-                        plugins: {
-                            tooltip: {
-                                mode: 'index',
-                                intersect: false
-                            }
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
                         }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        legend: {
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 5,
+                                boxHeight: 5,
+                            },
+                        },
                     }
+                }
+            });
+
+            $(function() {
+                $('#samplePerYearDistrictFilter').change(function(e) {
+                    e.preventDefault();
+                    // select first option
+                    $('#samplePerYearFilter').val($('#samplePerYearFilter option:first').val()).change();
+                    let year = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('user.vector.filter-year-district') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            year: year
+                        },
+                        success: function(response) {
+                            let data = response.samplePerDistrict;
+                            sampleChart.destroy();
+                            $('#samplePerDistrict').remove();
+                            $('#samplePerYearDistrictContainer').attr('style', 'height: 220px');
+                            $('#samplePerYearDistrictContainer').html(
+                                '<canvas id="samplePerDistrict"></canvas>');
+                            if (data.length == 0) {
+                                // remove style
+                                $('#samplePerYearDistrictContainer').removeAttr('style');
+                                $('#samplePerYearDistrictContainer').html(
+                                    '<p class="text-center">No data available</p>');
+                                $('#labelYearDistrict').html(year);
+                                return;
+                            }
+                            data = Object.values(data);
+                            sampleDistrictLabel = [];
+                            datasetsDistrict = [];
+                            virusTypes = {};
+
+                            data.forEach(function(item) {
+                                sampleDistrictLabel.push(item.district);
+                                let districtData = {};
+
+                                item.type.forEach(function(type) {
+                                    districtData[type.name] = type.amount;
+                                    if (!virusTypes[type.name]) {
+                                        virusTypes[type.name] = [];
+                                    }
+                                });
+
+                                for (let key in virusTypes) {
+                                    if (virusTypes.hasOwnProperty(key)) {
+                                        if (districtData.hasOwnProperty(key)) {
+                                            virusTypes[key].push(districtData[key]);
+                                        } else {
+                                            virusTypes[key].push(0);
+                                        }
+                                    }
+                                }
+                            });
+
+                            for (let key in virusTypes) {
+                                if (virusTypes.hasOwnProperty(key)) {
+                                    datasetsDistrict.push({
+                                        label: key,
+                                        data: virusTypes[key],
+                                        backgroundColor: purplePalette[datasetsDistrict
+                                            .length %
+                                            purplePalette.length],
+                                        borderColor: purplePalette[datasetsDistrict.length %
+                                            purplePalette.length],
+                                    });
+                                }
+                            }
+
+                            sampleChartCtx = document.getElementById('samplePerDistrict')
+                                .getContext('2d');
+                            sampleChartCtx.canvas.width = '100%';
+                            sampleChart = new Chart(sampleChartCtx, {
+                                type: 'bar',
+                                data: {
+                                    labels: sampleDistrictLabel,
+                                    datasets: datasetsDistrict
+                                },
+                                options: {
+                                    scales: {
+                                        x: {
+                                            stacked: true
+                                        },
+                                        y: {
+                                            stacked: true,
+                                            beginAtZero: true
+                                        }
+                                    },
+                                    plugins: {
+                                        tooltip: {
+                                            mode: 'index',
+                                            intersect: false
+                                        },
+                                        legend: {
+                                            labels: {
+                                                usePointStyle: true,
+                                                boxWidth: 5,
+                                                boxHeight: 5,
+                                            },
+                                        },
+                                    }
+                                }
+                            });
+
+                            $('#labelYearDistrict').html(year);
+                        }
+                    });
                 });
+
+                $('#samplePerYearFilterRegency').change(function(e) {
+                    // select first option
+                    $('#samplePerYearDistrictFilter').val($('#samplePerYearDistrictFilter option:first').val())
+                        .change();
+                    e.preventDefault();
+                    let regency = $(this).find(':selected').text();
+                    let regency_id = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('user.vector.filter-regency') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            regency_id: regency_id
+                        },
+                        success: function(response) {
+                            let data = Object.values(response.samples);
+                            sampleChart.destroy();
+                            $('#samplePerDistrict').remove();
+                            $('#samplePerYearDistrictContainer').attr('style', 'height: 220px');
+                            $('#samplePerYearDistrictContainer').html(
+                                '<canvas id="samplePerDistrict"></canvas>');
+                            if (data.length == 0) {
+                                // remove style
+                                $('#samplePerYearDistrictContainer').removeAttr('style');
+                                $('#samplePerYearDistrictContainer').html(
+                                    '<p class="text-center">No data available</p>');
+                                $('#labelYearDistrict').html(regency);
+                                return;
+                            }
+                            data = Object.values(data);
+                            sampleDistrictLabel = [];
+                            datasetsDistrict = [];
+                            virusTypes = {};
+
+                            data.forEach(function(item) {
+                                sampleDistrictLabel.push(item.district);
+                                let districtData = {};
+
+                                item.type.forEach(function(type) {
+                                    districtData[type.name] = type.amount;
+                                    if (!virusTypes[type.name]) {
+                                        virusTypes[type.name] = [];
+                                    }
+                                });
+
+                                for (let key in virusTypes) {
+                                    if (virusTypes.hasOwnProperty(key)) {
+                                        if (districtData.hasOwnProperty(key)) {
+                                            virusTypes[key].push(districtData[key]);
+                                        } else {
+                                            virusTypes[key].push(0);
+                                        }
+                                    }
+                                }
+                            });
+
+                            for (let key in virusTypes) {
+                                if (virusTypes.hasOwnProperty(key)) {
+                                    datasetsDistrict.push({
+                                        label: key,
+                                        data: virusTypes[key],
+                                        backgroundColor: purplePalette[datasetsDistrict
+                                            .length %
+                                            purplePalette.length],
+                                        borderColor: purplePalette[datasetsDistrict.length %
+                                            purplePalette.length],
+                                    });
+                                }
+                            }
+
+                            sampleChartCtx = document.getElementById('samplePerDistrict')
+                                .getContext('2d');
+                            sampleChartCtx.canvas.width = '100%';
+                            sampleChart = new Chart(sampleChartCtx, {
+                                type: 'bar',
+                                data: {
+                                    labels: sampleDistrictLabel,
+                                    datasets: datasetsDistrict
+                                },
+                                options: {
+                                    scales: {
+                                        x: {
+                                            stacked: true
+                                        },
+                                        y: {
+                                            stacked: true,
+                                            beginAtZero: true
+                                        }
+                                    },
+                                    plugins: {
+                                        tooltip: {
+                                            mode: 'index',
+                                            intersect: false
+                                        },
+                                        legend: {
+                                            labels: {
+                                                usePointStyle: true,
+                                                boxWidth: 5,
+                                                boxHeight: 5,
+                                            },
+                                        },
+                                    }
+                                }
+                            });
+
+                            $('#labelYearDistrict').html(regency);
+                        }
+                    });
+                })
             });
         </script>
     @endpush
