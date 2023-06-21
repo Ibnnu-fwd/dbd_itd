@@ -3,7 +3,7 @@
 
     <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
         <x-link-button route="{{ route('admin.sample.detail-sample.export', $sample->id) }}"
-            class="justify-center bg-gray-500" type="button" target="_blank">
+            class="justify-center" color="gray" type="button" target="_blank">
             Unduh Template Import
         </x-link-button>
         <x-button id="btnImport" class="justify-center bg-primary" type="button">
