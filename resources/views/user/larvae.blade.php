@@ -30,9 +30,13 @@
                             in our
                             area is the mosquito. You can see the data we have collected below.
                         </p>
-                        <div id="mapContainer">
-                            <div id="map" class="z-0 mb-4" style="height: 300px; border-radius: 6px"></div>
-                        </div>
+                        @if ($larvae->count() > 0)
+                            <div id="mapContainer">
+                                <div id="map" class="z-0 mb-4" style="height: 300px; border-radius: 6px"></div>
+                            </div>
+                        @else
+                            <h3 class="text-center">Larvae data is empty</h3>
+                        @endif
                         <p class="text-center text-xs 2xl:text-sm italic">
                             <span class="text-error">*</span>
                             This map shows the location of the samples collected by the user and it all have been

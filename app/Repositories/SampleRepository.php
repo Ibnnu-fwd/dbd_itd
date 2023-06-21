@@ -501,7 +501,7 @@ class SampleRepository implements SampleInterface
 
     public function getAllForUser($year = null, $regency_id = null)
     {
-        $samples = $this->sample->with('province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()
+        $samples = $this->sample->with('province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleSerotypes')->active()
             ->when($year, function ($query, $year) {
                 return $query->whereYear('created_at', $year);
             })
@@ -524,25 +524,31 @@ class SampleRepository implements SampleInterface
                 'location_name' => ucwords(strtolower($sample->location_name)),
                 'created_by' => ucwords(strtolower($sample->createdBy->name)),
                 'created_at' => Carbon::parse($sample->created_at)->isoFormat('D MMMM Y'),
-                'count' => $sample->detailSampleViruses->map(function ($item) {
-                    $amount = 0;
-                    $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                        $amount += $item->detailSampleSerotypes->map(function ($item) {
-                            return $item->amount;
-                        })->sum();
-                    });
-                    return $amount;
-                })->sum(),
+                'count' => $this->sample->active()->where('district_id', $sample->district_id)->count(),
                 'type' => $sample->detailSampleViruses->map(function ($item) {
-                    return [
-                        'name' => $item->virus->name,
-                        'amount' => $item->detailSampleMorphotypes->map(function ($item) {
-                            return $item->amount;
-                        })->sum(),
-                    ];
+                    if ($item->virus_id == 1 && $item->identification == 1) {
+                        return [
+                            'name' => $item->virus->name,
+                            'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                                return $item->amount;
+                            })->sum(),
+                        ];
+                    } elseif ($item->virus_id == 1 && $item->identification == 0) {
+                        return [
+                            'name' => $item->virus->name,
+                            'amount' => $item->amount,
+                        ];
+                    } elseif ($item->virus_id != 1) {
+                        return [
+                            'name' => $item->virus->name,
+                            'amount' => $item->amount,
+                        ];
+                    }
                 }),
             ];
         }
+
+        // dd($data);
 
         return collect($data);
     }
@@ -555,22 +561,26 @@ class SampleRepository implements SampleInterface
         foreach ($sample as $key => $value) {
             $data[$key]['district'] = $value->district->name;
             $data[$key]['regency'] = $value->regency->name;
-            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
-                $amount = 0;
-                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                    $amount += $item->detailSampleSerotypes->map(function ($item) {
-                        return $item->amount;
-                    })->sum();
-                });
-                return $amount;
-            })->sum();
+            $data[$key]['count'] = $this->sample->active()->where('district_id', $value->district_id)->count();
             $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
-                return [
-                    'name' => $item->virus->name,
-                    'amount' => $item->detailSampleMorphotypes->map(function ($item) {
-                        return $item->amount;
-                    })->sum(),
-                ];
+                if ($item->virus_id == 1 && $item->identification == 1) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum(),
+                    ];
+                } elseif ($item->virus_id == 1 && $item->identification == 0) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->amount,
+                    ];
+                } elseif ($item->virus_id != 1) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->amount,
+                    ];
+                }
             });
             $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
         }
@@ -581,11 +591,24 @@ class SampleRepository implements SampleInterface
             foreach ($item as $key => $value) {
                 $amount += $value['count'];
             }
+
+            // sum each amount of type virus in a month
+            $type = [];
+            foreach ($item as $key => $value) {
+                foreach ($value['type'] as $key => $value) {
+                    if (isset($type[$value['name']])) {
+                        $type[$value['name']] += $value['amount'];
+                    } else {
+                        $type[$value['name']] = $value['amount'];
+                    }
+                }
+            }
+
             return [
                 'district' => ucwords(strtolower($item[0]['district'])),
                 'regency' => $item[0]['regency'],
                 'count' => $amount,
-                'type' => $item[0]['type'],
+                'type' => $type,
             ];
         });
 
@@ -609,22 +632,26 @@ class SampleRepository implements SampleInterface
         foreach ($sample as $key => $value) {
             $data[$key]['district'] = $value->district->name;
             $data[$key]['regency'] = $value->regency->name;
-            $data[$key]['count'] = $value->detailSampleViruses->map(function ($item) {
-                $amount = 0;
-                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                    $amount += $item->detailSampleSerotypes->map(function ($item) {
-                        return $item->amount;
-                    })->sum();
-                });
-                return $amount;
-            })->sum();
+            $data[$key]['count'] = $this->sample->active()->where('district_id', $value->district_id)->count();
             $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
-                return [
-                    'name' => $item->virus->name,
-                    'amount' => $item->detailSampleMorphotypes->map(function ($item) {
-                        return $item->amount;
-                    })->sum(),
-                ];
+                if ($item->virus_id == 1 && $item->identification == 1) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum(),
+                    ];
+                } elseif ($item->virus_id == 1 && $item->identification == 0) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->amount,
+                    ];
+                } elseif ($item->virus_id != 1) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->amount,
+                    ];
+                }
             });
             $data[$key]['created_at'] = $value->created_at->format('Y-m-d');
         }
@@ -635,11 +662,24 @@ class SampleRepository implements SampleInterface
             foreach ($item as $key => $value) {
                 $amount += $value['count'];
             }
+
+            // sum each amount of type virus in a month
+            $type = [];
+            foreach ($item as $key => $value) {
+                foreach ($value['type'] as $key => $value) {
+                    if (isset($type[$value['name']])) {
+                        $type[$value['name']] += $value['amount'];
+                    } else {
+                        $type[$value['name']] = $value['amount'];
+                    }
+                }
+            }
+
             return [
                 'district' => ucwords(strtolower($item[0]['district'])),
                 'regency' => $item[0]['regency'],
                 'count' => $amount,
-                'type' => $item[0]['type'],
+                'type' => $type,
             ];
         });
 

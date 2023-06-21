@@ -2,12 +2,14 @@
     <x-breadcrumb name="dashboard" />
     <div id="map" class="z-0 mb-4" style="height: 350px; border-radius: 6px; margin-top:30px;"></div>
     <div class="xl:grid grid-cols-2 gap-x-4">
-        <x-card-container height="" style="height: 220px">
-            <p class="text-xs 2xl:text-sm font-semibold">
-                Statistik Sampel
-            </p>
-            <canvas id="samplePerYear"></canvas>
-        </x-card-container>
+        @if ($samplePerYear->count() > 0)
+            <x-card-container height="" style="height: 220px">
+                <p class="text-xs 2xl:text-sm font-semibold">
+                    Statistik Sampel
+                </p>
+                <canvas id="samplePerYear"></canvas>
+            </x-card-container>
+        @endif
         <div class="xl:grid grid-cols-2 gap-4 md:flex md:flex-wrap">
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
                 <i class="fas fa-users fa-2x text-primary mr-4 "></i>
@@ -200,6 +202,7 @@
             // full screen
             L.control.fullscreen().addTo(map);
         </script>
+
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             $(function() {

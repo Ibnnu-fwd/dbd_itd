@@ -96,19 +96,19 @@
                         <div>
                             <h2 class="bg-clip-text bg-gradient-to-r to-purple-500 from-purple-700 text-transparent">
                                 Vector Information</h2>
-                                <p class="leading-7">
-                                    Vectors, as defined by the California Department of Public Health, are “any insect
-                                    or other
-                                    arthropod, rodent or other animal of public health significance capable of harboring
-                                    or
-                                    transmitting the causative agents of human disease, or capable of causing human
-                                    discomfort and
-                                    injury." Under this definition of a vector, the Orange County Mosquito and Vector
-                                    Control
-                                    District (District) provides surveillance and control measures for rats, mosquitoes,
-                                    flies, and
-                                    Red Imported Fire Ants.
-                                </p>
+                            <p class="leading-7">
+                                Vectors, as defined by the California Department of Public Health, are “any insect
+                                or other
+                                arthropod, rodent or other animal of public health significance capable of harboring
+                                or
+                                transmitting the causative agents of human disease, or capable of causing human
+                                discomfort and
+                                injury." Under this definition of a vector, the Orange County Mosquito and Vector
+                                Control
+                                District (District) provides surveillance and control measures for rats, mosquitoes,
+                                flies, and
+                                Red Imported Fire Ants.
+                            </p>
                         </div>
                         <img src="{{ asset('assets/images/vector/header.jpg') }}" alt=""
                             class="hidden xl:block w-32 h-32 object-cover rounded-xl">
@@ -157,7 +157,6 @@
         <!-- Map -->
         <script>
             let samples = Object.values(@json($samples));
-            console.log(samples);
             // set last lat long of sample
             let lastSample = samples[samples.length - 1];
             let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 8);
@@ -267,7 +266,6 @@
                             year: year
                         },
                         success: function(response) {
-                            console.log(response.samples);
                             if (response.samples.length == 0) {
                                 map.removeLayer(markers);
                                 return;
@@ -476,16 +474,14 @@
             let samplePerYear = @json($samplePerYear);
 
             // Mengambil bulan dan jumlah dari setiap entri data
-            let labels = samplePerYear.map((entry) => entry.month);
-            let counts = samplePerYear.map((entry) => entry.count);
+            var labels = samplePerYear.map(entry => entry.month);
+            var counts = samplePerYear.map(entry => entry.count);
 
             // Mengambil jenis nyamuk dari setiap entri samplePerYear
-            let mosquitoTypes = samplePerYear[0].type.map((entry) => entry.name);
+            var mosquitoTypes = Object.keys(samplePerYear[0].type);
 
             // Mengambil jumlah nyamuk dari setiap entri samplePerYear
-            let mosquitoAmounts = samplePerYear.map((entry) =>
-                entry.type.map((type) => type.amount)
-            );
+            var mosquitoAmounts = samplePerYear.map(entry => Object.values(entry.type));
 
             // Membuat chart dengan Chart.js
             let ctx = document.getElementById("samplePerYear").getContext("2d");
@@ -494,7 +490,7 @@
             let purplePalette = ["#B799FF", "#ACBCFF", "#AEE2FF"];
 
             let myChart = new Chart(ctx, {
-                type: "line",
+                type: "bar",
                 data: {
                     labels: labels,
                     datasets: mosquitoTypes.map((type, index) => ({
@@ -572,7 +568,6 @@
                         },
                         success: function(response) {
                             let samplePerYear = response.samplePerYear;
-                            myChart.destroy();
                             $('#samplePerYear').remove();
                             $('#samplePerYearContainer').attr('style', 'height: 220px');
                             $('#samplePerYearContainer').html(
@@ -585,17 +580,23 @@
                                 $('#labelYear').html(year);
                                 return;
                             }
-                            samplePerYear = samplePerYear
-                            labels = samplePerYear.map((entry) => entry.month);
-                            counts = samplePerYear.map((entry) => entry.count);
-                            mosquitoTypes = samplePerYear[0].type.map((entry) => entry.name);
-                            mosquitoAmounts = samplePerYear.map((entry) =>
-                                entry.type.map((type) => type.amount)
-                            );
+                            samplePerYear = samplePerYear;
+                            // Mengambil bulan dan jumlah dari setiap entri data
+                            labels = samplePerYear.map(entry => entry.month);
+                            counts = samplePerYear.map(entry => entry.count);
+
+                            // Mengambil jenis nyamuk dari setiap entri samplePerYear
+                            mosquitoTypes = Object.keys(samplePerYear[0].type);
+
+                            // Mengambil jumlah nyamuk dari setiap entri samplePerYear
+                            mosquitoAmounts = samplePerYear.map(entry => Object.values(entry
+                                .type));
+                            myChart.destroy();
+
                             ctx = document.getElementById("samplePerYear").getContext("2d");
                             ctx.canvas.width = "100%";
                             myChart = new Chart(ctx, {
-                                type: "line",
+                                type: "bar",
                                 data: {
                                     labels: labels,
                                     datasets: mosquitoTypes.map((type, index) => ({
@@ -670,7 +671,64 @@
 
         <!-- Sample Per District -->
         <script>
-            let data = Object.values(@json($samplePerDistrict));
+            let data = [{
+                    "district": "Bintan Timur",
+                    "regency": "KABUPATEN BINTAN",
+                    "count": 1,
+                    "type": {
+                        "Aedes Aegypti": 0,
+                        "Aedes Albopictus": 39
+                    }
+                },
+                {
+                    "district": "Way Tuba",
+                    "regency": "KABUPATEN WAY KANAN",
+                    "count": 1,
+                    "type": {
+                        "Aedes Aegypti": 103,
+                        "Aedes Albopictus": 12,
+                        "Culex": 13
+                    }
+                },
+                {
+                    "district": "Popayato Timur",
+                    "regency": "KABUPATEN POHUWATO",
+                    "count": 1,
+                    "type": {
+                        "Aedes Aegypti": 0,
+                        "Culex": 8
+                    }
+                },
+                {
+                    "district": "Lumut",
+                    "regency": "KABUPATEN TAPANULI TENGAH",
+                    "count": 1,
+                    "type": {
+                        "Aedes Aegypti": 20,
+                        "Aedes Albopictus": 999
+                    }
+                },
+                {
+                    "district": "Gunung Bintang Awai",
+                    "regency": "KABUPATEN BARITO SELATAN",
+                    "count": 1,
+                    "type": {
+                        "Aedes Aegypti": 10,
+                        "Aedes Albopictus": 9
+                    }
+                },
+                {
+                    "district": "Teluk Sebong",
+                    "regency": "KABUPATEN BINTAN",
+                    "count": 1,
+                    "type": {
+                        "Aedes Aegypti": 4,
+                        "Aedes Albopictus": 12,
+                        "Culex": 7
+                    }
+                }
+            ];
+
             // Prepare data for the chart
             let sampleDistrictLabel = [];
             let datasetsDistrict = [];
@@ -680,10 +738,10 @@
                 sampleDistrictLabel.push(item.district);
                 let districtData = {};
 
-                item.type.forEach(function(type) {
-                    districtData[type.name] = type.amount;
-                    if (!virusTypes[type.name]) {
-                        virusTypes[type.name] = [];
+                Object.entries(item.type).forEach(function([type, amount]) {
+                    districtData[type] = amount;
+                    if (!virusTypes[type]) {
+                        virusTypes[type] = [];
                     }
                 });
 
@@ -783,10 +841,10 @@
                                 sampleDistrictLabel.push(item.district);
                                 let districtData = {};
 
-                                item.type.forEach(function(type) {
-                                    districtData[type.name] = type.amount;
-                                    if (!virusTypes[type.name]) {
-                                        virusTypes[type.name] = [];
+                                Object.entries(item.type).forEach(function([type, amount]) {
+                                    districtData[type] = amount;
+                                    if (!virusTypes[type]) {
+                                        virusTypes[type] = [];
                                     }
                                 });
 
@@ -807,8 +865,7 @@
                                         label: key,
                                         data: virusTypes[key],
                                         backgroundColor: purplePalette[datasetsDistrict
-                                            .length %
-                                            purplePalette.length],
+                                            .length % purplePalette.length],
                                         borderColor: purplePalette[datasetsDistrict.length %
                                             purplePalette.length],
                                     });
@@ -893,10 +950,10 @@
                                 sampleDistrictLabel.push(item.district);
                                 let districtData = {};
 
-                                item.type.forEach(function(type) {
-                                    districtData[type.name] = type.amount;
-                                    if (!virusTypes[type.name]) {
-                                        virusTypes[type.name] = [];
+                                Object.entries(item.type).forEach(function([type, amount]) {
+                                    districtData[type] = amount;
+                                    if (!virusTypes[type]) {
+                                        virusTypes[type] = [];
                                     }
                                 });
 
@@ -917,8 +974,7 @@
                                         label: key,
                                         data: virusTypes[key],
                                         backgroundColor: purplePalette[datasetsDistrict
-                                            .length %
-                                            purplePalette.length],
+                                            .length % purplePalette.length],
                                         borderColor: purplePalette[datasetsDistrict.length %
                                             purplePalette.length],
                                     });
