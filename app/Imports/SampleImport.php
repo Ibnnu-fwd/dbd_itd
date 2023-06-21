@@ -11,6 +11,7 @@ use App\Models\Sample;
 use App\Models\Village;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -164,9 +165,8 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
     public function village($param)
     {
         $param = strtoupper($param);
-        $village = Village::pluck('name', 'id')->toArray();
-        $village = array_search($param, $village);
-        return $village;
+        $village = DB::table('villages')->where('name', $param)->cursor();
+        return $village->first()->id;
     }
 
     // public function sampleMethodId($param)
