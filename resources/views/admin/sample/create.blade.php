@@ -6,12 +6,6 @@
             <div class="sm:grid grid-cols-3 gap-x-4">
                 <div>
                     <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Sampling</p>
-                    {{-- <x-select id="sample_method_id" label="Metode Pengambilan Sampel" name="sample_method_id" isFit="true"
-                        required>
-                        @foreach ($sampleMethods as $sampleMethod)
-                            <option value="{{ $sampleMethod->id }}">{{ $sampleMethod->name }}</option>
-                        @endforeach
-                    </x-select> --}}
                     <x-input id="public_health_name" label="Pukesmas" name="public_health_name" type="text" />
                     <x-input id="location_name" label="Nama Lokasi" name="location_name" type="text" required />
                     <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true"
@@ -60,7 +54,7 @@
                     <li class="">
                         <div class="flex items-center pl-3">
                             <input id="virus-{{ $virus->id }}-checkbox-list" type="checkbox"
-                                value="{{ $virus->id }}" name="viruses[]"
+                                value="{{ $virus->id }}" name="viruses[]" onchange="checkVirus({{ $virus->id }})"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                             <label for="virus-{{ $virus->id }}-checkbox-list"
                                 class="w-full py-3 ml-2 text-xs 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">{{ $virus->name }}</label>
@@ -68,6 +62,29 @@
                     </li>
                 @endforeach
             </ul>
+
+            <!-- Border -->
+            <div class="border-b border-gray-200 my-6"></div>
+
+            <ul
+                class="items-center w-full gap-x-2 text-sm font-medium text-gray-900 bg-white rounded-lg sm:flex flex-wrap">
+                <li class="hidden" id="aegyptiIdentificationContainer">
+                    <x-select id="aedesAegyptiIdentification" name="aedesAegyptiIdentification"
+                        label="Identifikasi Aegpyti">
+                        <option value="1">Ya</option>
+                        <option value="0">Tidak</option>
+                    </x-select>
+                </li>
+                <li class="hidden" id="albopictusAmountContainer">
+                    <x-input id="albopictus_amount" label="Total Individu Albopictus" name="albopictus_amount" type="number" />
+                <li class="hidden" id="culexAmountContainer">
+                    <x-input id="culex_amount" label="Total Individu Culex" name="culex_amount" type="number" />
+                </li>
+            </ul>
+
+            <div class="hidden xl:w-1/5" id="aedesAegyptiAmountContainer">
+                <x-input id="aedes_aegypti_amount" label="Total Individu Aegypti" name="aedes_aegypti_amount" type="number" />
+            </div>
 
             @error('viruses')
                 <p class="text-xs text-red-500 mt-2">{{ $message }}</p>
@@ -385,6 +402,46 @@
                     });
                 @endif
             });
+        </script>
+
+        <!-- Aedes Aegypti Identification -->
+        <script>
+            function checkVirus(id) {
+                // check if aedes aegypti is checked
+                let aedesAegypti    = $('#virus-1-checkbox-list').is(':checked');
+                let aedesAlbopictus = $('#virus-2-checkbox-list').is(':checked');
+                let culex           = $('#virus-3-checkbox-list').is(':checked');
+
+                if(aedesAegypti) {
+                    $('#aegyptiIdentificationContainer').removeClass('hidden');
+                } else {
+                    $('#aegyptiIdentificationContainer').addClass('hidden');
+                    $('#aedesAegyptiAmountContainer').addClass('hidden');
+                }
+
+                if(aedesAlbopictus) {
+                    $('#albopictusAmountContainer').removeClass('hidden');
+                } else {
+                    $('#albopictusAmountContainer').addClass('hidden');
+                }
+
+                if(culex) {
+                    $('#culexAmountContainer').removeClass('hidden');
+                } else {
+                    $('#culexAmountContainer').addClass('hidden');
+                }
+            }
+
+            $('#aedesAegyptiIdentification').change(function(e) {
+                e.preventDefault();
+                let value = $(this).val();
+                if(value == 0)
+                {
+                    $('#aedesAegyptiAmountContainer').removeClass('hidden');
+                } else {
+                    $('#aedesAegyptiAmountContainer').addClass('hidden');
+                }
+            })
         </script>
     @endpush
 </x-app-layout>

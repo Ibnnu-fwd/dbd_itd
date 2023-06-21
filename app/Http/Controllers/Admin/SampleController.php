@@ -63,28 +63,18 @@ class SampleController extends Controller
 
     public function index(Request $request)
     {
+        // return $this->sample->getAll();
         if ($request->ajax()) {
             return datatables()
                 ->of($this->sample->getAll())
                 ->addColumn('sample_code', function ($data) {
                     return $data->sample_code;
                 })
-                // ->addColumn('sample_method', function ($data) {
-                //     return $data->sampleMethod->name;
-                // })
                 ->addColumn('address', function ($data) {
                     $address = $data->village->name . ', ' . $data->district->name . ', ' . $data->regency->name . ', ' . $data->province->name;
 
                     $address = strtolower($address);
                     return ucwords($address);
-
-                    // return view('admin.sample.column.address', [
-                    //     'address' => $data->village->name . ', ' . $data->district->name . ', ' . $data->regency->name . ', ' . $data->province->name,
-                    //     'coordinate' => $data->latitude . ', ' . $data->longitude
-                    // ]);
-                })
-                ->addColumn('sample_count', function ($data) {
-                    return $data->total_sample;
                 })
                 ->addColumn('location', function ($data) {
                     return $data->location_name ?? '-';
@@ -126,7 +116,6 @@ class SampleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'sample_method_id' => ['required'],
             'location_name' => ['required'],
             'location_type_id' => ['required'],
             'description' => ['nullable'],
@@ -138,7 +127,6 @@ class SampleController extends Controller
             'longitude' => ['required'],
             'viruses' => ['required', 'array'],
         ], [
-            // 'sample_method_id.required' => 'Metode pengambilan sampel harus diisi.',
             'location_name.required' => 'Nama lokasi harus diisi.',
             'location_type_id.required' => 'Tipe lokasi harus diisi.',
             'province_id.required' => 'Provinsi harus diisi.',
@@ -239,10 +227,8 @@ class SampleController extends Controller
     // CUSTOM FUNCTION
     public function detailSample($id)
     {
-        // dd($this->sample->detailSample($id));
         return view('admin.sample.detail-sample', [
             'sample' => $this->sample->detailSample($id),
-            'serotypes' => $this->serotype->getAll(),
         ]);
     }
 
@@ -259,10 +245,10 @@ class SampleController extends Controller
     {
         try {
             $this->detailSampleVirus->store($request->all(), $id);
-            return response()->json(true);
+            $sample = $this->sample->getById($id);
+            return redirect()->route('admin.sample.detail-sample.virus', $sample)->with('success', 'Data berhasil disimpan.');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
-            return response()->json(false);
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
 
@@ -332,5 +318,40 @@ class SampleController extends Controller
     {
         $sample = $this->sample->getById($id);
         return Excel::download(new DetailSampleExport($id), 'DETAIL SAMPLE_' . $sample->sample_code . uniqid() . '.xlsx');
+    }
+
+    public function updateSingleAmountDetailSampleVirus($id, Request $request)
+    {
+        $detailSampleVirus = $this->detailSampleVirus->getById($id);
+        $detailSampleVirus->amount = $request->amount;
+        $detailSampleVirus->save();
+
+        return response()->json(true);
+    }
+
+    public function updateIdentificationDetailSampleVirus($id, Request $request)
+    {
+        $detailSampleVirus = $this->detailSampleVirus->getById($id);
+        $detailSampleVirus->identification = $request->identification;
+        $detailSampleVirus->amount = null;
+        $detailSampleVirus->save();
+
+        return response()->json(true);
+    }
+
+    public function editDetailSampleVirus($id)
+    {
+        return view('admin.sample.edit-detail-sample-virus', [
+            'sample' => $this->detailSampleVirus->getById($id),
+            'morphotypes' => $this->detailSampleVirus->getById($id)->detailSampleMorphotypes,
+            'serotypes' => $this->sample->getById($this->detailSampleVirus->getById($id)->sample_id)->detailSampleSerotypes,
+        ]);
+    }
+
+    public function updateDetailSampleVirus($id, Request $request)
+    {
+        $this->detailSampleVirus->update($request->all(), $id);
+        $sample = $this->sample->getById($id);
+        return redirect()->route('admin.sample.detail-sample.virus.edit', $sample)->with('success', 'Data berhasil diubah.');
     }
 }

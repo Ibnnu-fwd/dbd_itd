@@ -46,11 +46,6 @@ class Sample extends Model
         return $this->belongsTo(LocationType::class);
     }
 
-    // public function sampleMethod()
-    // {
-    //     return $this->belongsTo(SampleMethod::class);
-    // }
-
     public function province()
     {
         return $this->belongsTo(Province::class);
@@ -84,6 +79,11 @@ class Sample extends Model
     public function detailSamples()
     {
         return $this->hasMany(DetailSample::class);
+    }
+
+    public function detailSampleSeroTypes()
+    {
+        return $this->hasMany(DetailSampleSerotype::class, 'sample_id');
     }
 
     // generate sample code : SC-2021-0001

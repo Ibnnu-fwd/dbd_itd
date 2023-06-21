@@ -49,20 +49,10 @@ class SampleRepository implements SampleInterface
 
     public function getAll()
     {
-        $samples = $this->sample->with('province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->active()->get();
+        $samples = $this->sample->with('province', 'regency', 'district', 'village', 'createdBy', 'updatedBy', 'detailSampleViruses', 'detailSampleViruses.virus', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleSerotypes')->active()->get();
 
-        $samples = $samples->map(function ($item) {
-            $item['total_sample'] = $item->detailSampleViruses->map(function ($item) {
-                $amount = 0;
-                $item->detailSampleMorphotypes->map(function ($item) use (&$amount) {
-                    $amount += $item->detailSampleSerotypes->map(function ($item) {
-                        return $item->amount;
-                    })->sum();
-                });
-                return $amount;
-            })->sum();
-            return $item;
-        });
+        // sort sample_code desc
+        $samples = $samples->sortByDesc('sample_code');
 
         return $samples;
     }
@@ -97,10 +87,41 @@ class SampleRepository implements SampleInterface
 
         try {
             foreach ($attributes['viruses'] as $virus => $key) {
-                $this->detailSampleVirus->create([
-                    'sample_id' => $sample->id,
-                    'virus_id' => $key,
-                ]);
+                if($key == 1)
+                {
+                    if($attributes['aedesAegyptiIdentification'] == 0) {
+                        $this->detailSampleVirus->create([
+                            'sample_id' => $sample->id,
+                            'virus_id' => $key,
+                            'identification' => 0,
+                            'amount' => $attributes['aedes_aegypti_amount'],
+                        ]);
+                    } else {
+                        $this->detailSampleVirus->create([
+                            'sample_id' => $sample->id,
+                            'virus_id' => $key,
+                            'identification' => 1
+                        ]);
+                    }
+                }
+
+                if($key == 2)
+                {
+                    $this->detailSampleVirus->create([
+                        'sample_id' => $sample->id,
+                        'virus_id' => $key,
+                        'amount' => $attributes['albopictus_amount'],
+                    ]);
+                }
+
+                if($key == 3)
+                {
+                    $this->detailSampleVirus->create([
+                        'sample_id' => $sample->id,
+                        'virus_id' => $key,
+                        'amount' => $attributes['culex_amount'],
+                    ]);
+                }
             }
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -158,7 +179,7 @@ class SampleRepository implements SampleInterface
 
     public function detailSample($id)
     {
-        return $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleViruses.detailSampleMorphotypes.detailSampleSerotypes')->find($id);
+        return $this->sample->active()->with('detailSampleViruses', 'detailSampleViruses.detailSampleMorphotypes', 'detailSampleSerotypes')->find($id);
     }
 
     public function getAllRegency()
@@ -464,9 +485,7 @@ class SampleRepository implements SampleInterface
         $data = [];
         foreach ($samples as $sample) {
             $data[] = [
-                // 'sample_code' => $sample->sample_code,
                 'public_health_name' => ucwords(strtolower($sample->public_health_name)),
-                // 'sample_method' => $sample->sampleMethod->name,
                 'latitude' => $sample->latitude,
                 'longitude' => $sample->longitude,
                 'province' => ucwords(strtolower($sample->province->name)),

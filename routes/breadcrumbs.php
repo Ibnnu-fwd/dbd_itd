@@ -273,6 +273,18 @@ Breadcrumbs::for('sample.detail-sample.virus', function (BreadcrumbTrail $trail,
     $trail->push($data->virus->name);
 });
 
+// Sample > Detail Sample > Virus > Edit
+Breadcrumbs::for('sample.detail-sample.virus.edit', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('sample.detail-sample.virus', $data);
+    $trail->push('Edit', route('admin.sample.detail-sample.virus.edit', $data->id));
+});
+
+// Sample > Detail Sample > Virus > Identification
+Breadcrumbs::for('sample.detail-sample.virus.identification', function (BreadcrumbTrail $trail, $data) {
+    $trail->parent('sample.detail-sample.virus', $data);
+    $trail->push('Identifikasi');
+});
+
 // ------------ VARIABLE AGENT ------------
 Breadcrumbs::for('variable-agent', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');

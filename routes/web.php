@@ -121,7 +121,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
         Route::post('sample/import', [SampleController::class, 'import'])->name('admin.sample.import');
         Route::post('sample/detail-sample/virus/morphotype/delete', [SampleController::class, 'deleteDetailSampleVirusMorphotype'])->name('admin.sample.detail-sample.virus.morphotype.delete');
         Route::post('sample/detail-sample/virus/{id}/delete', [SampleController::class, 'deleteDetailSampleVirus'])->name('admin.sample.detail-sample.virus.delete');
+        Route::post('sample/detail-sample/virus/{id}/update', [SampleController::class, 'updateDetailSampleVirus'])->name('admin.sample.detail-sample.virus.update');
         Route::post('sample/detail-sample/virus/{id}/store', [SampleController::class, 'storeDetailSampleVirus'])->name('admin.sample.detail-sample.virus.store');
+        Route::post('sample/detail-sample/virus/{id}/update-identification', [SampleController::class, 'updateIdentificationDetailSampleVirus'])->name('admin.sample.detail-sample.virus.update-identification');
+        Route::post('sample/detail-sample/virus/{id}/update-single-amount', [SampleController::class, 'updateSingleAmountDetailSampleVirus'])->name('admin.sample.detail-sample.virus.update-single-amount');
+        Route::get('sample/detail-sample/virus/{id}/edit', [SampleController::class, 'editDetailSampleVirus'])->name('admin.sample.detail-sample.virus.edit');
         Route::get('sample/detail-sample/virus/{id}', [SampleController::class, 'detailSampleVirus'])->name('admin.sample.detail-sample.virus');
         Route::get('sample/detail-sample/{id}', [SampleController::class, 'detailSample'])->name('admin.sample.detail-sample');
         Route::resource('sample', SampleController::class, ['as' => 'admin']);

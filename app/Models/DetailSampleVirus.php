@@ -13,6 +13,7 @@ class DetailSampleVirus extends Model
     protected $fillable = [
         'sample_id',
         'virus_id',
+        'identification',
         'amount',
     ];
 

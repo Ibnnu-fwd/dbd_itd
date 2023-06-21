@@ -26,9 +26,4 @@ class DetailSampleMorphotype extends Model
     {
         return $this->belongsTo(Morphotype::class, 'morphotype_id');
     }
-
-    public function detailSampleSerotypes()
-    {
-        return $this->hasMany(DetailSampleSerotype::class, 'detail_sample_morphotype_id');
-    }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sample_id')->constrained('samples');
             $table->foreignId('virus_id')->constrained('viruses');
+            $table->boolean('identification')->nullable();
             $table->integer('amount')->nullable();
             $table->timestamps();
         });

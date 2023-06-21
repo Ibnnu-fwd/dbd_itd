@@ -26,44 +26,131 @@ class DetailSampleVirusRepository implements DetailSampleVirusInterface
 
     public function getById($id)
     {
-        return $this->detailSampleVirus->with('detailSampleMorphotypes', 'virus', 'detailSampleMorphotypes.detailSampleSerotypes', 'detailSampleMorphotypes.morphotype', 'detailSampleMorphotypes.detailSampleSerotypes.serotype')->find($id);
+        return $this->detailSampleVirus->with('detailSampleMorphotypes', 'detailSampleMorphotypes.morphotype')->find($id);
     }
 
     public function store($attributes, $detailSampleVirusId)
     {
-        DB::beginTransaction();
+        $sample_id = $this->detailSampleVirus->find($detailSampleVirusId)->sample_id;
 
-        try {
-            foreach ($attributes['morphotypeValues'] as $morphotype) {
-                //    check if morphotype is exist, if exist then update, if not exist then create
-                $detailMorphotypeId = $this->detailSampleMorphotype->updateOrCreate(
-                    [
-                        'detail_sample_virus_id' => $detailSampleVirusId,
-                        'morphotype_id' => $morphotype['morphotype_id']
-                    ],
-                    [
-                        'amount' => $morphotype['amount']
-                    ]
-                );
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id'    => $detailSampleVirusId,
+            'morphotype_id'             => 1,
+            'amount' => $attributes['morphotype_1'] ?? 0,
+        ]);
 
-                foreach ($morphotype['serotypes'] as $serotype) {
-                    $this->detailSampleSerotype->updateOrCreate(
-                        [
-                            'detail_sample_morphotype_id' => $detailMorphotypeId->id,
-                            'serotype_id' => $serotype['serotype_id']
-                        ],
-                        [
-                            'amount' => $serotype['amount']
-                        ]
-                    );
-                }
-            }
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id'    => $detailSampleVirusId,
+            'morphotype_id'             => 2,
+            'amount' => $attributes['morphotype_2'] ?? 0,
+        ]);
 
-        DB::commit();
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id'    => $detailSampleVirusId,
+            'morphotype_id'             => 3,
+            'amount' => $attributes['morphotype_3'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id'    => $detailSampleVirusId,
+            'morphotype_id'             => 4,
+            'amount' => $attributes['morphotype_4'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id'    => $detailSampleVirusId,
+            'morphotype_id'             => 5,
+            'amount' => $attributes['morphotype_5'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id'    => $detailSampleVirusId,
+            'morphotype_id'             => 6,
+            'amount' => $attributes['morphotype_6'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id'    => $detailSampleVirusId,
+            'morphotype_id'             => 7,
+            'amount' => $attributes['morphotype_7'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->create([
+            'sample_id' => $sample_id,
+            'serotype_id' => 1,
+            'status' => $attributes['denv_1'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->create([
+            'sample_id' => $sample_id,
+            'serotype_id' => 2,
+            'status' => $attributes['denv_2'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->create([
+            'sample_id' => $sample_id,
+            'serotype_id' => 3,
+            'status' => $attributes['denv_3'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->create([
+            'sample_id' => $sample_id,
+            'serotype_id' => 4,
+            'status' => $attributes['denv_4'] ?? 0,
+        ]);
+
+        return true;
+    }
+
+    public function update($attributes, $detailSampleVirusId)
+    {
+        $sample_id = $this->detailSampleVirus->find($detailSampleVirusId)->sample_id;
+
+        $this->detailSampleMorphotype->where('detail_sample_virus_id', $detailSampleVirusId)->where('morphotype_id', 1)->update([
+            'amount' => $attributes['morphotype_1'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->where('detail_sample_virus_id', $detailSampleVirusId)->where('morphotype_id', 2)->update([
+            'amount' => $attributes['morphotype_2'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->where('detail_sample_virus_id', $detailSampleVirusId)->where('morphotype_id', 3)->update([
+            'amount' => $attributes['morphotype_3'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->where('detail_sample_virus_id', $detailSampleVirusId)->where('morphotype_id', 4)->update([
+            'amount' => $attributes['morphotype_4'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->where('detail_sample_virus_id', $detailSampleVirusId)->where('morphotype_id', 5)->update([
+            'amount' => $attributes['morphotype_5'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->where('detail_sample_virus_id', $detailSampleVirusId)->where('morphotype_id', 6)->update([
+            'amount' => $attributes['morphotype_6'] ?? 0,
+        ]);
+
+        $this->detailSampleMorphotype->where('detail_sample_virus_id', $detailSampleVirusId)->where('morphotype_id', 7)->update([
+            'amount' => $attributes['morphotype_7'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->where('sample_id', $sample_id)->where('serotype_id', 1)->update([
+            'status' => $attributes['denv_1'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->where('sample_id', $sample_id)->where('serotype_id', 2)->update([
+            'status' => $attributes['denv_2'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->where('sample_id', $sample_id)->where('serotype_id', 3)->update([
+            'status' => $attributes['denv_3'] ?? 0,
+        ]);
+
+        $this->detailSampleSerotype->where('sample_id', $sample_id)->where('serotype_id', 4)->update([
+            'status' => $attributes['denv_4'] ?? 0,
+        ]);
+
+        return true;
     }
 
     public function delete($id)

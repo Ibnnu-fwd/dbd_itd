@@ -11,24 +11,19 @@ class DetailSampleSerotype extends Model
 
     public $table = 'detail_sample_serotypes';
     protected $fillable = [
-        'detail_sample_morphotype_id',
+        'sample_id',
         'serotype_id',
-        'amount'
+        'status'
     ];
 
     // RELATIONSHIPS
-    public function detailSampleMorphotype()
-    {
-        return $this->belongsTo(DetailSampleMorphotype::class, 'detail_sample_morphotype_id');
-    }
-
     public function serotype()
     {
         return $this->belongsTo(Serotype::class, 'serotype_id');
     }
 
-    public function detailSampleVirus()
+    public function sample()
     {
-        return $this->belongsTo(DetailSampleVirus::class, 'detail_sample_virus_id');
+        return $this->belongsTo(Sample::class, 'sample_id');
     }
 }

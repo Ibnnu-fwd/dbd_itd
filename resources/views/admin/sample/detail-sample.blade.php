@@ -2,8 +2,8 @@
     <x-breadcrumb name="sample.detail-sample" :data="$sample" />
 
     <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
-        <x-link-button route="{{ route('admin.sample.detail-sample.export', $sample->id) }}"
-            class="justify-center" color="gray" type="button" target="_blank">
+        <x-link-button route="{{ route('admin.sample.detail-sample.export', $sample->id) }}" class="justify-center"
+            color="gray" type="button" target="_blank">
             Unduh Template Import
         </x-link-button>
         <x-button id="btnImport" class="justify-center bg-primary" type="button">
@@ -13,7 +13,7 @@
 
     <div class="sm:grid grid-cols-3 gap-x-4">
         @foreach ($sample->detailSampleViruses as $detailSample)
-            <x-card-container>
+            <x-card-container class="mb-4 md:mb-0">
                 <div class="flex justify-between items-center">
                     <h3 class="font-semibold text-xs 2xl:text-sm">
                         {{ $detailSample->virus->name }}
@@ -21,43 +21,52 @@
                     <div class="sm:flex gap-x-2">
                         <x-icon-button onclick="confirmDelete({{ $detailSample->id }})" icon="fas fa-trash-alt"
                             class="bg-red-500" />
-                        <x-icon-button route="{{ route('admin.sample.detail-sample.virus', $detailSample->id) }}"
+                        <x-icon-button
+                            route="{{ $detailSample->detailSampleMorphotypes->count() > 0 && $detailSample->virus_id == 1 && $detailSample->identification == 1 ? route('admin.sample.detail-sample.virus.edit', $detailSample->id) : route('admin.sample.detail-sample.virus', $detailSample->id) }}"
                             icon="fas fa-arrow-right" color="gray" />
                     </div>
                 </div>
 
-                <!-- Detail Sample Morphotyp List -->
-                @if ($detailSample->detailSampleMorphotypes->count() > 0)
-                    <div class="flex justify-between items-center mt-4">
-                        <span class="text-xs 2xl:text-sm">Jumlah Morfotipe</span>
-                        <span class=text-xs
-                            2xl:text-sm">{{ $detailSample->detailSampleMorphotypes->sum('amount') }}</span>
-                    </div>
-                    <ul class="list-inside text-xs 2xl:text-sm mt-4">
-                        @foreach ($detailSample->detailSampleMorphotypes as $detailSampleMorphotype)
-                            <li class="list-inside mt-2 sm:flex justify-between items-center">
-                                {{ $detailSampleMorphotype->morphotype->name }}
-                                <!-- badge -->
-                                <span class="text-xs 2xl:text-sm">{{ $detailSampleMorphotype->amount }}</span>
-                                <!-- list detail serotype -->
+                @if ($detailSample->virus_id == 1 && $detailSample->identification == 0)
+                    <h3 class="text-xs 2xl:text-sm">
+                        Total Individu: {{ $detailSample->amount }}
+                    </h3>
+                @elseif ($detailSample->virus_id == 1 && $detailSample->identification == 1)
+                    @if ($detailSample->detailSampleMorphotypes->count() > 0)
+                        <h3 class="text-xs 2xl:text-sm font-semibold mt-3">
+                            Detail Morfotipe
+                        </h3>
+                        <hr class="my-3">
+                        <ul class="list-inside">
+                            @foreach ($detailSample->detailSampleMorphotypes as $item)
+                            <li class="text-xs 2xl:text-sm mb-2 flex justify-between items-center">
+                                <span class="">{{ $item->morphotype->name }}</span>
+                                <span class="font-semibold">{{ $item->amount }}</span>
                             </li>
-                            @foreach ($detailSampleMorphotype->detailSampleSerotypes as $detailSampleSerotype)
-                                <li class="list-inside mt-2 sm:flex justify-between items-center">
-                                    {{ $detailSampleSerotype->serotype->name }}
-                                    <!-- badge -->
-                                    <span class="text-xs 2xl:text-sm">{{ $detailSampleSerotype->amount }}</span>
-                                </li>
                             @endforeach
-                            <!-- border -->
-                            @if (!$loop->last)
-                                <hr class="my-2">
-                            @endif
-                        @endforeach
-                    </ul>
-                @else
-                    <div class="p-4 text-xs 2xl:text-sm text-gray-800 rounded-lg bg-gray-100 mt-4" role="alert">
-                        <i class="fas fa-info-circle mr-2 fa-lg text-gray-800"></i> Tidak ada data
-                    </div>
+                        </ul>
+                        <br>
+                        <h3 class="text-xs 2xl:text-sm font-semibold mt-2">
+                            Detail Serotipe
+                        </h3>
+                        <hr class="my-3">
+                        <ul class="list-inside">
+                            @foreach ($sample->detailSampleSerotypes as $item)
+                            <li class="text-xs 2xl:text-sm mb-2 flex justify-between items-center">
+                                <span class="">{{ $item->serotype->name }}</span>
+                                <span class="">{{ $item->status == 1 ? '✓' : '✕' }}</span>
+                            </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <div class="p-4 text-xs 2xl:text-sm text-gray-800 rounded-lg bg-gray-100 mt-4" role="alert">
+                            <span class="">Data Sampling Kosong</span>
+                        </div>
+                    @endif
+                @elseif ($detailSample->virus_id != 1 && $detailSample->identification == null)
+                    <h3 class="text-xs 2xl:text-sm">
+                        Total Individu: {{ $detailSample->amount }}
+                    </h3>
                 @endif
             </x-card-container>
         @endforeach

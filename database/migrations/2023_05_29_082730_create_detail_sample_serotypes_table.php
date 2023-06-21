@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('detail_sample_serotypes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('detail_sample_morphotype_id')->constrained('detail_sample_morphotypes');
+            $table->foreignId('sample_id')->constrained('samples');
             $table->foreignId('serotype_id')->constrained('serotypes');
-            $table->integer('amount')->nullable();
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

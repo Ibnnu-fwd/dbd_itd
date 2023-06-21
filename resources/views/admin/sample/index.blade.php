@@ -46,10 +46,8 @@
                 <tr>
                     <th>#</th>
                     <th>Kode sampel</th>
-                    {{-- <th>Metode</th> --}}
-                    <th>Kecamatan</th>
+                    <th>Lokasi</th>
                     <th>Alamat</th>
-                    <th>Jumlah Sampel</th>
                     <th>
                         <i class="fas fa-user-plus"></i>
                     <th>
@@ -130,10 +128,6 @@
                             data: 'sample_code',
                             name: 'sample_code'
                         },
-                        // {
-                        //     data: 'sample_method',
-                        //     name: 'sample_method'
-                        // },
                         {
                             data: 'location',
                             name: 'location'
@@ -141,10 +135,6 @@
                         {
                             data: 'address',
                             name: 'address'
-                        },
-                        {
-                            data: 'sample_count',
-                            name: 'sample_count',
                         },
                         {
                             data: 'created_by',
