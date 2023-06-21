@@ -79,20 +79,27 @@
                 center: [113.717332, -8.1624029],
                 zoom: 8
             });
-            // Array centerCoordinate
-            let centerCoordinate = [
-                ["-7.288460409805473", "112.77981215718906"],
-                ["-7.3007104", "112.7284736"],
-                ["-8.2280448", "114.3734272"],
-                ["-8.1557166", "113.7275701"]
-                ];
+                let larvae = Object.values(@json($larvae));
+                
+                let centerCoordinate = [];
+                for (let i = 0; i < larvae.length; i++) {
+                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
+                }
 
-                // Menambahkan marker untuk setiap koordinat dalam array
                 centerCoordinate.forEach(coordinate => {
-                var marker = new mapboxgl.Marker()
-                    .setLngLat([parseFloat(coordinate[1]), parseFloat(coordinate[0])])
-                    .addTo(map);
-                });
+                    var el = document.createElement('div');
+                    el.className = 'custom-marker';
+                    el.innerHTML = '<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">';
+
+                    // Membuat marker dengan ikon kustom
+                    var marker = new mapboxgl.Marker({
+                        element: el,
+                        anchor: 'center'
+                    })
+                        .setLngLat([parseFloat(coordinate[1]), parseFloat(coordinate[0])])
+                        .addTo(map);
+                    });
+                    
             map.on('load', () => {
                 map.addLayer({
                     id: 'tile-layer',
@@ -128,11 +135,6 @@
 
             function updateMapData() {
                 let abj = Object.values(@json($abj));
-                let larvae = Object.values(@json($larvae));
-                let centerCoordinate = [];
-                for (let i = 0; i < larvae.length; i++) {
-                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
-                }
                 
                
                 fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
