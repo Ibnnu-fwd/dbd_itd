@@ -97,6 +97,7 @@
 
                 let samples = Object.values(@json($samples));
                 let map = L.map('map').setView([-8.172357, 113.699948], 10);
+                console.log(samples);
 
                 let markers = L.markerClusterGroup();
 

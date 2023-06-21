@@ -216,7 +216,8 @@ class SampleController extends Controller
 
         try {
             $this->sample->update($id, $request->all());
-            return redirect()->route('admin.sample.index')->with('success', 'Data berhasil disimpan.');
+            $sample = $this->sample->getById($id);
+            return redirect()->route('admin.sample.detail-sample', $sample)->with('success', 'Sampel berhasil diubah');
         } catch (\Throwable $th) {
             dd($th->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
