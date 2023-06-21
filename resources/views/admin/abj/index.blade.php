@@ -31,7 +31,7 @@
                 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg';
             const map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/mapbox/light-v11', // URL gaya peta
+                style: 'mapbox://styles/mapbox/light-v10', // URL gaya peta
                 center: [113.717332, -8.1624029], // koordinat Jember
                 zoom: 8 // zoom awal
             });
