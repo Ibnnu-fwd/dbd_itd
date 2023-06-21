@@ -53,7 +53,12 @@ class KshController extends Controller
                     return $data->total_sample ?? 0;
                 })
                 ->addColumn('created_by', function($data) {
-                    return explode(' ', $data->createdBy->name)[1];
+                    $name = explode(' ', $data->createdBy->name);
+                    if(count($name) > 1) {
+                        return $name[1];
+                    } else {
+                        return $data->createdBy->name;
+                    }
                 })
                 ->addColumn('action', function ($data) {
                     return view('admin.ksh.column.action', compact('data'));

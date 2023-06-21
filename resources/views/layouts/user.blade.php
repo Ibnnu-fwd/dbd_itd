@@ -85,7 +85,10 @@
                                         </div>
                                     </div>
                                     <div class="py-2">
-                                        <form action="{{ route('logout') }}" method="POST">
+                                            <a href="{{route('admin.dashboard')}}" class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                <i class="fas fa-tachometer-alt mr-2"></i>
+                                                <span>Dashboard</span>
+                                            </a>
                                             @csrf
                                             <button type="submit"
                                                 class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">

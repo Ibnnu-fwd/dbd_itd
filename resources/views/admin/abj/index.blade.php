@@ -17,8 +17,6 @@
     </x-card-container>
 
     @push('js-internal')
-        <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
-        <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
         <script>
             function getColor(abj_total) {
                 return abj_total > 90 ? '#1cc88a' :
@@ -27,25 +25,18 @@
                     '#858796';
             }
 
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg';
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/light-v10', // URL gaya peta
-                center: [113.717332, -8.1624029], // koordinat Jember
-                zoom: 8 // zoom awal
-            });
+            const map = L.map('map').setView([-8.1624029, 113.717332], 8);
 
-            let geojson = {
-                type: 'FeatureCollection',
-                crs: {
-                    type: 'name',
-                    properties: {
-                        name: 'urn:ogc:def:crs:OGC:1.3:CRS84'
-                    }
-                },
-                features: []
-            };
+            L.tileLayer(
+                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                    attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                    maxZoom: 18,
+                    id: 'mapbox/light-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                }
+            ).addTo(map);
 
             function updateMapData() {
                 let abj = Object.values(@json($abj));
@@ -80,68 +71,56 @@
                                 }
                             });
                         });
-                        console.log(geojson);
 
-                        map.getSource('geojson-data').setData(geojson);
+                        L.geoJSON(geojson, {
+                            style: function(feature) {
+                                return {
+                                    fillColor: feature.properties.color,
+                                    color: feature.properties.color,
+                                    weight: 0.5,
+                                    fillOpacity: 0.5,
+                                };
+                            },
+                            onEachFeature: function(feature, layer) {
+                                layer.on('click', function(e) {
+                                    const coordinates = e.latlng;
+                                    const properties = feature.properties;
+
+                                    const popupContent = `
+                                        <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
+                                        <p><strong>Kecamatan:</strong> ${properties.district}</p>
+                                        <p><strong>ABJ:</strong> ${properties.abj}%</p>
+                                        <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
+                                        <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
+                                    `;
+
+                                    L.popup()
+                                        .setLatLng(coordinates)
+                                        .setContent(popupContent)
+                                        .openOn(map);
+
+                                    // Zoom to the clicked feature
+                                    map.fitBounds(layer.getBounds(), {
+                                        padding: [100, 100]
+                                    });
+                                });
+
+                                layer.on('mouseover', function(e) {
+                                    map.getContainer().style.cursor = 'pointer';
+                                });
+
+                                layer.on('mouseout', function(e) {
+                                    map.getContainer().style.cursor = '';
+                                });
+                            }
+                        }).addTo(map);
                     });
             }
 
-            map.on('load', () => {
-                map.addSource('geojson-data', {
-                    type: 'geojson',
-                    data: geojson
-                });
+            updateMapData(); // map update
 
-                map.addLayer({
-                    id: 'geojson-layer',
-                    type: 'fill',
-                    source: 'geojson-data',
-                    paint: {
-                        'fill-color': ['get', 'color'],
-                        'fill-opacity': 0.5,
-                    }
-                });
-
-                map.on('click', 'geojson-layer', (e) => {
-                    const coordinates = e.lngLat;
-                    const properties = e.features[0].properties;
-
-                    const popup = new mapboxgl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(`
-
-                        <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
-                        <p><strong>Kecamatan:</strong> ${properties.district}</p>
-                        <p><strong>ABJ:</strong> ${properties.abj}%</p>
-                        <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
-                        <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
-                    `)
-                        .addTo(map);
-                });
-
-                //ketika mouse masuk ke area
-                map.on('mouseenter', 'geojson-layer', () => {
-                    map.getCanvas().style.cursor = 'pointer';
-                });
-                // ketika mouse tidak di dalam area
-                map.on('mouseleave', 'geojson-layer', () => {
-                    map.getCanvas().style.cursor = '';
-                });
-
-                updateMapData(); // map update
-
-                // ketika area di klik maka akan zoom in ke area tersebut
-                map.on('click', 'geojson-layer', (e) => {
-                    const coordinates = e.features[0].geometry.coordinates[0][0];
-                    map.flyTo({
-                        center: coordinates,
-                        zoom: 12
-                    });
-                });
-
-                // full screen
-                map.addControl(new mapboxgl.FullscreenControl());
-            });
+            // full screen
+            L.control.fullscreen().addTo(map);
         </script>
 
 
