@@ -65,19 +65,19 @@
     
         <script>
             function getColor(abj_total) {
-                return abj_total > 80 ? '#1cc88a' :
-                    abj_total > 60 ? '#f6c23e' :
-                    abj_total > 40 ? '#e74a3b' :
+                return abj_total > 90 ? '#1cc88a' :
+                    abj_total >= 15 && abj_total < 90 ? '#f6c23e' :
+                    abj_total <= 15 ? '#e74a3b' :
                     '#858796';
             }
 
-            mapboxgl.accessToken = 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg';
-
+            mapboxgl.accessToken =
+                'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg';
             const map = new mapboxgl.Map({
                 container: 'map',
-                style: 'mapbox://styles/mapbox/light-v11',
-                center: [113.717332, -8.1624029],
-                zoom: 8
+                style: 'mapbox://styles/mapbox/light-v10', // URL gaya peta
+                center: [113.717332, -8.1624029], // koordinat Jember
+                zoom: 8 // zoom awal
             });
                 let larvae = Object.values(@json($larvae));
                 let sample = Object.values(@json($sample));
@@ -85,16 +85,13 @@
                 for (let i = 0; i < sample.length; i++) {
                     centerCoordinateSample.push([sample[i].latitude, sample[i].longitude]);
                 }
-                console.log(centerCoordinateSample);
-                let centerCoordinate = [];
-                for (let i = 0; i < larvae.length; i++) {
-                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
-                }
+                console.log(larvae);
+                
 
                 centerCoordinateSample.forEach(coordinate => {
                     var el = document.createElement('div');
                     el.className = 'custom-marker';
-                    el.innerHTML = '<<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">';
+                    el.innerHTML = '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">';
 
                     // Membuat marker dengan ikon kustom
                     var marker = new mapboxgl.Marker({
@@ -104,6 +101,10 @@
                         .setLngLat([parseFloat(coordinate[1]), parseFloat(coordinate[0])])
                         .addTo(map);
                     });
+                let centerCoordinate = [];
+                for (let i = 0; i < larvae.length; i++) {
+                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
+                }
                 centerCoordinate.forEach(coordinate => {
                     var el = document.createElement('div');
                     el.className = 'custom-marker';

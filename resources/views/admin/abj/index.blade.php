@@ -21,9 +21,9 @@
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
         <script>
             function getColor(abj_total) {
-                return abj_total > 80 ? '#1cc88a' :
-                    abj_total > 60 ? '#f6c23e' :
-                    abj_total > 40 ? '#e74a3b' :
+                return abj_total > 90 ? '#1cc88a' :
+                    abj_total >= 15 && abj_total < 90 ? '#f6c23e' :
+                    abj_total <= 15 ? '#e74a3b' :
                     '#858796';
             }
 
