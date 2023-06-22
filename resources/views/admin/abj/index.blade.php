@@ -2,6 +2,11 @@
     <x-breadcrumb name="abj" />
     <x-card-container>
         <div id="map" class="z-0 mb-4" style="height: 350px; border-radius: 6px"></div>
+        <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
+            <x-button type="button" data-modal-toggle="defaultModal" color="gray" type="button" class="justify-center">
+                Tambah
+            </x-button>
+        </div>
         <table id="abjTable">
             <thead>
                 <tr>
@@ -18,6 +23,73 @@
 
     @push('js-internal')
         <script>
+            $("#regency_id").on("change", function() {
+                regency = $(this).val();
+                $("#district_id").empty();
+                $("#village_id").empty();
+                $("#district_id").append(
+                    `<option value="" selected disabled>Pilih Kecamatan</option>`
+                );
+                $("#village_id").append(
+                    `<option value="" selected disabled>Pilih Desa</option>`
+                );
+                $.ajax({
+                    url: "{{ route('admin.district.list') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        regency_id: regency,
+                    },
+                    success: function(data) {
+                        let districts = Object.values(data);
+                        districts.forEach((district) => {
+                            $("#district_id").append(
+                                `<option value="${district.id}">${district.name}</option>`
+                            );
+                        });
+                    },
+                });
+            });
+
+            $("#district_id").on("change", function() {
+                district = $(this).val();
+                $("#village_id").empty();
+                $("#village_id").append(
+                    `<option value="" selected disabled>Pilih Desa</option>`
+                );
+                $.ajax({
+                    url: "{{ route('admin.village.list') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        district_id: district,
+                    },
+                    success: function(data) {
+                        let villages = Object.values(data);
+                        villages.forEach((village) => {
+                            $("#village_id").append(
+                                `<option value="${village.id}">${village.name}</option>`
+                            );
+                        });
+                    },
+                });
+            });
+
+            $("#village_id").on("change", function() {
+                village = $(this).val();
+                $.ajax({
+                    url: "{{ route('admin.village.show', ':id') }}".replace(
+                        ":id",
+                        village
+                    ),
+                    type: "GET",
+                    success: function(data) {
+                        $('#address').val(data.address);
+                        $("#address").text(data.address);
+                    },
+                });
+            });
+
             function getColor(abj_total) {
                 return abj_total > 90 ? '#1cc88a' :
                     abj_total >= 15 && abj_total < 90 ? '#f6c23e' :
@@ -40,7 +112,6 @@
 
             function updateMapData() {
                 let abj = Object.values(@json($abj));
-
                 fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
                     .then((response) => response.json())
                     .then((data) => {
@@ -52,25 +123,56 @@
                         data.forEach((dataItem) => {
                             abj.forEach((abjItem) => {
                                 if (abjItem.district === dataItem.sub_district) {
-                                    geojson.features.push({
-                                        type: 'Feature',
-                                        geometry: {
-                                            type: 'Polygon',
-                                            coordinates: [dataItem.border]
-                                        },
-                                        properties: {
-                                            color: getColor(abjItem.abj_total),
-                                            regency: dataItem.district,
-                                            district: dataItem.sub_district,
-                                            village: dataItem.name,
-                                            abj: abjItem.abj_total,
-                                            total_sample: abjItem.total_sample,
-                                            total_check: abjItem.total_check
-                                        }
-                                    });
+                                    if (dataItem.border.length > 1) {
+                                        console.log("benar");
+                                        let coordinates2 = dataItem.border.map((coord) => [coord[1], coord[
+                                            0]]);
+                                        console.log(coordinates2);
+                                        let coordinates = dataItem.border;
+                                        geojson.features.push({
+                                            type: 'Feature',
+                                            geometry: {
+                                                type: 'Polygon',
+                                                coordinates: [coordinates]
+                                            },
+                                            properties: {
+                                                color: getColor(abjItem.abj_total),
+                                                regency: dataItem.district,
+                                                district: dataItem.sub_district,
+                                                village: dataItem.name,
+                                                abj: abjItem.abj_total,
+                                                total_sample: abjItem.total_sample,
+                                                total_check: abjItem.total_check
+                                            }
+                                        });
+                                    } else {
+                                        console.log("salah");
+                                        let coordinates2 = dataItem.border[0].map((coord) => [coord[1],
+                                            coord[0]
+                                        ]);
+                                        console.log(coordinates2);
+                                        geojson.features.push({
+                                            type: 'Feature',
+                                            geometry: {
+                                                type: 'Polygon',
+                                                coordinates: [coordinates2]
+                                            },
+                                            properties: {
+                                                color: getColor(abjItem.abj_total),
+                                                regency: dataItem.district,
+                                                district: dataItem.sub_district,
+                                                village: dataItem.name,
+                                                abj: abjItem.abj_total,
+                                                total_sample: abjItem.total_sample,
+                                                total_check: abjItem.total_check
+                                            }
+                                        });
+                                    }
                                 }
                             });
                         });
+
+
 
                         L.geoJSON(geojson, {
                             style: function(feature) {
@@ -87,12 +189,12 @@
                                     const properties = feature.properties;
 
                                     const popupContent = `
-                                        <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
-                                        <p><strong>Kecamatan:</strong> ${properties.district}</p>
-                                        <p><strong>ABJ:</strong> ${properties.abj}%</p>
-                                        <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
-                                        <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
-                                    `;
+                                <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
+                                <p><strong>Kecamatan:</strong> ${properties.district}</p>
+                                <p><strong>ABJ:</strong> ${properties.abj}%</p>
+                                <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
+                                <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
+                            `;
 
                                     L.popup()
                                         .setLatLng(coordinates)
@@ -105,6 +207,7 @@
                                     });
                                 });
 
+
                                 layer.on('mouseover', function(e) {
                                     map.getContainer().style.cursor = 'pointer';
                                 });
@@ -116,6 +219,7 @@
                         }).addTo(map);
                     });
             }
+
 
             updateMapData(); // map update
 
