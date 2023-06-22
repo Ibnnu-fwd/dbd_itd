@@ -65,150 +65,145 @@
 
         <script>
             function getColor(abj_total) {
-                return abj_total > 90 ? '#1cc88a' :
-                    abj_total >= 15 && abj_total < 90 ? '#f6c23e' :
-                    abj_total <= 15 ? '#e74a3b' :
-                    '#858796';
+                return abj_total > 90 ? "#1cc88a" : abj_total >= 15 && abj_total < 90 ? "#f6c23e" : abj_total <= 15 ?
+                    "#e74a3b" : "#858796";
             }
 
-            const map = L.map('map').setView([-8.1624029, 113.717332], 8);
+            const map = L.map("map").setView([-8.1624029, 113.717332], 8);
 
             var markers = L.markerClusterGroup();
 
-            L.tileLayer(
-                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                    attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-                    maxZoom: 18,
-                    id: 'mapbox/light-v11',
-                    tileSize: 512,
-                    zoomOffset: -1,
-                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
-                }
-            ).addTo(map);
+            L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+                attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                maxZoom: 18,
+                id: "mapbox/light-v11",
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: "pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg",
+            }).addTo(map);
 
-            let larvae = Object.values(@json($larvae));
-            let sample = Object.values(@json($sample));
+            async function addSampleMarkers() {
+                let sample = Object.values(@json($sample));
 
-            @if ($sample->count() > 0)
-                let centerCoordinateSample = [];
-                for (let i = 0; i < sample.length; i++) {
-                    centerCoordinateSample.push([sample[i].latitude, sample[i].longitude]);
-                }
+                let centerCoordinateSample = sample.map((item) => [item.latitude, item.longitude]);
 
-                centerCoordinateSample.forEach(coordinate => {
+                for (let i = 0; i < centerCoordinateSample.length; i++) {
                     var el = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">'
+                        className: "custom-marker",
+                        html: '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">',
                     });
 
                     // cluster marker
-                    markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                    markers.addLayer(L.marker([parseFloat(centerCoordinateSample[i][0]), parseFloat(centerCoordinateSample[
+                        i][1])], {
                         icon: el
                     }));
-
-                    map.addLayer(markers);
-                });
-            @endif
-
-            @if ($larvae->count() > 0)
-                let centerCoordinate = [];
-                for (let i = 0; i < larvae.length; i++) {
-                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
                 }
 
-                centerCoordinate.forEach(coordinate => {
+                map.addLayer(markers);
+            }
+
+            async function addLarvaeMarkers() {
+                let larvae = Object.values(@json($larvae));
+
+                let centerCoordinate = larvae.map((item) => [item.latitude, item.longitude]);
+
+                for (let i = 0; i < centerCoordinate.length; i++) {
                     var el = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">'
+                        className: "custom-marker",
+                        html: '<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">',
                     });
 
-                    L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                    L.marker([parseFloat(centerCoordinate[i][0]), parseFloat(centerCoordinate[i][1])], {
                         icon: el
                     }).addTo(map);
-                });
-            @endif
-
-            @if (count($abj) > 0)
-                function updateMapData() {
-                    let abj = Object.values(@json($abj));
-
-                    fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
-                        .then((response) => response.json())
-                        .then((data) => {
-                            const geojson = {
-                                type: 'FeatureCollection',
-                                features: []
-                            };
-
-                            data.forEach((dataItem) => {
-                                abj.forEach((abjItem) => {
-                                    if (abjItem.district === dataItem.sub_district) {
-                                        geojson.features.push({
-                                            type: 'Feature',
-                                            geometry: {
-                                                type: 'Polygon',
-                                                coordinates: [dataItem.border]
-                                            },
-                                            properties: {
-                                                color: getColor(abjItem.abj_total),
-                                                regency: dataItem.district,
-                                                district: dataItem.sub_district,
-                                                village: dataItem.name,
-                                                abj: abjItem.abj_total,
-                                                total_sample: abjItem.total_sample,
-                                                total_check: abjItem.total_check
-                                            }
-                                        });
-                                    }
-                                });
-                            });
-
-                            L.geoJSON(geojson, {
-                                style: function(feature) {
-                                    return {
-                                        fillColor: feature.properties.color,
-                                        color: feature.properties.color,
-                                        weight: 0.5,
-                                        fillOpacity: 0.5,
-                                    };
-                                },
-                                onEachFeature: function(feature, layer) {
-                                    layer.on('click', function(e) {
-                                        const coordinates = e.latlng;
-                                        const properties = feature.properties;
-
-                                        const popupContent = `
-                                        <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
-                                        <p><strong>Kecamatan:</strong> ${properties.district}</p>
-                                        <p><strong>ABJ:</strong> ${properties.abj}%</p>
-                                        <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
-                                        <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
-                                    `;
-
-                                        L.popup()
-                                            .setLatLng(coordinates)
-                                            .setContent(popupContent)
-                                            .openOn(map);
-
-                                        // Zoom to the clicked feature
-                                        map.fitBounds(layer.getBounds(), {
-                                            padding: [100, 100]
-                                        });
-                                    });
-
-                                    layer.on('mouseover', function(e) {
-                                        map.getContainer().style.cursor = 'pointer';
-                                    });
-
-                                    layer.on('mouseout', function(e) {
-                                        map.getContainer().style.cursor = '';
-                                    });
-                                }
-                            }).addTo(map);
-                        });
                 }
-                updateMapData(); // map update
-            @endif
+            }
+
+            async function updateMapData() {
+                let abj = Object.values(@json($abj));
+
+                const response = await fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}");
+                const data = await response.json();
+
+                const geojson = {
+                    type: "FeatureCollection",
+                    features: [],
+                };
+
+                data.forEach((dataItem) => {
+                    abj.forEach((abjItem) => {
+                        if (abjItem.district === dataItem.sub_district) {
+                            geojson.features.push({
+                                type: "Feature",
+                                geometry: {
+                                    type: "Polygon",
+                                    coordinates: [dataItem.border],
+                                },
+                                properties: {
+                                    color: getColor(abjItem.abj_total),
+                                    regency: dataItem.district,
+                                    district: dataItem.sub_district,
+                                    village: dataItem.name,
+                                    abj: abjItem.abj_total,
+                                    total_sample: abjItem.total_sample,
+                                    total_check: abjItem.total_check,
+                                },
+                            });
+                        }
+                    });
+                });
+
+                L.geoJSON(geojson, {
+                    style: function(feature) {
+                        return {
+                            fillColor: feature.properties.color,
+                            color: feature.properties.color,
+                            weight: 0.5,
+                            fillOpacity: 0.5,
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        layer.on("click", function(e) {
+                            const coordinates = e.latlng;
+                            const properties = feature.properties;
+
+                            const popupContent = `
+        <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
+        <p><strong>Kecamatan:</strong> ${properties.district}</p>
+        <p><strong>ABJ:</strong> ${properties.abj}%</p>
+        <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
+        <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
+      `;
+
+                            L.popup()
+                                .setLatLng(coordinates)
+                                .setContent(popupContent)
+                                .openOn(map);
+
+                            // Zoom to the clicked feature
+                            map.fitBounds(layer.getBounds(), {
+                                padding: [100, 100],
+                            });
+                        });
+
+                        layer.on("mouseover", function(e) {
+                            map.getContainer().style.cursor = "pointer";
+                        });
+
+                        layer.on("mouseout", function(e) {
+                            map.getContainer().style.cursor = "";
+                        });
+                    },
+                }).addTo(map);
+            }
+
+            async function updateMap() {
+                await Promise.all([addSampleMarkers(), addLarvaeMarkers()]);
+                await updateMapData();
+            }
+
+            updateMap(); // map update
 
             // full screen
             L.control.fullscreen().addTo(map);
@@ -218,100 +213,95 @@
         <script>
             $(function() {
                 let samplePerYear = @json($samplePerYear);
-                @if (count($samplePerYear) > 0)
-                    // Mengambil bulan dan jumlah dari setiap entri data
-                    var labels = samplePerYear.map(entry => entry.month);
-                    var counts = samplePerYear.map(entry => entry.count);
 
-                    // Mengambil jenis nyamuk dari setiap entri samplePerYear
-                    var mosquitoTypes = Object.keys(samplePerYear[0].type);
+                // Mengambil bulan dan jumlah dari setiap entri data
+                var labels = samplePerYear.map((entry) => entry.month);
+                var counts = samplePerYear.map((entry) => entry.count);
 
-                    // Mengambil jumlah nyamuk dari setiap entri samplePerYear
-                    var mosquitoAmounts = samplePerYear.map(entry => Object.values(entry.type));
+                // Mengambil jenis nyamuk dari setiap entri samplePerYear
+                var mosquitoTypes = Object.keys(samplePerYear[0].type);
 
-                    // Membuat chart dengan Chart.js
-                    var ctx = document.getElementById('samplePerYear').getContext('2d');
-                    // width 100%
-                    ctx.canvas.width = '100%';
+                // Mengambil jumlah nyamuk dari setiap entri samplePerYear
+                var mosquitoAmounts = samplePerYear.map((entry) => Object.values(entry.type));
 
-                    let purplePallete = [
-                        '#4e73df',
-                        '#6f42c1',
-                        '#9c27b0',
-                    ]
+                // Membuat chart dengan Chart.js
+                var ctx = document.getElementById("samplePerYear").getContext("2d");
+                // width 100%
+                ctx.canvas.width = "100%";
 
-                    var datasets = mosquitoTypes.map((type, index) => {
-                        return {
-                            label: type,
-                            data: mosquitoAmounts.map(amounts => amounts[index]),
-                            backgroundColor: purplePallete[index],
-                            borderColor: purplePallete[index],
-                            borderWidth: 1,
-                            fill: false,
-                            pointRadius: 3,
-                            pointHoverRadius: 5,
-                            pointHitRadius: 10,
-                            pointBackgroundColor: purplePallete[index],
-                            pointBorderColor: purplePallete[index],
-                            pointHoverBackgroundColor: purplePallete[index],
-                            pointHoverBorderColor: purplePallete[index],
-                        };
-                    });
+                let purplePallete = ["#4e73df", "#6f42c1", "#9c27b0"];
 
-                    var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: datasets
+                var datasets = mosquitoTypes.map((type, index) => {
+                    return {
+                        label: type,
+                        data: mosquitoAmounts.map((amounts) => amounts[index]),
+                        backgroundColor: purplePallete[index],
+                        borderColor: purplePallete[index],
+                        borderWidth: 1,
+                        fill: false,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointHitRadius: 10,
+                        pointBackgroundColor: purplePallete[index],
+                        pointBorderColor: purplePallete[index],
+                        pointHoverBackgroundColor: purplePallete[index],
+                        pointHoverBorderColor: purplePallete[index],
+                    };
+                });
+
+                var myChart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: labels,
+                        datasets: datasets,
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            mode: "index",
+                            intersect: false,
                         },
-                        options: {
-                            responsive: true,
-                            interaction: {
-                                mode: 'index',
-                                intersect: false
-                            },
-                            scales: {
-                                y: {
-                                    // stack the bar
-                                    stacked: true,
-                                    grid: {
-                                        display: false,
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                        precision: 0,
-                                        stepSize: 1,
-                                    },
+                        scales: {
+                            y: {
+                                // stack the bar
+                                stacked: true,
+                                grid: {
+                                    display: false,
                                 },
-                                x: {
-                                    // stack the bar
-                                    stacked: true,
-                                    grid: {
-                                        display: false,
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                        precision: 0,
-                                        stepSize: 1,
-                                    },
+                                ticks: {
+                                    beginAtZero: true,
+                                    precision: 0,
+                                    stepSize: 1,
                                 },
                             },
-                            plugins: {
-                                tooltip: {
-                                    mode: 'index',
-                                    intersect: false
+                            x: {
+                                // stack the bar
+                                stacked: true,
+                                grid: {
+                                    display: false,
                                 },
-                                legend: {
-                                    labels: {
-                                        usePointStyle: true,
-                                        boxWidth: 5,
-                                        boxHeight: 5,
-                                    },
+                                ticks: {
+                                    beginAtZero: true,
+                                    precision: 0,
+                                    stepSize: 1,
                                 },
                             },
-                        }
-                    });
-                @endif
+                        },
+                        plugins: {
+                            tooltip: {
+                                mode: "index",
+                                intersect: false,
+                            },
+                            legend: {
+                                labels: {
+                                    usePointStyle: true,
+                                    boxWidth: 5,
+                                    boxHeight: 5,
+                                },
+                            },
+                        },
+                    },
+                });
             });
         </script>
     @endpush
