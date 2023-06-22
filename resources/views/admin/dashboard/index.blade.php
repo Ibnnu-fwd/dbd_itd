@@ -73,6 +73,8 @@
 
             const map = L.map('map').setView([-8.1624029, 113.717332], 8);
 
+            var markers = L.markerClusterGroup();
+
             L.tileLayer(
                 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                     attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -97,9 +99,12 @@
                     html: '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">'
                 });
 
-                L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                // cluster marker
+                markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
                     icon: el
-                }).addTo(map);
+                }));
+
+                map.addLayer(markers);
             });
 
             let centerCoordinate = [];

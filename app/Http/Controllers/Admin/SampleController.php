@@ -6,6 +6,7 @@ use App\Exports\DetailSampleExport;
 use App\Http\Controllers\Controller;
 use App\Imports\DetailSampleImport;
 use App\Imports\SampleImport;
+use App\Models\DetailSampleVirus;
 use App\Repositories\Interface\DetailSampleVirusInterface;
 use App\Repositories\Interface\DistrictInterface;
 use App\Repositories\Interface\LocationTypeInterface;
@@ -246,7 +247,7 @@ class SampleController extends Controller
         try {
             $this->detailSampleVirus->store($request->all(), $id);
             $sample = $this->sample->getById($id);
-            return redirect()->route('admin.sample.detail-sample.virus.edit', $sample)->with('success', 'Data berhasil disimpan.');
+            return redirect()->route('admin.sample.detail-sample.virus', $sample)->with('success', 'Data berhasil disimpan.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
@@ -264,12 +265,19 @@ class SampleController extends Controller
 
     public function deleteDetailSampleVirus($id)
     {
-        try {
-            $this->detailSampleVirus->delete($id);
+        $detailSample = $this->detailSampleVirus->getById($id);
+        if ($detailSample->virus_id == 1 && $detailSample->identification == 1) {
+            try {
+                $this->detailSampleVirus->delete($id);
+                return response()->json(true);
+            } catch (\Throwable $th) {
+                dd($th->getMessage());
+                return response()->json(false);
+            }
+        } elseif($detailSample->virus_id == 1 && $detailSample->identification == 0 || $detailSample->virus_id != 1)
+        {
+            DetailSampleVirus::where('id', $id)->delete();
             return response()->json(true);
-        } catch (\Throwable $th) {
-            dd($th->getMessage());
-            return response()->json(false);
         }
     }
 
@@ -351,7 +359,7 @@ class SampleController extends Controller
     public function updateDetailSampleVirus($id, Request $request)
     {
         $this->detailSampleVirus->update($request->all(), $id);
-        $sample = $this->sample->getById($id);
-        return redirect()->route('admin.sample.detail-sample.virus.edit', $sample)->with('success', 'Data berhasil diubah.');
+        $sample = $this->sample->getById($this->detailSampleVirus->getById($id)->sample_id);
+        return redirect()->route('admin.sample.detail-sample', $sample)->with('success', 'Data berhasil diubah.');
     }
 }

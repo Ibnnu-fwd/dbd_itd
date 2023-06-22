@@ -33,6 +33,10 @@
                     <x-input id="morphotype_7" name="morphotype_7" label="Jumlah Morfotipe 7" type="number"
                         :value="$morphotypes[6]->amount" />
                 </li>
+                <li class="w-full">
+                    <x-input id="unidentified" name="unidentified" label="Unidentified" type="number"
+                        :value="$morphotypes[7]->amount ?? 0" />
+                </li>
             </ul>
 
             <br>

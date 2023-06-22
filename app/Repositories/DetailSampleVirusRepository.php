@@ -75,6 +75,12 @@ class DetailSampleVirusRepository implements DetailSampleVirusInterface
             'amount' => $attributes['morphotype_7'] ?? 0,
         ]);
 
+        $this->detailSampleMorphotype->create([
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id'          => 8,
+            'amount' => $attributes['unidentified'] ?? 0,
+        ]);
+
         $this->detailSampleSerotype->create([
             'sample_id' => $sample_id,
             'serotype_id' => 1,
@@ -134,6 +140,17 @@ class DetailSampleVirusRepository implements DetailSampleVirusInterface
             'amount' => $attributes['morphotype_7'] ?? 0,
         ]);
 
+        // update or create unidentified morphotype
+        $this->detailSampleMorphotype->updateOrCreate(
+            [
+                'detail_sample_virus_id' => $detailSampleVirusId,
+                'morphotype_id' => 8,
+            ],
+            [
+                'amount' => $attributes['unidentified'] ?? 0,
+            ]
+        );
+
         $this->detailSampleSerotype->where('sample_id', $sample_id)->where('serotype_id', 1)->update([
             'status' => $attributes['denv_1'] ?? 0,
         ]);
@@ -158,8 +175,8 @@ class DetailSampleVirusRepository implements DetailSampleVirusInterface
         DB::beginTransaction();
 
         try {
-            $this->detailSampleSerotype->whereHas('detailSampleMorphotype', function ($query) use ($id) {
-                $query->where('detail_sample_virus_id', $id);
+            $this->detailSampleSerotype->whereHas('sample', function ($query) use ($id) {
+                $query->where('sample_id', $id);
             })->delete();
         } catch (\Throwable $th) {
             DB::rollBack();

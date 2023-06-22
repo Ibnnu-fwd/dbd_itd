@@ -51,6 +51,10 @@
                         <x-input id="morphotype_7" name="morphotype_7" label="Jumlah Morfotipe 7" type="number"
                             value="0" />
                     </li>
+                    <li class="w-full">
+                        <x-input id="unidentified" name="unidentified" label="Unidentified" type="number"
+                            value="0" />
+                    </li>
                 </ul>
 
                 <br>

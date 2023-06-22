@@ -2,6 +2,9 @@
 
 namespace App\Imports;
 
+use App\Models\DetailSampleMorphotype;
+use App\Models\DetailSampleSerotype;
+use App\Models\DetailSampleVirus;
 use App\Models\District;
 use App\Models\LocationType;
 use App\Models\Province;
@@ -48,44 +51,46 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
     public function rules(): array
     {
         return [
-            '*.0' => ['required'],
-            '*.1' => ['required', 'string'],
-            '*.2' => ['required', 'string'],
-            '*.3' => ['required', 'string'],
-            '*.4' => ['required', 'string'],
-            '*.5' => ['required', 'string'],
-            '*.6' => ['required', 'string'],
-            '*.7' => ['required', 'string'],
-            '*.8' => ['required'],
-            '*.9' => ['required'],
-            // '*.10' => ['required', 'string'],
+            '*.0' => 'required',
+            '*.1' => 'required',
+            '*.2' => 'required',
+            '*.3' => 'required',
+            '*.4' => 'required',
+            '*.5' => 'required',
+            '*.6' => 'required',
+            '*.7' => 'required',
+            '*.8' => 'required',
+            '*.9' => 'nullable',
+            '*.10' => 'nullable',
+            '*.11' => 'nullable',
+            '*.12' => 'nullable',
+            '*.13' => 'nullable',
+            '*.14' => 'nullable',
+            '*.15' => 'nullable',
+            '*.16' => 'nullable',
+            '*.17' => 'nullable',
+            '*.18' => 'nullable',
+            '*.19' => 'nullable',
+            '*.20' => 'nullable',
+            '*.21' => 'nullable',
+            '*.22' => 'nullable',
+            '*.23' => 'nullable',
         ];
     }
 
     public function customValidationMessages()
     {
         return [
-            '*.0.required' => 'Tanggal tidak boleh kosong',
+            '*.0.required' => 'Tanggal pengambilan sampel tidak boleh kosong',
             '*.1.required' => 'Provinsi tidak boleh kosong',
-            '*.1.string' => 'Provinsi harus berupa string',
             '*.2.required' => 'Kabupaten/Kota tidak boleh kosong',
-            '*.2.string' => 'Kabupaten/Kota harus berupa string',
             '*.3.required' => 'Kecamatan tidak boleh kosong',
-            '*.3.string' => 'Kecamatan harus berupa string',
-            '*.4.required' => 'Desa/Kelurahan tidak boleh kosong',
-            '*.4.string' => 'Desa/Kelurahan harus berupa string',
-            '*.5.required' => 'Tipe Lokasi tidak boleh kosong',
-            '*.5.string' => 'Tipe Lokasi harus berupa string',
-            '*.6.required' => 'Nama Lokasi tidak boleh kosong',
-            '*.6.string' => 'Nama Lokasi harus berupa string',
-            '*.7.required' => 'Nama Puskesmas tidak boleh kosong',
-            '*.7.string' => 'Nama Puskesmas harus berupa string',
+            '*.4.required' => 'Desa tidak boleh kosong',
+            '*.5.required' => 'Tipe lokasi tidak boleh kosong',
+            '*.6.required' => 'Nama lokasi tidak boleh kosong',
+            '*.7.required' => 'Nama pukesmas tidak boleh kosong',
             '*.8.required' => 'Latitude tidak boleh kosong',
-            '*.8.string' => 'Latitude harus berupa string',
             '*.9.required' => 'Longitude tidak boleh kosong',
-            '*.9.string' => 'Longitude harus berupa string',
-            // '*.10.required' => 'Metode Pengambilan Sampel tidak boleh kosong',
-            // '*.10.string' => 'Metode Pengambilan Sampel harus berupa string',
         ];
     }
 
@@ -102,18 +107,51 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
         $publicHealthName   = $row[7];
         $latitude           = str_replace(',', '.', $row[8]);
         $longitude          = str_replace(',', '.', $row[9]);
-        // $sampleMethodId     = $this->sampleMethodId($row[10]);
         $sampleCode         = $this->generateSampleCode();
         $sample             = Sample::where('sample_code', $sampleCode)->first();
+
+        $aedesAegypti       = (int) $row[10] ?? 0;
+        $aedesAlbopictus    = (int) $row[11] ?? 0;
+        $culex              = (int) $row[12] ?? 0;
+
+        $morphotype1 = (int) $row[13] ?? 0;
+        $morphotype2 = (int) $row[14] ?? 0;
+        $morphotype3 = (int) $row[15] ?? 0;
+        $morphotype4 = (int) $row[16] ?? 0;
+        $morphotype5 = (int) $row[17] ?? 0;
+        $morphotype6 = (int) $row[18] ?? 0;
+        $morphotype7 = (int) $row[19] ?? 0;
+
+        $unidentified = 0;
+        if ($aedesAegypti != 0) {
+            // check morphotype there's no value, then unidentified = aedesAegypti
+            if ($morphotype1 == 0 && $morphotype2 == 0 && $morphotype3 == 0 && $morphotype4 == 0 && $morphotype5 == 0 && $morphotype6 == 0 && $morphotype7 == 0) {
+                $unidentified = $aedesAegypti;
+            } else if ($morphotype1 != 0 || $morphotype2 != 0 || $morphotype3 != 0 || $morphotype4 != 0 || $morphotype5 != 0 || $morphotype6 != 0 || $morphotype7 != 0) {
+                $unidentified = $aedesAegypti - ($morphotype1 + $morphotype2 + $morphotype3 + $morphotype4 + $morphotype5 + $morphotype6 + $morphotype7);
+            }
+
+            // if unidentified < 0, then unidentified = 0
+            if ($unidentified < 0) {
+                $unidentified = 0;
+            }
+        }
+
+        $denv1 = $row[20] == '' ? 0 : 1;
+        $denv2 = $row[21] == '' ? 0 : 1;
+        $denv3 = $row[22] == '' ? 0 : 1;
+        $denv4 = $row[23] == '' ? 0 : 1;
 
         if ($sample) {
             $sampleCode = $this->generateSampleCode();
         }
 
-        if ($createdAt == null || $province == null || $regency == null || $district == null || $village == null || $locationType == null || $locationName == null || $publicHealthName == null || $latitude == null || $longitude == null ) {
+        // dd($aedesAegypti, $aedesAlbopictus, $culex, $morphotype1, $morphotype2, $morphotype3, $morphotype4, $morphotype5, $morphotype6, $morphotype7, $unidentified, $denv1, $denv2, $denv3, $denv4);
+
+        if ($createdAt == null || $province == null || $regency == null || $district == null || $village == null || $locationType == null || $locationName == null || $publicHealthName == null || $latitude == null || $longitude == null) {
             return null;
         } else {
-            return Sample::create([
+            $sample = Sample::create([
                 'sample_code' => $sampleCode,
                 'file_code' => $this->fileCode,
                 'created_at' => $createdAt,
@@ -126,7 +164,113 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
                 'public_health_name' => $publicHealthName,
                 'latitude' => $latitude,
                 'longitude' => $longitude,
-                // 'sample_method_id' => $sampleMethodId
+            ]);
+
+            // insert aedes albopictus
+            if ($aedesAlbopictus != 0) {
+                DetailSampleVirus::create([
+                    'sample_id' => $sample->id,
+                    'virus_id' => 2,
+                    'amount' => $aedesAlbopictus,
+                ]);
+            }
+
+            // insert culex
+            if ($culex != 0) {
+                DetailSampleVirus::create([
+                    'sample_id' => $sample->id,
+                    'virus_id' => 3,
+                    'amount' => $culex,
+                ]);
+            }
+
+            if ($aedesAegypti != 0) {
+                $detailSampleVirus = DetailSampleVirus::create([
+                    'sample_id' => $sample->id,
+                    'virus_id' => 1,
+                    'identification' => 1
+                ]);
+                if ($unidentified != 0) {
+                    DetailSampleMorphotype::create([
+                        'detail_sample_virus_id' => $detailSampleVirus->id,
+                        'morphotype_id' => 8,
+                        'amount' => $unidentified,
+                    ]);
+                } else {
+                    DetailSampleMorphotype::create([
+                        'detail_sample_virus_id' => $detailSampleVirus->id,
+                        'morphotype_id' => 8,
+                        'amount' => 0,
+                    ]);
+                }
+
+                DetailSampleMorphotype::create([
+                    'detail_sample_virus_id' => $detailSampleVirus->id,
+                    'morphotype_id' => 1,
+                    'amount' => $morphotype1,
+                ]);
+
+                DetailSampleMorphotype::create([
+                    'detail_sample_virus_id' => $detailSampleVirus->id,
+                    'morphotype_id' => 2,
+                    'amount' => $morphotype2,
+                ]);
+
+                DetailSampleMorphotype::create([
+                    'detail_sample_virus_id' => $detailSampleVirus->id,
+                    'morphotype_id' => 3,
+                    'amount' => $morphotype3,
+                ]);
+
+                DetailSampleMorphotype::create([
+                    'detail_sample_virus_id' => $detailSampleVirus->id,
+                    'morphotype_id' => 4,
+                    'amount' => $morphotype4,
+                ]);
+
+                DetailSampleMorphotype::create([
+                    'detail_sample_virus_id' => $detailSampleVirus->id,
+                    'morphotype_id' => 5,
+                    'amount' => $morphotype5,
+                ]);
+
+                DetailSampleMorphotype::create([
+                    'detail_sample_virus_id' => $detailSampleVirus->id,
+                    'morphotype_id' => 6,
+                    'amount' => $morphotype6,
+                ]);
+
+                DetailSampleMorphotype::create([
+                    'detail_sample_virus_id' => $detailSampleVirus->id,
+                    'morphotype_id' => 7,
+                    'amount' => $morphotype7,
+                ]);
+            }
+        }
+
+        if ($denv1 != 0) {
+            DetailSampleSerotype::create([
+                'sample_id' => $sample->id,
+                'serotype_id' => 1,
+                'status' => $denv1,
+            ]);
+
+            DetailSampleSerotype::create([
+                'sample_id' => $sample->id,
+                'serotype_id' => 2,
+                'status' => $denv2,
+            ]);
+
+            DetailSampleSerotype::create([
+                'sample_id' => $sample->id,
+                'serotype_id' => 3,
+                'status' => $denv3,
+            ]);
+
+            DetailSampleSerotype::create([
+                'sample_id' => $sample->id,
+                'serotype_id' => 4,
+                'status' => $denv4,
             ]);
         }
     }
