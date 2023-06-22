@@ -88,6 +88,23 @@
 
             let larvae = Object.values(@json($larvae));
             let sample = Object.values(@json($sample));
+
+            // check if larvae is empty
+            if(larvae.length === 0) {
+                larvae = [{
+                    latitude: -8.1624029,
+                    longitude: 113.717332
+                }]
+            }
+
+            // check if sample is empty
+            if(sample.length === 0) {
+                sample = [{
+                    latitude: -8.1624029,
+                    longitude: 113.717332
+                }]
+            }
+
             let centerCoordinateSample = [];
             for (let i = 0; i < sample.length; i++) {
                 centerCoordinateSample.push([sample[i].latitude, sample[i].longitude]);
