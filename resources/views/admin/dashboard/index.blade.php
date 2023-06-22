@@ -218,100 +218,100 @@
         <script>
             $(function() {
                 let samplePerYear = @json($samplePerYear);
+                @if (count($samplePerYear) > 0)
+                    // Mengambil bulan dan jumlah dari setiap entri data
+                    var labels = samplePerYear.map(entry => entry.month);
+                    var counts = samplePerYear.map(entry => entry.count);
 
-                // Mengambil bulan dan jumlah dari setiap entri data
-                var labels = samplePerYear.map(entry => entry.month);
-                var counts = samplePerYear.map(entry => entry.count);
+                    // Mengambil jenis nyamuk dari setiap entri samplePerYear
+                    var mosquitoTypes = Object.keys(samplePerYear[0].type);
 
-                // Mengambil jenis nyamuk dari setiap entri samplePerYear
-                var mosquitoTypes = Object.keys(samplePerYear[0].type);
+                    // Mengambil jumlah nyamuk dari setiap entri samplePerYear
+                    var mosquitoAmounts = samplePerYear.map(entry => Object.values(entry.type));
 
-                // Mengambil jumlah nyamuk dari setiap entri samplePerYear
-                var mosquitoAmounts = samplePerYear.map(entry => Object.values(entry.type));
+                    // Membuat chart dengan Chart.js
+                    var ctx = document.getElementById('samplePerYear').getContext('2d');
+                    // width 100%
+                    ctx.canvas.width = '100%';
 
-                // Membuat chart dengan Chart.js
-                var ctx = document.getElementById('samplePerYear').getContext('2d');
-                // width 100%
-                ctx.canvas.width = '100%';
+                    let purplePallete = [
+                        '#4e73df',
+                        '#6f42c1',
+                        '#9c27b0',
+                    ]
 
-                let purplePallete = [
-                    '#4e73df',
-                    '#6f42c1',
-                    '#9c27b0',
-                ]
+                    var datasets = mosquitoTypes.map((type, index) => {
+                        return {
+                            label: type,
+                            data: mosquitoAmounts.map(amounts => amounts[index]),
+                            backgroundColor: purplePallete[index],
+                            borderColor: purplePallete[index],
+                            borderWidth: 1,
+                            fill: false,
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            pointHitRadius: 10,
+                            pointBackgroundColor: purplePallete[index],
+                            pointBorderColor: purplePallete[index],
+                            pointHoverBackgroundColor: purplePallete[index],
+                            pointHoverBorderColor: purplePallete[index],
+                        };
+                    });
 
-                var datasets = mosquitoTypes.map((type, index) => {
-                    return {
-                        label: type,
-                        data: mosquitoAmounts.map(amounts => amounts[index]),
-                        backgroundColor: purplePallete[index],
-                        borderColor: purplePallete[index],
-                        borderWidth: 1,
-                        fill: false,
-                        pointRadius: 3,
-                        pointHoverRadius: 5,
-                        pointHitRadius: 10,
-                        pointBackgroundColor: purplePallete[index],
-                        pointBorderColor: purplePallete[index],
-                        pointHoverBackgroundColor: purplePallete[index],
-                        pointHoverBorderColor: purplePallete[index],
-                    };
-                });
-
-                var myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        interaction: {
-                            mode: 'index',
-                            intersect: false
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: datasets
                         },
-                        scales: {
-                            y: {
-                                // stack the bar
-                                stacked: true,
-                                grid: {
-                                    display: false,
-                                },
-                                ticks: {
-                                    beginAtZero: true,
-                                    precision: 0,
-                                    stepSize: 1,
-                                },
-                            },
-                            x: {
-                                // stack the bar
-                                stacked: true,
-                                grid: {
-                                    display: false,
-                                },
-                                ticks: {
-                                    beginAtZero: true,
-                                    precision: 0,
-                                    stepSize: 1,
-                                },
-                            },
-                        },
-                        plugins: {
-                            tooltip: {
+                        options: {
+                            responsive: true,
+                            interaction: {
                                 mode: 'index',
                                 intersect: false
                             },
-                            legend: {
-                                labels: {
-                                    usePointStyle: true,
-                                    boxWidth: 5,
-                                    boxHeight: 5,
+                            scales: {
+                                y: {
+                                    // stack the bar
+                                    stacked: true,
+                                    grid: {
+                                        display: false,
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        precision: 0,
+                                        stepSize: 1,
+                                    },
+                                },
+                                x: {
+                                    // stack the bar
+                                    stacked: true,
+                                    grid: {
+                                        display: false,
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        precision: 0,
+                                        stepSize: 1,
+                                    },
                                 },
                             },
-                        },
-                    }
-                });
-
+                            plugins: {
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false
+                                },
+                                legend: {
+                                    labels: {
+                                        usePointStyle: true,
+                                        boxWidth: 5,
+                                        boxHeight: 5,
+                                    },
+                                },
+                            },
+                        }
+                    });
+                @endif
             });
         </script>
     @endpush
