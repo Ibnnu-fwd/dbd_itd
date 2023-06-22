@@ -33,9 +33,16 @@
                     </h3>
                 @elseif ($detailSample->virus_id == 1 && $detailSample->identification == 1)
                     @if ($detailSample->detailSampleMorphotypes->count() > 0)
-                        <h3 class="text-xs 2xl:text-sm font-semibold mt-3">
-                            Detail Morfotipe
-                        </h3>
+                        <div class="xl:flex items-center justify-between text-xs 2xl:text-sm mt-5">
+                            <h3 class="font-semibold">
+                                Total Individu
+                            </h3>
+                            <span class="font-semibold">
+                                {{
+                                    $detailSample->detailSampleMorphotypes->sum('amount')
+                                }}
+                            </span>
+                        </div>
                         <hr class="my-3">
                         <ul class="list-inside">
                             @foreach ($detailSample->detailSampleMorphotypes as $item)
