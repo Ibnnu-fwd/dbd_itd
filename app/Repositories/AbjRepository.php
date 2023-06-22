@@ -28,7 +28,6 @@ class AbjRepository implements AbjInterface
             $data[$key]['regency'] = Ksh::where('id', $value->first()->ksh_id)->first()->regency->name;
             $data[$key]['district'] = $value->first()->district->name;
             $data[$key]['village'] = $value->first()->village->name;
-            dd($data);
             $data[$key]['location'] = $value->map(function($item) {
                 return [
                     'village' => $item->ksh->village,
