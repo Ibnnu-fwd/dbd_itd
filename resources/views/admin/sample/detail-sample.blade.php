@@ -34,7 +34,7 @@
                 @elseif ($detailSample->virus_id == 1 && $detailSample->identification == 1)
                     @if ($detailSample->detailSampleMorphotypes->count() > 0)
                         <div class="xl:flex items-center justify-between text-xs 2xl:text-sm mt-5">
-                            <h3 class="font-semibold">
+                            <h3 class="">
                                 Total Individu
                             </h3>
                             <span class="font-semibold">
@@ -71,9 +71,16 @@
                         </div>
                     @endif
                 @elseif ($detailSample->virus_id != 1 && $detailSample->identification == null)
-                    <h3 class="text-xs 2xl:text-sm">
-                        Total Individu: {{ $detailSample->amount }}
+                <div class="xl:flex items-center justify-between text-xs 2xl:text-sm mt-5">
+                    <h3 class="">
+                        Total Individu
                     </h3>
+                    <span class="font-semibold">
+                        {{
+                            $detailSample->amount
+                        }}
+                    </span>
+                </div>
                 @endif
             </x-card-container>
         @endforeach
