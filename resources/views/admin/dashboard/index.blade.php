@@ -89,106 +89,95 @@
             let larvae = Object.values(@json($larvae));
             let sample = Object.values(@json($sample));
 
-            // check if larvae is empty
-            if(larvae.length === 0) {
-                larvae = [{
-                    latitude: -8.1624029,
-                    longitude: 113.717332
-                }]
-            }
+            @if ($sample->count() > 0)
+                let centerCoordinateSample = [];
+                for (let i = 0; i < sample.length; i++) {
+                    centerCoordinateSample.push([sample[i].latitude, sample[i].longitude]);
+                }
 
-            // check if sample is empty
-            if(sample.length === 0) {
-                sample = [{
-                    latitude: -8.1624029,
-                    longitude: 113.717332
-                }]
-            }
+                centerCoordinateSample.forEach(coordinate => {
+                    var el = L.divIcon({
+                        className: 'custom-marker',
+                        html: '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">'
+                    });
 
-            let centerCoordinateSample = [];
-            for (let i = 0; i < sample.length; i++) {
-                centerCoordinateSample.push([sample[i].latitude, sample[i].longitude]);
-            }
+                    // cluster marker
+                    markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                        icon: el
+                    }));
 
-            centerCoordinateSample.forEach(coordinate => {
-                var el = L.divIcon({
-                    className: 'custom-marker',
-                    html: '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">'
+                    map.addLayer(markers);
                 });
+            @endif
 
-                // cluster marker
-                markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
-                    icon: el
-                }));
+            @if ($larvae->count() > 0)
+                let centerCoordinate = [];
+                for (let i = 0; i < larvae.length; i++) {
+                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
+                }
 
-                map.addLayer(markers);
-            });
+                centerCoordinate.forEach(coordinate => {
+                    var el = L.divIcon({
+                        className: 'custom-marker',
+                        html: '<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">'
+                    });
 
-            let centerCoordinate = [];
-            for (let i = 0; i < larvae.length; i++) {
-                centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
-            }
-
-            centerCoordinate.forEach(coordinate => {
-                var el = L.divIcon({
-                    className: 'custom-marker',
-                    html: '<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">'
+                    L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                        icon: el
+                    }).addTo(map);
                 });
+            @endif
 
-                L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
-                    icon: el
-                }).addTo(map);
-            });
+            @if (count($abj) > 0)
+                function updateMapData() {
+                    let abj = Object.values(@json($abj));
 
-            function updateMapData() {
-                let abj = Object.values(@json($abj));
+                    fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
+                        .then((response) => response.json())
+                        .then((data) => {
+                            const geojson = {
+                                type: 'FeatureCollection',
+                                features: []
+                            };
 
-                fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const geojson = {
-                            type: 'FeatureCollection',
-                            features: []
-                        };
-
-                        data.forEach((dataItem) => {
-                            abj.forEach((abjItem) => {
-                                if (abjItem.district === dataItem.sub_district) {
-                                    geojson.features.push({
-                                        type: 'Feature',
-                                        geometry: {
-                                            type: 'Polygon',
-                                            coordinates: [dataItem.border]
-                                        },
-                                        properties: {
-                                            color: getColor(abjItem.abj_total),
-                                            regency: dataItem.district,
-                                            district: dataItem.sub_district,
-                                            village: dataItem.name,
-                                            abj: abjItem.abj_total,
-                                            total_sample: abjItem.total_sample,
-                                            total_check: abjItem.total_check
-                                        }
-                                    });
-                                }
+                            data.forEach((dataItem) => {
+                                abj.forEach((abjItem) => {
+                                    if (abjItem.district === dataItem.sub_district) {
+                                        geojson.features.push({
+                                            type: 'Feature',
+                                            geometry: {
+                                                type: 'Polygon',
+                                                coordinates: [dataItem.border]
+                                            },
+                                            properties: {
+                                                color: getColor(abjItem.abj_total),
+                                                regency: dataItem.district,
+                                                district: dataItem.sub_district,
+                                                village: dataItem.name,
+                                                abj: abjItem.abj_total,
+                                                total_sample: abjItem.total_sample,
+                                                total_check: abjItem.total_check
+                                            }
+                                        });
+                                    }
+                                });
                             });
-                        });
 
-                        L.geoJSON(geojson, {
-                            style: function(feature) {
-                                return {
-                                    fillColor: feature.properties.color,
-                                    color: feature.properties.color,
-                                    weight: 0.5,
-                                    fillOpacity: 0.5,
-                                };
-                            },
-                            onEachFeature: function(feature, layer) {
-                                layer.on('click', function(e) {
-                                    const coordinates = e.latlng;
-                                    const properties = feature.properties;
+                            L.geoJSON(geojson, {
+                                style: function(feature) {
+                                    return {
+                                        fillColor: feature.properties.color,
+                                        color: feature.properties.color,
+                                        weight: 0.5,
+                                        fillOpacity: 0.5,
+                                    };
+                                },
+                                onEachFeature: function(feature, layer) {
+                                    layer.on('click', function(e) {
+                                        const coordinates = e.latlng;
+                                        const properties = feature.properties;
 
-                                    const popupContent = `
+                                        const popupContent = `
                                         <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
                                         <p><strong>Kecamatan:</strong> ${properties.district}</p>
                                         <p><strong>ABJ:</strong> ${properties.abj}%</p>
@@ -196,30 +185,30 @@
                                         <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
                                     `;
 
-                                    L.popup()
-                                        .setLatLng(coordinates)
-                                        .setContent(popupContent)
-                                        .openOn(map);
+                                        L.popup()
+                                            .setLatLng(coordinates)
+                                            .setContent(popupContent)
+                                            .openOn(map);
 
-                                    // Zoom to the clicked feature
-                                    map.fitBounds(layer.getBounds(), {
-                                        padding: [100, 100]
+                                        // Zoom to the clicked feature
+                                        map.fitBounds(layer.getBounds(), {
+                                            padding: [100, 100]
+                                        });
                                     });
-                                });
 
-                                layer.on('mouseover', function(e) {
-                                    map.getContainer().style.cursor = 'pointer';
-                                });
+                                    layer.on('mouseover', function(e) {
+                                        map.getContainer().style.cursor = 'pointer';
+                                    });
 
-                                layer.on('mouseout', function(e) {
-                                    map.getContainer().style.cursor = '';
-                                });
-                            }
-                        }).addTo(map);
-                    });
-            }
-
-            updateMapData(); // map update
+                                    layer.on('mouseout', function(e) {
+                                        map.getContainer().style.cursor = '';
+                                    });
+                                }
+                            }).addTo(map);
+                        });
+                }
+                updateMapData(); // map update
+            @endif
 
             // full screen
             L.control.fullscreen().addTo(map);
