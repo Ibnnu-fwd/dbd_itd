@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Abj;
+use App\Models\Ksh;
 use App\Repositories\Interface\AbjInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -23,7 +24,11 @@ class AbjRepository implements AbjInterface
 
         foreach($abj as $key => $value)
         {
+            $data[$key]['province'] = Ksh::where('id', $value->first()->ksh_id)->first()->regency->province->name;
+            $data[$key]['regency'] = Ksh::where('id', $value->first()->ksh_id)->first()->regency->name;
             $data[$key]['district'] = $value->first()->district->name;
+            $data[$key]['village'] = $value->first()->village->name;
+            dd($data);
             $data[$key]['location'] = $value->map(function($item) {
                 return [
                     'village' => $item->ksh->village,
