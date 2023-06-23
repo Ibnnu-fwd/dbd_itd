@@ -54,6 +54,30 @@ class SampleRepository implements SampleInterface
         // sort sample_code desc
         $samples = $samples->sortByDesc('sample_code');
 
+        foreach($samples as $key => $data)
+        {
+            $samples[$key]['type'] = $data->detailSampleViruses->map(function ($item) {
+                if ($item->virus_id == 1 && $item->identification == 1) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->detailSampleMorphotypes->map(function ($item) {
+                            return $item->amount;
+                        })->sum(),
+                    ];
+                } elseif ($item->virus_id == 1 && $item->identification == 0) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->amount,
+                    ];
+                } elseif ($item->virus_id != 1) {
+                    return [
+                        'name' => $item->virus->name,
+                        'amount' => $item->amount,
+                    ];
+                }
+            });
+        }
+
         return $samples;
     }
 

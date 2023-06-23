@@ -66,7 +66,7 @@
         <script>
             function getColor(abj_total) {
                 return abj_total > 90 ? '#1cc88a' :
-                    abj_total >= 15 && abj_total < 90 ? '#f6c23e' :
+                    abj_total >= 15 && abj_total < 90 ? '#ff9671' :
                     abj_total <= 15 ? '#e74a3b' :
                     '#858796';
             }
@@ -92,7 +92,7 @@
             @if ($sample->count() > 0)
                 let centerCoordinateSample = [];
                 for (let i = 0; i < sample.length; i++) {
-                    centerCoordinateSample.push([sample[i].latitude, sample[i].longitude]);
+                    centerCoordinateSample.push([sample[i].latitude, sample[i].longitude, sample[i]]);
                 }
 
                 centerCoordinateSample.forEach(coordinate => {
@@ -104,7 +104,64 @@
                     // cluster marker
                     markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
                         icon: el
-                    }));
+                    }).bindPopup(`
+                        <table class="border-collapse border-none">
+                            <tbody>
+                                <tr>
+                                    <th colspan="3" class="p-0">Detail Lokasi</th>
+                                </tr>
+                                <tr>
+                                    <td class="p-0">Provinsi</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${coordinate[2].province.name}</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0">Kabupaten</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${coordinate[2].regency.name}</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0">Kecamatan</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${coordinate[2].district.name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lokasi</td>
+                                    <td>:</td>
+                                    <td>${coordinate[2].location_name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Rumah Sakit</td>
+                                    <td>:</td>
+                                    <td>${coordinate[2].public_health_name}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="border-collapse border-none mt-4 w-full">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" class="p-0">Detail Sampling</th>
+                                </tr>
+                                <tr class="mt-3">
+                                    <th colspan="2" class="p-0">Jenis Virus</th>
+                                    <th class="p-0">Jumlah</th>
+                                </tr>
+                                </thead>
+                            <tbody>
+                                ` +
+                        Object.values(coordinate[2].type).map(function(type) {
+                            return `
+                                        <tr>
+                                            <td class="p-0">${type.name}:</td>
+                                            <td class="p-0" align="right">${type.amount}</td>
+                                        </tr>
+                                    `;
+                        }).join('') +
+                        `
+                            </tbody>
+                        </table>
+                    `).openPopup());
 
                     map.addLayer(markers);
                 });
@@ -131,7 +188,7 @@
             @if (count($abj) > 0)
                 function updateMapData() {
                     let abj = Object.values(@json($abj));
-                    fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
+                    fetch('{{ asset('assets/geojson/surabaya.geojson') }}')
                         .then((response) => response.json())
                         .then((data) => {
                             const geojson = {
@@ -143,12 +200,9 @@
                                 abj.forEach((abjItem) => {
                                     if (abjItem.district === dataItem.sub_district) {
                                         if (dataItem.border.length > 1) {
-                                            console.log("benar");
                                             let coordinates2 = dataItem.border.map((coord) => [coord[1],
-                                                coord[
-                                                    0]
+                                                coord[0]
                                             ]);
-                                            console.log(coordinates2);
                                             let coordinates = dataItem.border;
                                             geojson.features.push({
                                                 type: 'Feature',
@@ -167,11 +221,9 @@
                                                 }
                                             });
                                         } else {
-                                            console.log("salah");
                                             let coordinates2 = dataItem.border[0].map((coord) => [coord[1],
                                                 coord[0]
                                             ]);
-                                            console.log(coordinates2);
                                             geojson.features.push({
                                                 type: 'Feature',
                                                 geometry: {
@@ -240,6 +292,7 @@
                             }).addTo(map);
                         });
                 }
+
 
                 updateMapData(); // map update
             @endif
