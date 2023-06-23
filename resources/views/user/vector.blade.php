@@ -159,7 +159,7 @@
             let samples = Object.values(@json($samples));
             // set last lat long of sample
             let lastSample = samples[samples.length - 1];
-            let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 8);
+            let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 14);
 
             L.tileLayer(
                 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
