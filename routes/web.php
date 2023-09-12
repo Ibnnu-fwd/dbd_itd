@@ -25,6 +25,7 @@ use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LarvaeController as UserLarvaeController;
 use App\Http\Controllers\User\VectorController;
+use App\Models\Map;
 use Illuminate\Support\Facades\Route;
 
 /*

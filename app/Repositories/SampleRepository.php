@@ -281,11 +281,14 @@ class SampleRepository implements SampleInterface
 
         $data = [];
         foreach ($sample as $key => $value) {
+            $data[$key]['province'] = $value->province->name;
             $data[$key]['district_id'] = $value->district_id;
             $data[$key]['district'] = $value->district->name;
             $data[$key]['regency'] = $value->regency->name;
             $data[$key]['latitude'] = $value->latitude;
             $data[$key]['longitude'] = $value->longitude;
+            $data[$key]['location_name'] = $value->location_name;
+            $data[$key]['public_health_name'] = $value->public_health_name;
             $data[$key]['count'] = $this->sample->active()->where('district_id', $value->district_id)->count();
             $data[$key]['type'] = $value->detailSampleViruses->map(function ($item) {
                 if ($item->virus_id == 1 && $item->identification == 1) {

@@ -96,95 +96,101 @@
                 });
 
                 let samples = Object.values(@json($samples));
-                let map = L.map('map').setView([-8.172357, 113.699948], 10);
-                console.log(samples);
+            // set last lat long of sample
+            let lastSample = samples[samples.length - 1];
+            let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 14);
 
-                let markers = L.markerClusterGroup();
+            L.tileLayer(
+                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                    maxZoom: 18,
+                    id: 'mapbox/light-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                }
+            ).addTo(map);
 
-                // full screen
-                map.addControl(new L.Control.Fullscreen());
+            map.attributionControl.setPrefix(false);
+            map.zoomControl.remove();
 
-                L.tileLayer(
-                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                        attribution: '&copy; <a href="https://www.mapbox.com/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-                        maxZoom: 18,
-                        id: 'mapbox/light-v11',
-                        tileSize: 512,
-                        zoomOffset: -1,
-                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
-                    }
-                ).addTo(map);
+            let markers = L.markerClusterGroup();
 
-                map.zoomControl.remove();
-                samples.map((sample) => {
-                    let marker = L.marker([sample.latitude, sample.longitude], {
-                        icon: L.divIcon({
-                            // using image
-                            html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
-                            backgroundSize: 'contain',
-                            className: 'marker bg-transparent',
-                            iconAnchor: [15, 15],
-                            popupAnchor: [0, -15]
-                        })
-                    });
-                    marker.bindPopup(`
-                        <table class="table-auto">
-                            <tr>
-                                <td>Kabupaten/Kota</td>
-                                <td>:</td>
-                                <td>${sample.regency}</td>
-                            </tr>
-                            <tr>
-                                <td>Kecamatan</td>
-                                <td>:</td>
-                                <td>${sample.district}</td>
-                            </tr>
-                            <tr>
-                                <td>Latitude</td>
-                                <td>:</td>
-                                <td>${sample.latitude}</td>
-                            </tr>
-                            <tr>
-                                <td>Longitude</td>
-                                <td>:</td>
-                                <td>${sample.longitude}</td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah Sampel</td>
-                                <td>:</td>
-                                <td>${sample.count}</td>
-                            </tr>
-                            <tr>
-                                <td>Tipe</td>
-                                <td>:</td>
-                                <td>
-                                    <table class="table-auto">
-                                        ${
-                                            sample.type.map(type => {
-                                                return `
-                                                                                                                    <tr>
-                                                                                                                        <td>${type.name}</td>
-                                                                                                                        <td>:</td>
-                                                                                                                        <td>${type.amount}</td>
-                                                                                                                    </tr>
-                                                                                                                `;
-                                            }).join('')
-                                        }
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    `);
-
-                    // on click
-                    marker.on('click', function(e) {
-                        map.setView(e.latlng, 12);
-                    });
-
-                    markers.addLayer(marker);
+            samples.forEach(function(sample) {
+                let marker = L.marker([sample.latitude, sample.longitude], {
+                    icon: L.divIcon({
+                        // using image
+                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                        backgroundSize: 'contain',
+                        className: 'marker bg-transparent',
+                        iconAnchor: [15, 15],
+                        popupAnchor: [0, -15]
+                    })
                 });
+                marker.bindPopup(
+                    `
+                        <table class="border-collapse border-none">
+                            <tbody>
+                                <tr>
+                                    <th colspan="3" class="p-0">Detail Lokasi</th>
+                                </tr>
+                                <tr>
+                                    <td class="p-0">Provinsi</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${sample.province}</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0">Kabupaten</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${sample.regency}</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-0">Kecamatan</td>
+                                    <td class="p-0">:</td>
+                                    <td class="p-0">${sample.district}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lokasi</td>
+                                    <td>:</td>
+                                    <td>${sample.location_name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Rumah Sakit</td>
+                                    <td>:</td>
+                                    <td>${sample.public_health_name}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                map.addLayer(markers);
+                        <table class="border-collapse border-none">
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="p-0">Detail Sampling</th>
+                                </tr>
+                                <tr>
+                                    <td class="p-0">Jenis Virus</td>
+                                    <td class="p-0">Jumlah</td>
+                                </tr>
+                                ` +
+                    sample.type.map(function(type) {
+                        return `
+                                        <tr>
+                                            <td class="p-0">${type.name}</td>
+                                            <td class="p-0">${type.amount}</td>
+                                        </tr>
+                                    `;
+                    }).join('') +
+                    `
+                            </tbody>
+                        </table>
+                    `
+                );
+                markers.addLayer(marker);
+            });
+
+            // add fullscreen button
+            map.addControl(new L.Control.Fullscreen());
+
+            map.addLayer(markers);
 
                 // filter
                 $('#filterType').on('change', function() {
