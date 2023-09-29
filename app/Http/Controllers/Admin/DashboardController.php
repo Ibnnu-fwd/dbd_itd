@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Regency;
 use App\Models\User;
 use App\Repositories\Interface\LarvaeInterface;
 use App\Repositories\Interface\SampleInterface;
@@ -24,22 +25,24 @@ class DashboardController extends Controller
         LarvaeInterface $larvae,
     ) {
         $this->sample = $sample;
-        $this->larva = $larva;
-        $this->abj = $abj;
+        $this->larva  = $larva;
+        $this->abj    = $abj;
         $this->larvae = $larvae;
     }
 
     public function __invoke(Request $request)
     {
+        // return $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3501);
         return view('admin.dashboard.index', [
             'samplePerYear' => $this->sample->getSamplePerYear(date('Y')),
-            'usersCount' => User::all()->count(),
-            'totalSample' => $this->sample->getTotalSample(),
+            'usersCount'    => User::all()->count(),
+            'totalSample'   => $this->sample->getTotalSample(),
             'totalMosquito' => $this->sample->getTotalMosquito(),
-            'totalLarva' => $this->larva->getTotalLarva(),
-            'abj' => $this->abj->getAllGroupByDistrict(),
-            'larvae' => $this->larvae->getAll(),
-            'sample' => $this->sample->getAll(),
+            'totalLarva'    => $this->larva->getTotalLarva(),
+            'abj'           => $this->abj->getAllGroupByDistrict(),
+            'larvae'        => $this->larvae->getAll(),
+            'sample'        => $this->sample->getAll(),
+            'sampleAndAbj'  => $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3501),
         ]);
     }
 }

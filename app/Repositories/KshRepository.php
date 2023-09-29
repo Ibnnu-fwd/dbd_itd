@@ -39,11 +39,11 @@ class KshRepository implements KshInterface
     public function create($attributes)
     {
         return $this->ksh->create([
-            'regency_id' => $attributes['regency_id'],
+            'regency_id'  => $attributes['regency_id'],
             'district_id' => $attributes['district_id'],
-            'village_id' => $attributes['village_id'],
-            'latitude' => $attributes['latitude'],
-            'longitude' => $attributes['longitude'],
+            'village_id'  => $attributes['village_id'],
+            'latitude'    => $attributes['latitude'],
+            'longitude'   => $attributes['longitude'],
         ]);
     }
 
@@ -52,11 +52,11 @@ class KshRepository implements KshInterface
         DB::beginTransaction();
         try {
             $this->ksh->find($id)->update([
-                'regency_id' => $attributes['regency_id'],
+                'regency_id'  => $attributes['regency_id'],
                 'district_id' => $attributes['district_id'],
-                'village_id' => $attributes['village_id'],
-                'latitude' => $attributes['latitude'],
-                'longitude' => $attributes['longitude'],
+                'village_id'  => $attributes['village_id'],
+                'latitude'    => $attributes['latitude'],
+                'longitude'   => $attributes['longitude'],
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -66,7 +66,7 @@ class KshRepository implements KshInterface
         try {
             $this->abj->where('ksh_id', $id)->update([
                 'district_id' => $attributes['district_id'],
-                'village_id' => $attributes['village_id'],
+                'village_id'  => $attributes['village_id'],
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -79,14 +79,14 @@ class KshRepository implements KshInterface
     public function createMember($attributes)
     {
         return User::create([
-            'name' => $attributes['name'],
-            'sex' => $attributes['sex'],
+            'name'     => $attributes['name'],
+            'sex'      => $attributes['sex'],
             'birthday' => date('Y-m-d', strtotime($attributes['birthday'])),
-            'phone' => $attributes['phone'],
-            'email' => $attributes['email'],
-            'address' => $attributes['address'],
+            'phone'    => $attributes['phone'],
+            'email'    => $attributes['email'],
+            'address'  => $attributes['address'],
             'password' => password_hash($attributes['password'], PASSWORD_DEFAULT),
-            'role_id' => User::KHS_ROLE,
+            'role_id'  => User::KHS_ROLE,
         ]);
     }
 

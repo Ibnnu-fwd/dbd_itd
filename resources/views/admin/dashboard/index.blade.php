@@ -58,6 +58,16 @@
         </div>
     </div>
 
+    <x-card-container class="mt-8" style="height: 220px">
+        <div class="md:flex justify-between items-center">
+            <p class="text-xs 2xl:text-sm font-semibold">
+                Data Sampel dan ABJ (%)
+            </p>
+
+        </div>
+        <canvas id="sampleAndAbj"></canvas>
+    </x-card-container>
+
     @push('js-internal')
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
@@ -105,47 +115,47 @@
                     markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
                         icon: el
                     }).bindPopup(`
-                        <table class="border-collapse border-none">
+                        <table class = "border-collapse border-none">
                             <tbody>
                                 <tr>
-                                    <th colspan="3" class="p-0">Detail Lokasi</th>
+                                    <th colspan = "3" class = "p-0">Detail Lokasi</th>
                                 </tr>
                                 <tr>
-                                    <td class="p-0">Provinsi</td>
-                                    <td class="p-0">:</td>
-                                    <td class="p-0">${coordinate[2].province.name}</td>
+                                    <td class = "p-0">Provinsi</td>
+                                    <td class = "p-0">:</td>
+                                    <td class = "p-0">${coordinate[2].province.name}</td>
                                 </tr>
                                 <tr>
-                                    <td class="p-0">Kabupaten</td>
-                                    <td class="p-0">:</td>
-                                    <td class="p-0">${coordinate[2].regency.name}</td>
+                                    <td class = "p-0">Kabupaten</td>
+                                    <td class = "p-0">:</td>
+                                    <td class = "p-0">${coordinate[2].regency.name}</td>
                                 </tr>
                                 <tr>
-                                    <td class="p-0">Kecamatan</td>
-                                    <td class="p-0">:</td>
-                                    <td class="p-0">${coordinate[2].district.name}</td>
+                                    <td class = "p-0">Kecamatan</td>
+                                    <td class = "p-0">:</td>
+                                    <td class = "p-0">${coordinate[2].district.name}</td>
                                 </tr>
                                 <tr>
                                     <td>Lokasi</td>
-                                    <td>:</td>
+                                    <td>: </td>
                                     <td>${coordinate[2].location_name}</td>
                                 </tr>
                                 <tr>
                                     <td>Rumah Sakit</td>
-                                    <td>:</td>
+                                    <td>: </td>
                                     <td>${coordinate[2].public_health_name}</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <table class="border-collapse border-none mt-4 w-full">
+                        <table class = "border-collapse border-none mt-4 w-full">
                             <thead>
                                 <tr>
-                                    <th colspan="2" class="p-0">Detail Sampling</th>
+                                    <th colspan = "2" class = "p-0">Detail Sampling</th>
                                 </tr>
-                                <tr class="mt-3">
-                                    <th colspan="2" class="p-0">Jenis Virus</th>
-                                    <th class="p-0">Jumlah</th>
+                                <tr class   = "mt-3">
+                                <th colspan = "2" class = "p-0">Jenis Virus</th>
+                                <th class   = "p-0">Jumlah</th>
                                 </tr>
                                 </thead>
                             <tbody>
@@ -153,8 +163,8 @@
                         Object.values(coordinate[2].type).map(function(type) {
                             return `
                                         <tr>
-                                            <td class="p-0">${type.name}:</td>
-                                            <td class="p-0" align="right">${type.amount}</td>
+                                            <td class = "p-0">${type.name}:</td>
+                                            <td class = "p-0" align = "right">${type.amount}</td>
                                         </tr>
                                     `;
                         }).join('') +
@@ -262,11 +272,11 @@
                                         const properties = feature.properties;
 
                                         const popupContent = `
-                                <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
-                                <p><strong>Kecamatan:</strong> ${properties.district}</p>
-                                <p><strong>ABJ:</strong> ${properties.abj}%</p>
-                                <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
-                                <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
+                                                 <p><strong>Kabupaten/Kota: </strong> ${properties.regency}</p>
+                                                 <p><strong>Kecamatan     : </strong> ${properties.district}</p>
+                                                 <p><strong>ABJ           : </strong> ${properties.abj}%</p>
+                                <p><strong>Total Sampel                   : </strong> ${properties.total_sample}</p>
+                                <p><strong>Total Pemeriksaan              : </strong> ${properties.total_check}</p>
                             `;
 
                                         L.popup()
@@ -399,6 +409,122 @@
                         }
                     });
                 @endif
+            });
+        </script>
+
+        <script>
+            $(function() {
+                let sampleAndAbj = @json($sampleAndAbj);
+
+                @if (count($sampleAndAbj) > 0)
+                    let orangePalette = [
+                        '#f6c23e',
+                        '#e74a3b',
+                    ];
+
+                    // Extract data for labels, total_sample, and total_abj
+                    let districtNames = Object.values(sampleAndAbj).map(entry => entry.name);
+                    let totalSampleData = Object.values(sampleAndAbj).map(entry => entry.total_sample);
+                    let totalAbjData = Object.values(sampleAndAbj).map(entry => entry.total_abj);
+
+                    var ctx = document.getElementById('sampleAndAbj').getContext('2d');
+                    // width 100%
+                    ctx.canvas.width = '100%';
+
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: districtNames,
+                            datasets: [{
+                                    label: 'Total Sampel',
+                                    data: totalSampleData,
+                                    backgroundColor: orangePalette[0],
+                                    borderColor: orangePalette[0],
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                                },
+                                {
+                                    label: 'Total ABJ',
+                                    data: totalAbjData,
+                                    backgroundColor: orangePalette[1],
+                                    borderColor: orangePalette[1],
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                                },
+                            ],
+                        },
+                        options: {
+                            responsive: true,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            scales: {
+                                y: {
+                                    // stack the bar
+                                    stacked: true,
+                                    grid: {
+                                        display: false,
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        precision: 0,
+                                        stepSize: 1,
+                                    },
+                                },
+                                x: {
+                                    // stack the bar
+                                    stacked: true,
+                                    grid: {
+                                        display: false,
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        precision: 0,
+                                        stepSize: 1,
+                                    },
+                                },
+                            },
+                            options: {
+                                // ... (other options)
+                                plugins: {
+                                    tooltip: {
+                                        mode: 'index',
+                                        intersect: false,
+                                        callbacks: {
+                                            label: function(context) {
+                                                var datasetLabel = context.dataset.label || '';
+                                                var value = context.parsed.y;
+                                                var total = context.dataset.data.reduce(function(
+                                                    previousValue, currentValue) {
+                                                    return previousValue + currentValue;
+                                                });
+                                                var percentage = ((value / total) * 100).toFixed(2) + '%';
+                                                return datasetLabel + ': ' + percentage;
+                                            }
+                                        }
+                                    },
+                                    legend: {
+                                        display: true, // Set to true to display the legend
+                                        position: 'top', // Change the legend position (e.g., 'top', 'bottom', 'left', 'right')
+                                        labels: {
+                                            usePointStyle: true,
+                                            boxWidth: 5,
+                                            boxHeight: 5,
+                                            fontColor: 'black', // Change the font color of the legend labels
+                                        },
+                                    },
+                                    // ... (other plugins)
+                                },
+                            }
+                        },
+                    });
+                @endif
+
             });
         </script>
     @endpush

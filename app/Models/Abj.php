@@ -9,7 +9,7 @@ class Abj extends Model
 {
     use HasFactory;
 
-    public $table = 'abj';
+    public    $table    = 'abj';
     protected $fillable = [
         'district_id',
         'village_id',

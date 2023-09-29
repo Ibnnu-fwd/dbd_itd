@@ -28,8 +28,8 @@
                             required :value="$detailLarva->water_temperature" />
                         <x-input id="salinity" label="Salinitas" name="salinity" type="number" required
                             :value="$detailLarva->salinity" />
-                        <x-input id="ph" label="pH" name="ph" type="number" required
-                            :value="$detailLarva->ph" />
+                        <x-input id="ph" label="pH" name="ph" type="text" inputmode="decimal"
+                            required :value="$detailLarva->ph" />
                         <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true"
                             required>
                             <option value="available"
@@ -41,7 +41,8 @@
                         </x-select>
                     </div>
                     <div class="text-end">
-                        <x-button id="removeDetailLarva" type="button" class="bg-red-600 w-full md:w-auto justify-center"
+                        <x-button id="removeDetailLarva" type="button"
+                            class="bg-red-600 w-full md:w-auto justify-center"
                             onclick="removeDetailLarva('detailLarva-{{ $detailLarva->id }}')">
                             Hapus
                         </x-button>

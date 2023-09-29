@@ -12,7 +12,8 @@ class AbjRepository implements AbjInterface
 {
     private $abj;
 
-    public function __construct(Abj $abj) {
+    public function __construct(Abj $abj)
+    {
         $this->abj = $abj;
     }
 
@@ -22,37 +23,36 @@ class AbjRepository implements AbjInterface
 
         $data = [];
 
-        foreach($abj as $key => $value)
-        {
+        foreach ($abj as $key => $value) {
             $data[$key]['province'] = Ksh::where('id', $value->first()->ksh_id)->first()->regency->province->name;
-            $data[$key]['regency'] = Ksh::where('id', $value->first()->ksh_id)->first()->regency->name;
+            $data[$key]['regency']  = Ksh::where('id', $value->first()->ksh_id)->first()->regency->name;
             $data[$key]['district'] = $value->first()->district->name;
-            $data[$key]['village'] = $value->first()->village->name;
-            $data[$key]['location'] = $value->map(function($item) {
+            $data[$key]['village']  = $value->first()->village->name;
+            $data[$key]['location'] = $value->map(function ($item) {
                 return [
-                    'village' => $item->ksh->village,
-                    'coordinate' => $item->ksh->detailKsh->map(function($item) {
+                    'village'    => $item->ksh->village,
+                    'coordinate' => $item->ksh->detailKsh->map(function ($item) {
                         return $item;
                     })
                 ];
             });
-            $data[$key]['abj'] = $value->map(function($item) {
+            $data[$key]['abj'] = $value->map(function ($item) {
                 return [
-                    'abj_total' => $item->abj_total,
+                    'abj_total'  => $item->abj_total,
                     'created_at' => $item->created_at,
                 ];
             });
             $data[$key]['total_sample'] = $value->count();
-            $data[$key]['total_check'] = $value->sum(function($item) {
+            $data[$key]['total_check']  = $value->sum(function ($item) {
                 return $item->ksh->detailKsh->count();
             });
-            $data[$key]['min_long'] = $value->min(function($item) {
-                return $item->ksh->detailKsh->map(function($item) {
+            $data[$key]['min_long'] = $value->min(function ($item) {
+                return $item->ksh->detailKsh->map(function ($item) {
                     return $item->longitude;
                 })->min();
             });
-            $data[$key]['max_long'] = $value->max(function($item) {
-                return $item->ksh->detailKsh->map(function($item) {
+            $data[$key]['max_long'] = $value->max(function ($item) {
+                return $item->ksh->detailKsh->map(function ($item) {
                     return $item->longitude;
                 })->max();
             });
@@ -65,5 +65,6 @@ class AbjRepository implements AbjInterface
     }
 
     public function getGeoJson()
-    {}
+    {
+    }
 }

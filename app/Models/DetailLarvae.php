@@ -19,6 +19,7 @@ class DetailLarvae extends Model
         'water_temperature',
         'salinity',
         'ph',
+        'detail_tpa',
         'aquatic_plant'
     ];
 
@@ -36,9 +37,9 @@ class DetailLarvae extends Model
     // translate aquatic_plant value
     public function getAquaticPlantTranslation()
     {
-        if($this->aquatic_plant == 'available') {
+        if ($this->aquatic_plant == 'available') {
             return 'Tersedia';
-        } elseif($this->aquatic_plant == 'not_available') {
+        } elseif ($this->aquatic_plant == 'not_available') {
             return 'Tidak Tersedia';
         } else {
             return '-';
