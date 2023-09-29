@@ -14,7 +14,7 @@ class LarvaeRepository implements LarvaeInterface
 
     public function __construct(Larvae $larvae, DetailLarvae $detailLarvae)
     {
-        $this->larvae = $larvae;
+        $this->larvae       = $larvae;
         $this->detailLarvae = $detailLarvae;
     }
 
@@ -33,18 +33,18 @@ class LarvaeRepository implements LarvaeInterface
         DB::beginTransaction();
         try {
             $larvae = $this->larvae->create([
-                'larva_code'           => $this->larvae->generateLarvaCode(),
-                'regency_id'            => $attributes['regency_id'],
-                'district_id'           => $attributes['district_id'],
-                'village_id'            => $attributes['village_id'],
-                'location_type_id'      => $attributes['location_type_id'],
-                'settlement_type_id'    => $attributes['settlement_type_id'],
-                'environment_type_id'   => $attributes['environment_type_id'],
-                'building_type_id'      => $attributes['building_type_id'],
-                'floor_type_id'         => $attributes['floor_type_id'],
-                'address'               => $attributes['address'],
-                'latitude'              => $attributes['latitude'],
-                'longitude'             => $attributes['longitude']
+                'larva_code'          => $this->larvae->generateLarvaCode(),
+                'regency_id'          => $attributes['regency_id'],
+                'district_id'         => $attributes['district_id'],
+                'village_id'          => $attributes['village_id'],
+                'location_type_id'    => $attributes['location_type_id'],
+                'settlement_type_id'  => $attributes['settlement_type_id'],
+                'environment_type_id' => $attributes['environment_type_id'],
+                'building_type_id'    => $attributes['building_type_id'],
+                'floor_type_id'       => $attributes['floor_type_id'],
+                'address'             => $attributes['address'],
+                'latitude'            => $attributes['latitude'],
+                'longitude'           => $attributes['longitude']
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -62,7 +62,7 @@ class LarvaeRepository implements LarvaeInterface
                     'water_temperature' => $detailLarva['water_temperature'],
                     'salinity'          => $detailLarva['salinity'],
                     'ph'                => $detailLarva['ph'],
-                    'aquatic_plant'    => $detailLarva['aquatic_plant'],
+                    'aquatic_plant'     => $detailLarva['aquatic_plant'],
                 ]);
             }
         } catch (\Throwable $th) {
@@ -80,17 +80,17 @@ class LarvaeRepository implements LarvaeInterface
         try {
             $larvae = $this->larvae->find($id);
             $larvae->update([
-                'regency_id'            => $attributes['regency_id'],
-                'district_id'           => $attributes['district_id'],
-                'village_id'            => $attributes['village_id'],
-                'location_type_id'      => $attributes['location_type_id'],
-                'settlement_type_id'    => $attributes['settlement_type_id'],
-                'environment_type_id'   => $attributes['environment_type_id'],
-                'building_type_id'      => $attributes['building_type_id'],
-                'floor_type_id'         => $attributes['floor_type_id'],
-                'address'               => $attributes['address'],
-                'latitude'              => $attributes['latitude'],
-                'longitude'             => $attributes['longitude']
+                'regency_id'          => $attributes['regency_id'],
+                'district_id'         => $attributes['district_id'],
+                'village_id'          => $attributes['village_id'],
+                'location_type_id'    => $attributes['location_type_id'],
+                'settlement_type_id'  => $attributes['settlement_type_id'],
+                'environment_type_id' => $attributes['environment_type_id'],
+                'building_type_id'    => $attributes['building_type_id'],
+                'floor_type_id'       => $attributes['floor_type_id'],
+                'address'             => $attributes['address'],
+                'latitude'            => $attributes['latitude'],
+                'longitude'           => $attributes['longitude']
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -107,7 +107,6 @@ class LarvaeRepository implements LarvaeInterface
 
     public function createDetail($attributes, $id)
     {
-        DB::beginTransaction();
         try {
             foreach ($attributes['detailLarva'] as $detailLarva) {
                 $this->detailLarvae->updateOrCreate(
@@ -123,7 +122,8 @@ class LarvaeRepository implements LarvaeInterface
                         'water_temperature' => $detailLarva['water_temperature'],
                         'salinity'          => $detailLarva['salinity'],
                         'ph'                => $detailLarva['ph'],
-                        'aquatic_plant'    => $detailLarva['aquatic_plant'],
+                        'detail_tpa'        => $detailLarva['detail_tpa'],
+                        'aquatic_plant'     => $detailLarva['aquatic_plant'],
                     ]
                 );
             }
@@ -149,7 +149,8 @@ class LarvaeRepository implements LarvaeInterface
                     'water_temperature' => $detailLarva['water_temperature'],
                     'salinity'          => $detailLarva['salinity'],
                     'ph'                => $detailLarva['ph'],
-                    'aquatic_plant'    => $detailLarva['aquatic_plant'],
+                    'detail_tpa'        => $detailLarva['detail_tpa'],
+                    'aquatic_plant'     => $detailLarva['aquatic_plant'],
                 ]);
             }
         } catch (\Throwable $th) {
@@ -170,7 +171,7 @@ class LarvaeRepository implements LarvaeInterface
     public function filterDateRange($startDate, $endDate)
     {
         $startDate = date('Y-m-d', strtotime($startDate));
-        $endDate = date('Y-m-d', strtotime($endDate));
+        $endDate   = date('Y-m-d', strtotime($endDate));
         return $this->larvae->with('regency', 'district', 'village', 'locationType', 'settlementType', 'environmentType', 'buildingType', 'floorType', 'createdBy', 'updatedBy', 'detailLarvaes', 'detailLarvaes.tpaType')->orderBy('larva_code', 'desc')->where([
             ['created_at', '>=', $startDate],
             ['created_at', '<=', $endDate]
@@ -180,7 +181,7 @@ class LarvaeRepository implements LarvaeInterface
     public function getTotalLarva()
     {
         $detailLarva = $this->detailLarvae->all();
-        $totalLarva = 0;
+        $totalLarva  = 0;
         foreach ($detailLarva as $detail) {
             $totalLarva += $detail->amount_larva;
         }

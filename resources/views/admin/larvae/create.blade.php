@@ -20,12 +20,14 @@
                         <option value="{{ $locationType->id }}">{{ $locationType->name }}</option>
                     @endforeach
                 </x-select>
-                <x-select id="settlement_type_id" label="Jenis Pemukiman" name="settlement_type_id" isFit="true" required>
+                <x-select id="settlement_type_id" label="Jenis Pemukiman" name="settlement_type_id" isFit="true"
+                    required>
                     @foreach ($settlementTypes as $settlementType)
                         <option value="{{ $settlementType->id }}">{{ $settlementType->name }}</option>
                     @endforeach
                 </x-select>
-                <x-select id="environment_type_id" label="Jenis Lingkungan" name="environment_type_id" isFit="true" required>
+                <x-select id="environment_type_id" label="Jenis Lingkungan" name="environment_type_id" isFit="true"
+                    required>
                     @foreach ($environmentTypes as $environmentType)
                         <option value="{{ $environmentType->id }}">{{ $environmentType->name }}</option>
                     @endforeach
@@ -71,13 +73,15 @@
                             <option value="{{ $tpaType->id }}">{{ $tpaType->name }}</option>
                         @endforeach
                     </x-select>
+                    <x-input id="detail_tpa" label="Detail TPA" name="detail_tpa" type="text" required />
                     <x-input id="amount_larva" label="Jumlah Larva" name="amount_larva" type="number" required />
                     <x-input id="amount_egg" label="Jumlah Telur" name="amount_egg" type="number" required />
                     <x-input id="number_of_adults" label="Jumlah Nyamuk Dewasa" name="number_of_adults" type="number"
                         required />
                     <x-input id="water_temperature" label="Suhu Air" name="water_temperature" type="number" required />
                     <x-input id="salinity" label="Salinitas" name="salinity" type="number" required />
-                    <x-input id="ph" label="pH" name="ph" type="number" required />
+                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
+                        :value="$detailLarva->ph" />
                     <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true"
                         required>
                         <option value="available">Ada</option>
@@ -85,7 +89,9 @@
                     </x-select>
                 </div>
                 <div class="text-end">
-                    <x-button id="removeDetailLarva" type="button" class="bg-red-600 w-full md:w-auto justify-center" onclick="removeDetailLarva('detailLarva-1')">
+                    <x-button id="removeDetailLarva" type="button"
+                        class="bg-red-600 w-full md:w-auto justify-center"
+                        onclick="removeDetailLarva('detailLarva-1')">
                         <span>Hapus</span>
                     </x-button>
                 </div>
@@ -226,7 +232,8 @@
                                         required />
                                     <x-input id="water_temperature" label="Suhu Air" name="water_temperature" type="number" required />
                                     <x-input id="salinity" label="Salinitas" name="salinity" type="number" required />
-                                    <x-input id="ph" label="pH" name="ph" type="number" required />
+                                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
+                            :value="$detailLarva->ph" />
                                     <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true"
                                         required>
                                         <option value="available">Ada</option>
@@ -241,7 +248,7 @@
                             </div>
                         `);
 
-                    });
+                });
 
                 let map = L.map("map").setView([latitude, longitude], 13);
 
@@ -401,44 +408,44 @@
                     let detailLarva = [];
                     let count = $('#detailLarvaContainer').children().length;
                     for (let i = 1; i <= count; i++) {
-                        let tpa_type_id         = $(`#detailLarva-${i} #tpa_type_id`).val();
-                        let amount_larva        = $(`#detailLarva-${i} #amount_larva`).val();
-                        let amount_egg          = $(`#detailLarva-${i} #amount_egg`).val();
-                        let number_of_adults    = $(`#detailLarva-${i} #number_of_adults`).val();
-                        let water_temperature   = $(`#detailLarva-${i} #water_temperature`).val();
-                        let salinity            = $(`#detailLarva-${i} #salinity`).val();
-                        let ph                  = $(`#detailLarva-${i} #ph`).val();
-                        let aquatic_plant       = $(`#detailLarva-${i} #aquatic_plant`).val();
+                        let tpa_type_id = $(`#detailLarva-${i} #tpa_type_id`).val();
+                        let amount_larva = $(`#detailLarva-${i} #amount_larva`).val();
+                        let amount_egg = $(`#detailLarva-${i} #amount_egg`).val();
+                        let number_of_adults = $(`#detailLarva-${i} #number_of_adults`).val();
+                        let water_temperature = $(`#detailLarva-${i} #water_temperature`).val();
+                        let salinity = $(`#detailLarva-${i} #salinity`).val();
+                        let ph = $(`#detailLarva-${i} #ph`).val();
+                        let aquatic_plant = $(`#detailLarva-${i} #aquatic_plant`).val();
 
                         detailLarva.push({
-                            tpa_type_id         : tpa_type_id,
-                            amount_larva        : amount_larva,
-                            amount_egg          : amount_egg,
-                            number_of_adults    : number_of_adults,
-                            water_temperature   : water_temperature,
-                            salinity            : salinity,
-                            ph                  : ph,
-                            aquatic_plant       : aquatic_plant,
+                            tpa_type_id: tpa_type_id,
+                            amount_larva: amount_larva,
+                            amount_egg: amount_egg,
+                            number_of_adults: number_of_adults,
+                            water_temperature: water_temperature,
+                            salinity: salinity,
+                            ph: ph,
+                            aquatic_plant: aquatic_plant,
                         });
                     }
 
                     $.ajax({
                         type: "POST",
-                        url: "{{route('admin.larvae.store')}}",
+                        url: "{{ route('admin.larvae.store') }}",
                         data: {
-                            _token              : "{{ csrf_token() }}",
-                            regency_id          : $('#regency_id').val(),
-                            district_id         : $('#district_id').val(),
-                            village_id          : $('#village_id').val(),
-                            address             : $('#address').val(),
-                            location_type_id    : $('#location_type_id').val(),
-                            settlement_type_id  : $('#settlement_type_id').val(),
-                            environment_type_id : $('#environment_type_id').val(),
-                            building_type_id    : $('#building_type_id').val(),
-                            floor_type_id       : $('#floor_type_id').val(),
-                            latitude            : $('#latitude').val(),
-                            longitude           : $('#longitude').val(),
-                            detailLarva         : detailLarva,
+                            _token: "{{ csrf_token() }}",
+                            regency_id: $('#regency_id').val(),
+                            district_id: $('#district_id').val(),
+                            village_id: $('#village_id').val(),
+                            address: $('#address').val(),
+                            location_type_id: $('#location_type_id').val(),
+                            settlement_type_id: $('#settlement_type_id').val(),
+                            environment_type_id: $('#environment_type_id').val(),
+                            building_type_id: $('#building_type_id').val(),
+                            floor_type_id: $('#floor_type_id').val(),
+                            latitude: $('#latitude').val(),
+                            longitude: $('#longitude').val(),
+                            detailLarva: detailLarva,
                         },
                         // on processing
                         beforeSend: function() {
@@ -450,16 +457,16 @@
                                 },
                             });
                         },
-                        success: function (response) {
-                            if(response.status == 'success')
-                            {
+                        success: function(response) {
+                            if (response.status == 'success') {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: response.message,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = "{{ route('admin.larvae.index') }}";
+                                        window.location.href =
+                                            "{{ route('admin.larvae.index') }}";
                                     }
                                 });
                             } else {

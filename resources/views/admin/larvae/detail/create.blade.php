@@ -17,13 +17,15 @@
                             <option value="{{ $tpaType->id }}">{{ $tpaType->name }}</option>
                         @endforeach
                     </x-select>
+                    <x-input id="detail_tpa" label="Detail TPA" name="detail_tpa" type="text" required />
                     <x-input id="amount_larva" label="Jumlah Larva" name="amount_larva" type="number" required />
                     <x-input id="amount_egg" label="Jumlah Telur" name="amount_egg" type="number" required />
                     <x-input id="number_of_adults" label="Jumlah Nyamuk Dewasa" name="number_of_adults" type="number"
                         required />
                     <x-input id="water_temperature" label="Suhu Air" name="water_temperature" type="number" required />
                     <x-input id="salinity" label="Salinitas" name="salinity" type="number" required />
-                    <x-input id="ph" label="pH" name="ph" type="number" required />
+                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
+                        :value="$detailLarva->ph" />
                     <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true" required>
                         <option value="available">Ada</option>
                         <option value="not_available">Tidak Ada</option>
@@ -84,7 +86,8 @@
                                         required />
                                     <x-input id="water_temperature" label="Suhu Air" name="water_temperature" type="number" required />
                                     <x-input id="salinity" label="Salinitas" name="salinity" type="number" required />
-                                    <x-input id="ph" label="pH" name="ph" type="number" required />
+                                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
+                            :value="$detailLarva->ph" />
                                     <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true"
                                         required>
                                         <option value="available">Ada</option>
@@ -129,7 +132,7 @@
 
                     $.ajax({
                         url: "{{ route('admin.larvae.detail.store-new', ':id') }}".replace(':id',
-                        {{ $larva->id }}),
+                            {{ $larva->id }}),
                         type: "POST",
                         data: {
                             _token: '{{ csrf_token() }}',

@@ -18,6 +18,7 @@
                                     {{ $tpaType->name }}</option>
                             @endforeach
                         </x-select>
+                        <x-input id="detail_tpa" label="Detail TPA" name="detail_tpa" type="text" required />
                         <x-input id="amount_larva" label="Jumlah Larva" name="amount_larva" type="number" required
                             :value="$detailLarva->amount_larva" />
                         <x-input id="amount_egg" label="Jumlah Telur" name="amount_egg" type="number" required
@@ -28,8 +29,8 @@
                             required :value="$detailLarva->water_temperature" />
                         <x-input id="salinity" label="Salinitas" name="salinity" type="number" required
                             :value="$detailLarva->salinity" />
-                        <x-input id="ph" label="pH" name="ph" type="text" inputmode="decimal"
-                            required :value="$detailLarva->ph" />
+                        <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
+                            :value="$detailLarva->ph" />
                         <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true"
                             required>
                             <option value="available"
@@ -141,7 +142,8 @@
                                         required />
                                     <x-input id="water_temperature" label="Suhu Air" name="water_temperature" type="number" required />
                                     <x-input id="salinity" label="Salinitas" name="salinity" type="number" required />
-                                    <x-input id="ph" label="pH" name="ph" type="number" required />
+                                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
+                            :value="$detailLarva->ph" />
                                     <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true"
                                         required>
                                         <option value="available">Ada</option>

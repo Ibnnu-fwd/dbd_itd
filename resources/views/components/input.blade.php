@@ -1,4 +1,4 @@
-@props(['id' => '', 'label' => '', 'name' => '', 'type' => 'text', 'placeholder' => '', 'value' => '', 'required' => false, 'class' => '', 'inputmode' => ''])
+@props(['id' => '', 'label' => '', 'name' => '', 'type' => 'text', 'placeholder' => '', 'value' => '', 'required' => false, 'class' => '', 'step' => ''])
 
 <div class="mb-4">
     <label for="{{ $id }}" class="block mb-2 text-xs 2xl:text-sm font-medium text-gray-900 dark:text-white">
@@ -10,7 +10,7 @@
             ($class ? ' ' . $class : ''),
     ]) !!}
         placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }} autocomplete="off" value="{{ $value }}"
-        @if (isset($inputmode)) " inputmode="{{ $inputmode }}" @endif>
+        @if (isset($step)) step="{{ $step }}" @endif>
 
     @error($name)
         <p class="text-xs 2xl:text-sm text-red-500 mt-1">{{ $message }}</p>
