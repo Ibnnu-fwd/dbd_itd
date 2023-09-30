@@ -3,7 +3,7 @@
     <div id="map" class="z-0 mb-4" style="height: 350px; border-radius: 6px; margin-top:30px;"></div>
     <div class="xl:grid grid-cols-2 gap-x-4">
         @if ($samplePerYear->count() > 0)
-            <x-card-container height="" style="height: 220px">
+            <x-card-container style="height: 301px">
                 <p class="text-xs 2xl:text-sm font-semibold">
                     Statistik Sampel
                 </p>
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <x-card-container class="mt-8" style="height: 220px">
+    <x-card-container class="mt-8" id="sampleAbjCard" style="height: 410px; max-height: 100%; overflow: hidden">
         <div class="md:flex justify-between items-center">
             <p class="text-xs 2xl:text-sm font-semibold">
                 Data Sampel dan ABJ (%)
@@ -557,6 +557,8 @@
                     });
                 });
 
+                // set height when canvas already rendered
+                $('#sampleAbjCard').height($('#sampleAndAbj').height() + 100);
             });
         </script>
     @endpush
