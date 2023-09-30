@@ -63,7 +63,11 @@
             <p class="text-xs 2xl:text-sm font-semibold">
                 Data Sampel dan ABJ (%)
             </p>
-
+            <x-select id="regency" name="regency" label="Kabupaten">
+                @foreach ($regencies as $regency)
+                    <option value="{{ $regency->id }}">{{ $regency->name }}</option>
+                @endforeach
+            </x-select>
         </div>
         <canvas id="sampleAndAbj"></canvas>
     </x-card-container>
@@ -524,6 +528,34 @@
                         },
                     });
                 @endif
+
+                $('#regency').change(function() {
+                    let regencyId = $(this).val();
+                    $.ajax({
+                        url: '{{ route('admin.dashboard.get-sample-and-abj-by-district') }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            regency_id: regencyId
+                        },
+                        success: function(response) {
+                            let sampleAndAbj = response;
+
+                            // Extract data for labels, total_sample, and total_abj
+                            let districtNames = Object.values(sampleAndAbj).map(entry => entry
+                                .name);
+                            let totalSampleData = Object.values(sampleAndAbj).map(entry => entry
+                                .total_sample);
+                            let totalAbjData = Object.values(sampleAndAbj).map(entry => entry
+                                .total_abj);
+
+                            myChart.data.labels = districtNames;
+                            myChart.data.datasets[0].data = totalSampleData;
+                            myChart.data.datasets[1].data = totalAbjData;
+                            myChart.update();
+                        }
+                    });
+                });
 
             });
         </script>

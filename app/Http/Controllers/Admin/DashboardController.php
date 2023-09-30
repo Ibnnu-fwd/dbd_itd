@@ -9,6 +9,7 @@ use App\Repositories\Interface\LarvaeInterface;
 use App\Repositories\Interface\SampleInterface;
 use App\Repositories\Interface\AbjInterface;
 use App\Models\Sample;
+use App\Repositories\Interface\RegencyInterface;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -17,17 +18,20 @@ class DashboardController extends Controller
     private $larva;
     private $larvae;
     private $abj;
+    private $regency;
 
     public function __construct(
         SampleInterface $sample,
         LarvaeInterface $larva,
         AbjInterface $abj,
         LarvaeInterface $larvae,
+        RegencyInterface $regency
     ) {
         $this->sample = $sample;
         $this->larva  = $larva;
         $this->abj    = $abj;
         $this->larvae = $larvae;
+        $this->regency = $regency;
     }
 
     public function __invoke(Request $request)
@@ -43,6 +47,12 @@ class DashboardController extends Controller
             'larvae'        => $this->larvae->getAll(),
             'sample'        => $this->sample->getAll(),
             'sampleAndAbj'  => $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3501),
+            'regencies'     => $this->regency->getAll()
         ]);
+    }
+
+    public function getSampleAndAbjByDistrict(Request $request)
+    {
+        return response()->json($this->sample->getSampleAndAbjGroupByDistrict($request->regency_id));
     }
 }

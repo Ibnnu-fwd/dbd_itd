@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('ksh', [HomeController::class, 'ksh'])->name('user.ksh');
 
-Route::prefix('larvae')->group(function(){
+Route::prefix('larvae')->group(function () {
     Route::post('filter-map-regency', [UserLarvaeController::class, 'filterMapRegency'])->name('user.larvae.filter-map-regency');
     Route::post('filter-map-year', [UserLarvaeController::class, 'filterMapYear'])->name('user.larvae.filter-map-year');
     Route::get('/', [UserLarvaeController::class, 'index'])->name('user.larvae');
@@ -65,6 +65,8 @@ Route::post('user/check-email', [AuthController::class, 'checkEmail'])->name('ad
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
+
+    Route::post('get-sample-and-abj-by-district', [DashboardController::class, 'getSampleAndAbjByDistrict'])->name('admin.dashboard.get-sample-and-abj-by-district');
 
     // Province
     Route::post('province/list', [ProvinceController::class, 'list'])->name('admin.province.list');
