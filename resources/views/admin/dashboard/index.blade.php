@@ -470,7 +470,7 @@
                             scales: {
                                 y: {
                                     // stack the bar
-                                    stacked: true,
+                                    stacked: false,
                                     grid: {
                                         display: false,
                                     },
