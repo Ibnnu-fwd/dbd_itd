@@ -226,6 +226,7 @@
                                             <option value="{{ $tpaType->id }}">{{ $tpaType->name }}</option>
                                         @endforeach
                                     </x-select>
+                                    <x-input id="detail_tpa" label="Detail TPA" name="detail_tpa" type="text" required />
                                     <x-input id="amount_larva" label="Jumlah Larva" name="amount_larva" type="number" required />
                                     <x-input id="amount_egg" label="Jumlah Telur" name="amount_egg" type="number" required />
                                     <x-input id="number_of_adults" label="Jumlah Nyamuk Dewasa" name="number_of_adults" type="number"
@@ -409,6 +410,7 @@
                     let count = $('#detailLarvaContainer').children().length;
                     for (let i = 1; i <= count; i++) {
                         let tpa_type_id = $(`#detailLarva-${i} #tpa_type_id`).val();
+                        let detail_tpa = $(`#detailLarva-${i} #detail_tpa`).val();
                         let amount_larva = $(`#detailLarva-${i} #amount_larva`).val();
                         let amount_egg = $(`#detailLarva-${i} #amount_egg`).val();
                         let number_of_adults = $(`#detailLarva-${i} #number_of_adults`).val();
@@ -420,6 +422,7 @@
                         detailLarva.push({
                             tpa_type_id: tpa_type_id,
                             amount_larva: amount_larva,
+                            detail_tpa: detail_tpa,
                             amount_egg: amount_egg,
                             number_of_adults: number_of_adults,
                             water_temperature: water_temperature,

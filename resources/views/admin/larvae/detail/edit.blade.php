@@ -136,6 +136,7 @@
                                             <option value="{{ $tpaType->id }}">{{ $tpaType->name }}</option>
                                         @endforeach
                                     </x-select>
+                                    <x-input id="detail_tpa" label="Detail TPA" name="detail_tpa" type="text" required />
                                     <x-input id="amount_larva" label="Jumlah Larva" name="amount_larva" type="number" required />
                                     <x-input id="amount_egg" label="Jumlah Telur" name="amount_egg" type="number" required />
                                     <x-input id="number_of_adults" label="Jumlah Nyamuk Dewasa" name="number_of_adults" type="number"
@@ -171,6 +172,7 @@
                     detailLarva.forEach(function(id, index) {
                         let detailLarvaId = $(`#detailLarva-${id} input[name="id"]`).val() ?? null;
                         let tpa_type_id = $(`#detailLarva-${id} #tpa_type_id`).val();
+                        let detail_tpa = $(`#detailLarva-${id} #detail_tpa`).val();
                         let amount_larva = $(`#detailLarva-${id} #amount_larva`).val();
                         let amount_egg = $(`#detailLarva-${id} #amount_egg`).val();
                         let number_of_adults = $(`#detailLarva-${id} #number_of_adults`).val();
@@ -182,6 +184,7 @@
                         data.push({
                             id: detailLarvaId ? detailLarvaId : null,
                             tpa_type_id: tpa_type_id,
+                            detail_tpa: detail_tpa,
                             amount_larva: amount_larva,
                             amount_egg: amount_egg,
                             number_of_adults: number_of_adults,
