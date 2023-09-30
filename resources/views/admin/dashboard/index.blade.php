@@ -99,7 +99,107 @@
                     accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                 }
             ).addTo(map);
+            @if (count($abj) > 0)
+            function updateMapData() {
+            // Menggunakan fetch untuk mengambil data GeoJSON dari URL
+            let abj = Object.values(@json($abj));
+            fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
+                .then((response) => response.json())
+                .then((data) => {
+                    const geojson = {
+                        type: 'FeatureCollection',
+                        features: []
+                    };
 
+                    data.features.forEach((feature) => {
+                        const properties = feature.properties;
+                        const kecamatan = properties.KECAMATAN;
+
+                        abj.forEach((abjItem) => {
+                            if (abjItem.district === kecamatan) {
+                                // Sekarang Anda memiliki array koordinat dari fitur yang sesuai
+                                const coordinates = feature.geometry.coordinates;
+
+                                // Ubah koordinat jika diperlukan
+                                const coordinates2 = coordinates[0];
+                                // console.log(coordinates2);
+
+                                geojson.features.push({
+                                    type: 'Feature',
+                                    geometry: {
+                                        type: 'Polygon',
+                                        coordinates: [coordinates2]
+                                    },
+                                    properties: {
+                                        color: getColor(abjItem.abj_total),
+                                        regency: abjItem.regency,
+                                        district: properties.KECAMATAN,
+                                        village: properties.KELURAHAN,
+                                        abj: abjItem.abj_total,
+                                        total_sample: abjItem.total_sample,
+                                        total_check: abjItem.total_check
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                    L.geoJSON(geojson, {
+                        style: function(feature) {
+                            return {
+                                fillColor: feature.properties.color,
+                                color: feature.properties.color,
+                                weight: 0.5,
+                                fillOpacity: 0.5,
+                            };
+                        },
+                        onEachFeature: function(feature, layer) {
+                            layer.on('click', function(e) {
+                                const coordinates = e.latlng;
+                                const properties = feature.properties;
+
+                                const popupContent = `
+                                    <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
+                                    <p><strong>Kecamatan:</strong> ${properties.district}</p>
+                                    <p><strong>ABJ:</strong> ${properties.abj}%</p>
+                                    <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
+                                    <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
+                                `;
+
+                                L.popup()
+                                    .setLatLng(coordinates)
+                                    .setContent(popupContent)
+                                    .openOn(map);
+
+                                // Zoom to the clicked feature
+                                map.fitBounds(layer.getBounds(), {
+                                    padding: [100, 100]
+                                });
+                            });
+
+
+                            layer.on('mouseover', function(e) {
+                                map.getContainer().style.cursor = 'pointer';
+                            });
+
+                            layer.on('mouseout', function(e) {
+                                map.getContainer().style.cursor = '';
+                            });
+                        }
+                    }).addTo(map);
+                })
+                .catch((error) => {
+                    console.error("Gagal mengambil data GeoJSON:", error);
+                });
+
+
+        }
+
+                updateMapData(); // map update
+            @endif
+
+            // full screen
+            L.control.fullscreen().addTo(map);
             let larvae = Object.values(@json($larvae));
             let sample = Object.values(@json($sample));
 
@@ -199,107 +299,7 @@
                 });
             @endif
 
-             @if (count($abj) > 0)
-            function updateMapData() {
-            // Menggunakan fetch untuk mengambil data GeoJSON dari URL
-            let abj = Object.values(@json($abj));
-            fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
-                .then((response) => response.json())
-                .then((data) => {
-                    const geojson = {
-                        type: 'FeatureCollection',
-                        features: []
-                    };
-
-                    data.features.forEach((feature) => {
-                        const properties = feature.properties;
-                        const kecamatan = properties.KECAMATAN;
-
-                        abj.forEach((abjItem) => {
-                            if (abjItem.district === kecamatan) {
-                                // Sekarang Anda memiliki array koordinat dari fitur yang sesuai
-                                const coordinates = feature.geometry.coordinates;
-
-                                // Ubah koordinat jika diperlukan
-                                const coordinates2 = coordinates[0];
-                                console.log(coordinates2);
-
-                                geojson.features.push({
-                                    type: 'Feature',
-                                    geometry: {
-                                        type: 'Polygon',
-                                        coordinates: [coordinates2]
-                                    },
-                                    properties: {
-                                        color: getColor(abjItem.abj_total),
-                                        regency: abjItem.regency,
-                                        district: properties.KECAMATAN,
-                                        village: properties.KELURAHAN,
-                                        abj: abjItem.abj_total,
-                                        total_sample: abjItem.total_sample,
-                                        total_check: abjItem.total_check
-                                    }
-                                });
-                            }
-                        });
-                    });
-
-                    L.geoJSON(geojson, {
-                        style: function(feature) {
-                            return {
-                                fillColor: feature.properties.color,
-                                color: feature.properties.color,
-                                weight: 0.5,
-                                fillOpacity: 0.5,
-                            };
-                        },
-                        onEachFeature: function(feature, layer) {
-                            layer.on('click', function(e) {
-                                const coordinates = e.latlng;
-                                const properties = feature.properties;
-
-                                const popupContent = `
-                                    <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
-                                    <p><strong>Kecamatan:</strong> ${properties.district}</p>
-                                    <p><strong>ABJ:</strong> ${properties.abj}%</p>
-                                    <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
-                                    <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
-                                `;
-
-                                L.popup()
-                                    .setLatLng(coordinates)
-                                    .setContent(popupContent)
-                                    .openOn(map);
-
-                                // Zoom to the clicked feature
-                                map.fitBounds(layer.getBounds(), {
-                                    padding: [100, 100]
-                                });
-                            });
-
-
-                            layer.on('mouseover', function(e) {
-                                map.getContainer().style.cursor = 'pointer';
-                            });
-
-                            layer.on('mouseout', function(e) {
-                                map.getContainer().style.cursor = '';
-                            });
-                        }
-                    }).addTo(map);
-                })
-                .catch((error) => {
-                    console.error("Gagal mengambil data GeoJSON:", error);
-                });
-
-
-        }
-
-                updateMapData(); // map update
-            @endif
-
-            // full screen
-            L.control.fullscreen().addTo(map);
+            
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
