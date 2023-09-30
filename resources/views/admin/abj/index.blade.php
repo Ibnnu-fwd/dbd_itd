@@ -112,7 +112,7 @@
 
             function updateMapData() {
                 let abj = Object.values(@json($abj));
-                fetch("{{ asset('assets/geojson/indonesia_villages_border.geojson') }}")
+                fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
                     .then((response) => response.json())
                     .then((data) => {
                         const geojson = {
