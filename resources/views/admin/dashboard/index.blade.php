@@ -1,6 +1,52 @@
 <x-app-layout>
     <x-breadcrumb name="dashboard" />
-    <div id="map" class="z-0 mb-4" style="height: 350px; border-radius: 6px; margin-top:30px;"></div>
+    <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
+            <!-- Legenda -->
+            <div class="absolute bottom-0 right-0 p-2 bg-white shadow" style="z-index: 2;">
+                <h5 class="mb-2 legend-text ">Legend</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="legend-color legend-green"></span>
+                        ABJ Tinggi
+                    </li>
+                    <li>
+                        <span class="legend-color legend-yellow"></span>
+                        ABJ Sedang
+                    </li>
+                    <li>
+                        <span class="legend-color legend-red"></span>
+                        ABJ Rendah
+                    </li>
+                    <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
+                </ul>
+            </div>
+            <!-- Peta -->
+            <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
+        </div>
+
+        <style>
+            .legend-color {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                margin-right: 5px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .legend-green {
+                background-color: #1cc88a;
+            }
+
+            .legend-yellow {
+                background-color: #ff9671;
+            }
+
+            .legend-red {
+                background-color: #e74a3b;
+            }
+
+        </style>
     <div class="xl:grid grid-cols-2 gap-x-4">
         @if ($samplePerYear->count() > 0)
             <x-card-container style="height: 301px">
@@ -79,11 +125,16 @@
 
         <script>
             function getColor(abj_total) {
-                return abj_total > 90 ? '#1cc88a' :
-                    abj_total >= 15 && abj_total < 90 ? '#ff9671' :
-                    abj_total <= 15 ? '#e74a3b' :
-                    '#858796';
+            if (abj_total >= 95 && abj_total <= 100) {
+                return '#1cc88a'; // ABJ Tinggi
+            } else if (abj_total >= 50 && abj_total < 95) {
+                return '#ff9671'; // ABJ Sedang
+            } else if (abj_total < 50) {
+                return '#e74a3b'; // ABJ Rendah
+            } else {
+                return '#858796'; // Default
             }
+        }
 
             const map = L.map('map').setView([-8.1624029, 113.717332], 8);
 
