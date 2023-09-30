@@ -18,7 +18,8 @@
                                     {{ $tpaType->name }}</option>
                             @endforeach
                         </x-select>
-                        <x-input id="detail_tpa" label="Detail TPA" name="detail_tpa" type="text" required />
+                        <x-input id="detail_tpa" label="Detail TPA" name="detail_tpa" type="text" required autofocus
+                            :value="$detailLarva->detail_tpa" />
                         <x-input id="amount_larva" label="Jumlah Larva" name="amount_larva" type="number" required
                             :value="$detailLarva->amount_larva" />
                         <x-input id="amount_egg" label="Jumlah Telur" name="amount_egg" type="number" required
