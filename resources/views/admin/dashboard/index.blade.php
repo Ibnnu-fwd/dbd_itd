@@ -1,52 +1,6 @@
 <x-app-layout>
     <x-breadcrumb name="dashboard" />
-    <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
-            <!-- Legenda -->
-            <div class="absolute bottom-0 right-0 p-2 bg-white shadow" style="z-index: 2;">
-                <h5 class="mb-2 legend-text ">Legend</h5>
-                <ul class="list-unstyled">
-                    <li>
-                        <span class="legend-color legend-green"></span>
-                        ABJ Tinggi
-                    </li>
-                    <li>
-                        <span class="legend-color legend-yellow"></span>
-                        ABJ Sedang
-                    </li>
-                    <li>
-                        <span class="legend-color legend-red"></span>
-                        ABJ Rendah
-                    </li>
-                    <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
-                </ul>
-            </div>
-            <!-- Peta -->
-            <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
-        </div>
-
-        <style>
-            .legend-color {
-                width: 20px;
-                height: 20px;
-                display: inline-block;
-                margin-right: 5px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-
-            .legend-green {
-                background-color: #1cc88a;
-            }
-
-            .legend-yellow {
-                background-color: #ff9671;
-            }
-
-            .legend-red {
-                background-color: #e74a3b;
-            }
-
-        </style>
+    <div id="map" class="z-0 mb-4" style="height: 350px; border-radius: 6px; margin-top:30px;"></div>
     <div class="xl:grid grid-cols-2 gap-x-4">
         @if ($samplePerYear->count() > 0)
             <x-card-container style="height: 301px">
@@ -125,16 +79,11 @@
 
         <script>
             function getColor(abj_total) {
-            if (abj_total >= 95 && abj_total <= 100) {
-                return '#1cc88a'; // ABJ Tinggi
-            } else if (abj_total >= 50 && abj_total < 95) {
-                return '#ff9671'; // ABJ Sedang
-            } else if (abj_total < 50) {
-                return '#e74a3b'; // ABJ Rendah
-            } else {
-                return '#858796'; // Default
+                return abj_total > 90 ? '#1cc88a' :
+                    abj_total >= 15 && abj_total < 90 ? '#ff9671' :
+                    abj_total <= 15 ? '#e74a3b' :
+                    '#858796';
             }
-        }
 
             const map = L.map('map').setView([-8.1624029, 113.717332], 8);
 
@@ -150,6 +99,106 @@
                     accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                 }
             ).addTo(map);
+
+            let larvae = Object.values(@json($larvae));
+            let sample = Object.values(@json($sample));
+
+            @if ($sample->count() > 0)
+                let centerCoordinateSample = [];
+                for (let i = 0; i < sample.length; i++) {
+                    centerCoordinateSample.push([sample[i].latitude, sample[i].longitude, sample[i]]);
+                }
+
+                centerCoordinateSample.forEach(coordinate => {
+                    var el = L.divIcon({
+                        className: 'custom-marker',
+                        html: '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">'
+                    });
+
+                    // cluster marker
+                    markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                        icon: el
+                    }).bindPopup(`
+                        <table class = "border-collapse border-none">
+                            <tbody>
+                                <tr>
+                                    <th colspan = "3" class = "p-0">Detail Lokasi</th>
+                                </tr>
+                                <tr>
+                                    <td class = "p-0">Provinsi</td>
+                                    <td class = "p-0">:</td>
+                                    <td class = "p-0">${coordinate[2].province.name}</td>
+                                </tr>
+                                <tr>
+                                    <td class = "p-0">Kabupaten</td>
+                                    <td class = "p-0">:</td>
+                                    <td class = "p-0">${coordinate[2].regency.name}</td>
+                                </tr>
+                                <tr>
+                                    <td class = "p-0">Kecamatan</td>
+                                    <td class = "p-0">:</td>
+                                    <td class = "p-0">${coordinate[2].district.name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lokasi</td>
+                                    <td>: </td>
+                                    <td>${coordinate[2].location_name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Rumah Sakit</td>
+                                    <td>: </td>
+                                    <td>${coordinate[2].public_health_name}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class = "border-collapse border-none mt-4 w-full">
+                            <thead>
+                                <tr>
+                                    <th colspan = "2" class = "p-0">Detail Sampling</th>
+                                </tr>
+                                <tr class   = "mt-3">
+                                <th colspan = "2" class = "p-0">Jenis Virus</th>
+                                <th class   = "p-0">Jumlah</th>
+                                </tr>
+                                </thead>
+                            <tbody>
+                                ` +
+                        Object.values(coordinate[2].type).map(function(type) {
+                            return `
+                                        <tr>
+                                            <td class = "p-0">${type.name}:</td>
+                                            <td class = "p-0" align = "right">${type.amount}</td>
+                                        </tr>
+                                    `;
+                        }).join('') +
+                        `
+                            </tbody>
+                        </table>
+                    `).openPopup());
+
+                    map.addLayer(markers);
+                });
+            @endif
+
+            @if ($larvae->count() > 0)
+                let centerCoordinate = [];
+                for (let i = 0; i < larvae.length; i++) {
+                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
+                }
+
+                centerCoordinate.forEach(coordinate => {
+                    var el = L.divIcon({
+                        className: 'custom-marker',
+                        html: '<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">'
+                    });
+
+                    L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                        icon: el
+                    }).addTo(map);
+                });
+            @endif
+
             @if (count($abj) > 0)
             function updateMapData() {
             // Menggunakan fetch untuk mengambil data GeoJSON dari URL
@@ -251,106 +300,6 @@
 
             // full screen
             L.control.fullscreen().addTo(map);
-            let larvae = Object.values(@json($larvae));
-            let sample = Object.values(@json($sample));
-
-            @if ($sample->count() > 0)
-                let centerCoordinateSample = [];
-                for (let i = 0; i < sample.length; i++) {
-                    centerCoordinateSample.push([sample[i].latitude, sample[i].longitude, sample[i]]);
-                }
-
-                centerCoordinateSample.forEach(coordinate => {
-                    var el = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">'
-                    });
-
-                    // cluster marker
-                    markers.addLayer(L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
-                        icon: el
-                    }).bindPopup(`
-                        <table class = "border-collapse border-none">
-                            <tbody>
-                                <tr>
-                                    <th colspan = "3" class = "p-0">Detail Lokasi</th>
-                                </tr>
-                                <tr>
-                                    <td class = "p-0">Provinsi</td>
-                                    <td class = "p-0">:</td>
-                                    <td class = "p-0">${coordinate[2].province.name}</td>
-                                </tr>
-                                <tr>
-                                    <td class = "p-0">Kabupaten</td>
-                                    <td class = "p-0">:</td>
-                                    <td class = "p-0">${coordinate[2].regency.name}</td>
-                                </tr>
-                                <tr>
-                                    <td class = "p-0">Kecamatan</td>
-                                    <td class = "p-0">:</td>
-                                    <td class = "p-0">${coordinate[2].district.name}</td>
-                                </tr>
-                                <tr>
-                                    <td>Lokasi</td>
-                                    <td>: </td>
-                                    <td>${coordinate[2].location_name}</td>
-                                </tr>
-                                <tr>
-                                    <td>Rumah Sakit</td>
-                                    <td>: </td>
-                                    <td>${coordinate[2].public_health_name}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class = "border-collapse border-none mt-4 w-full">
-                            <thead>
-                                <tr>
-                                    <th colspan = "2" class = "p-0">Detail Sampling</th>
-                                </tr>
-                                <tr class   = "mt-3">
-                                <th colspan = "2" class = "p-0">Jenis Virus</th>
-                                <th class   = "p-0">Jumlah</th>
-                                </tr>
-                                </thead>
-                            <tbody>
-                                ` +
-                        Object.values(coordinate[2].type).map(function(type) {
-                            return `
-                                        <tr>
-                                            <td class = "p-0">${type.name}:</td>
-                                            <td class = "p-0" align = "right">${type.amount}</td>
-                                        </tr>
-                                    `;
-                        }).join('') +
-                        `
-                            </tbody>
-                        </table>
-                    `).openPopup());
-
-                    map.addLayer(markers);
-                });
-            @endif
-
-            @if ($larvae->count() > 0)
-                let centerCoordinate = [];
-                for (let i = 0; i < larvae.length; i++) {
-                    centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
-                }
-
-                centerCoordinate.forEach(coordinate => {
-                    var el = L.divIcon({
-                        className: 'custom-marker',
-                        html: '<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">'
-                    });
-
-                    L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
-                        icon: el
-                    }).addTo(map);
-                });
-            @endif
-
-            
         </script>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
