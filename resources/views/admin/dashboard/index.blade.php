@@ -469,8 +469,6 @@
                             },
                             scales: {
                                 y: {
-                                    // stack the bar
-                                    stacked: false,
                                     grid: {
                                         display: false,
                                     },
@@ -481,8 +479,6 @@
                                     },
                                 },
                                 x: {
-                                    // stack the bar
-                                    stacked: true,
                                     grid: {
                                         display: false,
                                     },
