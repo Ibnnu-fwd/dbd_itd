@@ -325,6 +325,10 @@
                         </table>
                     `).openPopup());
 
+                    markers.on('mouseover', function() {
+                        markers.openPopup();
+                    });
+
                     map.addLayer(markers);
                 });
             @endif
