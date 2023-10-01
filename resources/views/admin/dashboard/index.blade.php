@@ -514,12 +514,14 @@
                     let orangePalette = [
                         '#f6c23e',
                         '#e74a3b',
+                        '#9c27b0'
                     ];
 
                     // Extract data for labels, total_sample, and total_abj
                     let districtNames = Object.values(sampleAndAbj).map(entry => entry.name);
                     let totalSampleData = Object.values(sampleAndAbj).map(entry => entry.total_sample);
                     let totalAbjData = Object.values(sampleAndAbj).map(entry => entry.total_abj);
+                    let totalLarvaData = Object.values(sampleAndAbj).map(entry => entry.total_larva);
 
                     var ctx = document.getElementById('sampleAndAbj').getContext('2d');
                     // width 100%
@@ -544,6 +546,16 @@
                                     data: totalAbjData,
                                     backgroundColor: orangePalette[1],
                                     borderColor: orangePalette[1],
+                                    borderWidth: 1,
+                                    borderRadius: 4,
+                                    barPercentage: 0.5,
+                                    categoryPercentage: 0.5,
+                                },
+                                {
+                                    label: 'Total Larva',
+                                    data: totalLarvaData,
+                                    backgroundColor: orangePalette[2],
+                                    borderColor: orangePalette[2],
                                     borderWidth: 1,
                                     borderRadius: 4,
                                     barPercentage: 0.5,
@@ -634,10 +646,13 @@
                                 .total_sample);
                             let totalAbjData = Object.values(sampleAndAbj).map(entry => entry
                                 .total_abj);
+                            let totalLarvaData = Object.values(sampleAndAbj).map(entry => entry
+                                .total_larva);
 
                             myChart.data.labels = districtNames;
                             myChart.data.datasets[0].data = totalSampleData;
                             myChart.data.datasets[1].data = totalAbjData;
+                            myChart.data.datasets[2].data = totalLarvaData;
                             myChart.update();
                         }
                     });

@@ -6,6 +6,7 @@ use App\Models\Abj;
 use App\Models\DetailSampleMorphotype;
 use App\Models\DetailSampleVirus;
 use App\Models\District;
+use App\Models\Larvae;
 use App\Models\Morphotype;
 use App\Models\Province;
 use App\Models\Regency;
@@ -729,6 +730,7 @@ class SampleRepository implements SampleInterface
         foreach ($districts as $district) {
             $district['total_sample'] = $this->getTotalSampleForDistrict($district->id);
             $district['total_abj']    = $this->getAverageAbjForDistrict($district->id);
+            $district['total_larva']  = $this->getTotalLarvaForDistrict($district->id);
         }
 
         return $districts;
@@ -746,5 +748,18 @@ class SampleRepository implements SampleInterface
         return $abjs->isNotEmpty()
             ? $abjs->avg('abj_total')
             :  0;  // Set a default value if no ABJs are found
+    }
+
+    private function getTotalLarvaForDistrict($districtId)
+    {
+        $larvas = Larvae::with('detailLarvaes')->where('district_id', $districtId)->get();
+        // get sum of amount_larva in detail_larvaes
+        $totalLarva = $larvas->map(function ($item) {
+            return $item->detailLarvaes->map(function ($item) {
+                return $item->amount_larva;
+            })->sum();
+        })->sum();
+
+        return $totalLarva;
     }
 }

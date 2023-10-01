@@ -46,7 +46,7 @@ class DashboardController extends Controller
             'abj'           => $this->abj->getAllGroupByDistrict(),
             'larvae'        => $this->larvae->getAll(),
             'sample'        => $this->sample->getAll(),
-            'sampleAndAbj'  => $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3501),
+            'sampleAndAbj'  => $this->sample->getSampleAndAbjGroupByDistrict($request->regency_id ?? 3578),
             'regencies'     => $this->regency->getAll()
         ]);
     }
