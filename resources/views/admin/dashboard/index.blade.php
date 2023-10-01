@@ -347,36 +347,36 @@
 
                     marker.bindPopup(
                         `<table class="table-sm">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>TPA</th>
-                                    <th>Larva</th>
-                                    <th>Telur</th>
-                                    <th>Nyamuk Dewasa</th>
-                                    <th>Suhu Air</th>
-                                    <th>Salinitas</th>
-                                    <th>PH</th>
-                                    <th>Tumbuhan Air</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ` +
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>TPA</th>
+                    <th>Larva</th>
+                    <th>Telur</th>
+                    <th>Nyamuk Dewasa</th>
+                    <th>Suhu Air</th>
+                    <th>Salinitas</th>
+                    <th>PH</th>
+                    <th>Tumbuhan Air</th>
+                </tr>
+            </thead>
+            <tbody>
+                ` +
                         larvae[i].detail_larvaes.map((data, index) => {
                             return `<tr>
-                                        <td>${index + 1}</td>
-                                        <td>${data.tpa_type.name}</td>
-                                        <td>${data.amount_larva}</td>
-                                        <td>${data.amount_egg}</td>
-                                        <td>${data.number_of_adults}</td>
-                                        <td>${data.water_temperature}</td>
-                                        <td>${data.salinity}</td>
-                                        <td>${data.ph}</td>
-                                        <td>${data.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'}</td>
-                                    </tr>`
+                        <td>${index + 1}</td>
+                        <td>${data.tpa_type.name}</td>
+                        <td>${data.amount_larva}</td>
+                        <td>${data.amount_egg}</td>
+                        <td>${data.number_of_adults}</td>
+                        <td>${data.water_temperature}</td>
+                        <td>${data.salinity}</td>
+                        <td>${data.ph}</td>
+                        <td>${data.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'}</td>
+                    </tr>`
                         }).join('') +
                         `</tbody>
-                        </table>`
+        </table>`
                         // adjust width popup
                     ).on('popupopen', function() {
                         $('.leaflet-popup-content').width('auto');
