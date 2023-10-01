@@ -335,7 +335,7 @@
                     centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
                 }
 
-                centerCoordinate.forEach(coordinate => {
+                centerCoordinate.forEach((coordinate, i) => {
                     var el = L.divIcon({
                         className: 'custom-marker',
                         html: '<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">'
