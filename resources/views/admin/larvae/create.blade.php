@@ -129,6 +129,86 @@
             let latitude;
             let longitude;
 
+            $('#btnSubmit').click(function(e) {
+                e.preventDefault();
+
+                let detailLarva = [];
+                let count = $('#detailLarvaContainer').children().length;
+                for (let i = 1; i <= count; i++) {
+                    let tpa_type_id = $(`#detailLarva-${i} #tpa_type_id`).val();
+                    let detail_tpa = $(`#detailLarva-${i} #detail_tpa`).val();
+                    let amount_larva = $(`#detailLarva-${i} #amount_larva`).val();
+                    let amount_egg = $(`#detailLarva-${i} #amount_egg`).val();
+                    let number_of_adults = $(`#detailLarva-${i} #number_of_adults`).val();
+                    let water_temperature = $(`#detailLarva-${i} #water_temperature`).val();
+                    let salinity = $(`#detailLarva-${i} #salinity`).val();
+                    let ph = $(`#detailLarva-${i} #ph`).val();
+                    let aquatic_plant = $(`#detailLarva-${i} #aquatic_plant`).val();
+
+                    detailLarva.push({
+                        tpa_type_id: tpa_type_id,
+                        amount_larva: amount_larva,
+                        detail_tpa: detail_tpa,
+                        amount_egg: amount_egg,
+                        number_of_adults: number_of_adults,
+                        water_temperature: water_temperature,
+                        salinity: salinity,
+                        ph: ph,
+                        aquatic_plant: aquatic_plant,
+                    });
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('admin.larvae.store') }}",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        regency_id: $('#regency_id').val(),
+                        district_id: $('#district_id').val(),
+                        village_id: $('#village_id').val(),
+                        address: $('#address').val(),
+                        location_type_id: $('#location_type_id').val(),
+                        settlement_type_id: $('#settlement_type_id').val(),
+                        environment_type_id: $('#environment_type_id').val(),
+                        building_type_id: $('#building_type_id').val(),
+                        floor_type_id: $('#floor_type_id').val(),
+                        latitude: $('#latitude').val(),
+                        longitude: $('#longitude').val(),
+                        detailLarva: detailLarva,
+                    },
+                    // on processing
+                    beforeSend: function() {
+                        Swal.fire({
+                            title: 'Mohon Tunggu',
+                            html: 'Sedang memproses data',
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
+                        });
+                    },
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href =
+                                        "{{ route('admin.larvae.index') }}";
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: response.message,
+                            });
+                        }
+                    }
+                });
+            });
+
             if ($('#latitude').val() == '' && $('#longitude').val() == '') {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     $("#latitude").val(position.coords.latitude);
@@ -399,86 +479,6 @@
                             )
                             .openPopup();
                     }
-                });
-
-                $('#btnSubmit').click(function(e) {
-                    e.preventDefault();
-
-                    let detailLarva = [];
-                    let count = $('#detailLarvaContainer').children().length;
-                    for (let i = 1; i <= count; i++) {
-                        let tpa_type_id = $(`#detailLarva-${i} #tpa_type_id`).val();
-                        let detail_tpa = $(`#detailLarva-${i} #detail_tpa`).val();
-                        let amount_larva = $(`#detailLarva-${i} #amount_larva`).val();
-                        let amount_egg = $(`#detailLarva-${i} #amount_egg`).val();
-                        let number_of_adults = $(`#detailLarva-${i} #number_of_adults`).val();
-                        let water_temperature = $(`#detailLarva-${i} #water_temperature`).val();
-                        let salinity = $(`#detailLarva-${i} #salinity`).val();
-                        let ph = $(`#detailLarva-${i} #ph`).val();
-                        let aquatic_plant = $(`#detailLarva-${i} #aquatic_plant`).val();
-
-                        detailLarva.push({
-                            tpa_type_id: tpa_type_id,
-                            amount_larva: amount_larva,
-                            detail_tpa: detail_tpa,
-                            amount_egg: amount_egg,
-                            number_of_adults: number_of_adults,
-                            water_temperature: water_temperature,
-                            salinity: salinity,
-                            ph: ph,
-                            aquatic_plant: aquatic_plant,
-                        });
-                    }
-
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ route('admin.larvae.store') }}",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            regency_id: $('#regency_id').val(),
-                            district_id: $('#district_id').val(),
-                            village_id: $('#village_id').val(),
-                            address: $('#address').val(),
-                            location_type_id: $('#location_type_id').val(),
-                            settlement_type_id: $('#settlement_type_id').val(),
-                            environment_type_id: $('#environment_type_id').val(),
-                            building_type_id: $('#building_type_id').val(),
-                            floor_type_id: $('#floor_type_id').val(),
-                            latitude: $('#latitude').val(),
-                            longitude: $('#longitude').val(),
-                            detailLarva: detailLarva,
-                        },
-                        // on processing
-                        beforeSend: function() {
-                            Swal.fire({
-                                title: 'Mohon Tunggu',
-                                html: 'Sedang memproses data',
-                                didOpen: () => {
-                                    Swal.showLoading()
-                                },
-                            });
-                        },
-                        success: function(response) {
-                            if (response.status == 'success') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message,
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href =
-                                            "{{ route('admin.larvae.index') }}";
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal',
-                                    text: response.message,
-                                });
-                            }
-                        }
-                    });
                 });
             });
         </script>
