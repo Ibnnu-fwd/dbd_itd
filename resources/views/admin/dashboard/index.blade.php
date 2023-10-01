@@ -2,7 +2,7 @@
     <x-breadcrumb name="dashboard" />
     <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
         <!-- Legenda -->
-        <div class="absolute bottom-0 right-0 p-2 bg-white shadow" style="z-index: 2;">
+        <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-xs 2xl:text-sm" style="z-index: 2;">
             <h5 class="mb-2 legend-text ">Legend</h5>
             <ul class="list-unstyled">
                 <li>
@@ -149,6 +149,7 @@
                     accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                 }
             ).addTo(map);
+
             @if (count($abj) > 0)
                 function updateMapData() {
                     // Menggunakan fetch untuk mengambil data GeoJSON dari URL
@@ -340,9 +341,57 @@
                         html: '<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">'
                     });
 
-                    L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
+                    var marker = L.marker([parseFloat(coordinate[0]), parseFloat(coordinate[1])], {
                         icon: el
                     }).addTo(map);
+
+                    marker.bindPopup(
+                        `<table class="table-sm">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>TPA</th>
+                                    <th>Larva</th>
+                                    <th>Telur</th>
+                                    <th>Nyamuk Dewasa</th>
+                                    <th>Suhu Air</th>
+                                    <th>Salinitas</th>
+                                    <th>PH</th>
+                                    <th>Tumbuhan Air</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ` +
+                        larvae[i].detail_larvaes.map((data, index) => {
+                            return `<tr>
+                                        <td>${index + 1}</td>
+                                        <td>${data.tpa_type.name}</td>
+                                        <td>${data.amount_larva}</td>
+                                        <td>${data.amount_egg}</td>
+                                        <td>${data.number_of_adults}</td>
+                                        <td>${data.water_temperature}</td>
+                                        <td>${data.salinity}</td>
+                                        <td>${data.ph}</td>
+                                        <td>${data.aquatic_plant == 'available' ? 'Ada' : 'Tidak Ada'}</td>
+                                    </tr>`
+                        }).join('') +
+                        `</tbody>
+                        </table>`
+                        // adjust width popup
+                    ).on('popupopen', function() {
+                        $('.leaflet-popup-content').width('auto');
+                    });
+
+                    // on click pan to marker
+                    marker.on('click', function() {
+                        map.setZoom(15);
+                        map.panTo(marker.getLatLng());
+                    });
+
+                    // on hover show popup
+                    marker.on('mouseover', function() {
+                        marker.openPopup();
+                    });
                 });
             @endif
 
