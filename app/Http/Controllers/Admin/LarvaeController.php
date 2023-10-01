@@ -40,16 +40,16 @@ class LarvaeController extends Controller
         FloorTypeInterface $floorType,
         TpaTypeInterface $tpaType
     ) {
-        $this->regency = $regency;
-        $this->district = $district;
-        $this->village = $village;
-        $this->larvae = $larvae;
-        $this->locationType = $locationType;
-        $this->settlementType = $settlementType;
+        $this->regency         = $regency;
+        $this->district        = $district;
+        $this->village         = $village;
+        $this->larvae          = $larvae;
+        $this->locationType    = $locationType;
+        $this->settlementType  = $settlementType;
         $this->environmentType = $environmentType;
-        $this->buildingType = $buildingType;
-        $this->floorType = $floorType;
-        $this->tpaType = $tpaType;
+        $this->buildingType    = $buildingType;
+        $this->floorType       = $floorType;
+        $this->tpaType         = $tpaType;
     }
 
     public function index(Request $request)
@@ -87,15 +87,15 @@ class LarvaeController extends Controller
         return view('admin.larvae.index', [
             'larvae' => $this->larvae->getAll(),
             'months' => [
-                '1' => 'Januari',
-                '2' => 'Februari',
-                '3' => 'Maret',
-                '4' => 'April',
-                '5' => 'Mei',
-                '6' => 'Juni',
-                '7' => 'Juli',
-                '8' => 'Agustus',
-                '9' => 'September',
+                '1'  => 'Januari',
+                '2'  => 'Februari',
+                '3'  => 'Maret',
+                '4'  => 'April',
+                '5'  => 'Mei',
+                '6'  => 'Juni',
+                '7'  => 'Juli',
+                '8'  => 'Agustus',
+                '9'  => 'September',
                 '10' => 'Oktober',
                 '11' => 'November',
                 '12' => 'Desember',
@@ -109,15 +109,15 @@ class LarvaeController extends Controller
     public function create()
     {
         return view('admin.larvae.create', [
-            'regencies' => $this->regency->getAll(),
-            'districts' => $this->district->getAll(),
-            'villages' => $this->village->getAll(),
-            'locationTypes' => $this->locationType->getAll(),
-            'settlementTypes' => $this->settlementType->getAll(),
+            'regencies'        => $this->regency->getAll(),
+            'districts'        => $this->district->getAll(),
+            'villages'         => $this->village->getAll(),
+            'locationTypes'    => $this->locationType->getAll(),
+            'settlementTypes'  => $this->settlementType->getAll(),
             'environmentTypes' => $this->environmentType->getAll(),
-            'buildingTypes' => $this->buildingType->getAll(),
-            'floorTypes' => $this->floorType->getAll(),
-            'tpaTypes' => $this->tpaType->getAll(),
+            'buildingTypes'    => $this->buildingType->getAll(),
+            'floorTypes'       => $this->floorType->getAll(),
+            'tpaTypes'         => $this->tpaType->getAll(),
         ]);
     }
 
@@ -127,28 +127,28 @@ class LarvaeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'regency_id' => ['required'],
-            'district_id' => ['required'],
-            'village_id' => ['required'],
-            'address' => ['required'],
-            'location_type_id' => ['required'],
-            'settlement_type_id' => ['required'],
+            'regency_id'          => ['required'],
+            'district_id'         => ['required'],
+            'village_id'          => ['required'],
+            'address'             => ['required'],
+            'location_type_id'    => ['required'],
+            'settlement_type_id'  => ['required'],
             'environment_type_id' => ['required'],
-            'building_type_id' => ['required'],
-            'floor_type_id' => ['required'],
-            'latitude' => ['required'],
-            'longitude' => ['required'],
+            'building_type_id'    => ['required'],
+            'floor_type_id'       => ['required'],
+            'latitude'            => ['required'],
+            'longitude'           => ['required'],
         ]);
 
         try {
             $this->larvae->create($request->all());
             return response()->json([
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => 'Data berhasil ditambahkan'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => $th->getMessage()
             ]);
         }
@@ -200,16 +200,16 @@ class LarvaeController extends Controller
     public function edit(string $id)
     {
         return view('admin.larvae.edit', [
-            'larva' => $this->larvae->getById($id),
-            'regencies' => $this->regency->getAll(),
-            'districts' => $this->district->getAll(),
-            'villages' => $this->village->getAll(),
-            'locationTypes' => $this->locationType->getAll(),
-            'settlementTypes' => $this->settlementType->getAll(),
+            'larva'            => $this->larvae->getById($id),
+            'regencies'        => $this->regency->getAll(),
+            'districts'        => $this->district->getAll(),
+            'villages'         => $this->village->getAll(),
+            'locationTypes'    => $this->locationType->getAll(),
+            'settlementTypes'  => $this->settlementType->getAll(),
             'environmentTypes' => $this->environmentType->getAll(),
-            'buildingTypes' => $this->buildingType->getAll(),
-            'floorTypes' => $this->floorType->getAll(),
-            'tpaTypes' => $this->tpaType->getAll(),
+            'buildingTypes'    => $this->buildingType->getAll(),
+            'floorTypes'       => $this->floorType->getAll(),
+            'tpaTypes'         => $this->tpaType->getAll(),
         ]);
     }
 
@@ -219,28 +219,28 @@ class LarvaeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'regency_id' => ['required'],
-            'district_id' => ['required'],
-            'village_id' => ['required'],
-            'address' => ['required'],
-            'location_type_id' => ['required'],
-            'settlement_type_id' => ['required'],
+            'regency_id'          => ['required'],
+            'district_id'         => ['required'],
+            'village_id'          => ['required'],
+            'address'             => ['required'],
+            'location_type_id'    => ['required'],
+            'settlement_type_id'  => ['required'],
             'environment_type_id' => ['required'],
-            'building_type_id' => ['required'],
-            'floor_type_id' => ['required'],
-            'latitude' => ['required'],
-            'longitude' => ['required'],
+            'building_type_id'    => ['required'],
+            'floor_type_id'       => ['required'],
+            'latitude'            => ['required'],
+            'longitude'           => ['required'],
         ]);
 
         try {
             $this->larvae->update($request->all(), $id);
             return response()->json([
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => 'Data berhasil diperbarui'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => $th->getMessage()
             ]);
         }
@@ -251,14 +251,15 @@ class LarvaeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->larvae->destroy($id);
+        return response()->json(true);
     }
 
     // CUSTOM FUNCTION
     public function createDetail($id)
     {
         return view('admin.larvae.detail.create', [
-            'larva' => $this->larvae->getById($id),
+            'larva'    => $this->larvae->getById($id),
             'tpaTypes' => $this->tpaType->getAll(),
         ]);
     }
@@ -268,12 +269,12 @@ class LarvaeController extends Controller
         try {
             $this->larvae->createDetail($request->all(), $id);
             return response()->json([
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => 'Detail larva berhasil ditambahkan'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => $th->getMessage()
             ]);
         }
@@ -284,12 +285,12 @@ class LarvaeController extends Controller
         try {
             $this->larvae->createDetailNew($request->all(), $id);
             return response()->json([
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => 'Detail larva berhasil ditambahkan'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => $th->getMessage()
             ]);
         }
@@ -298,7 +299,7 @@ class LarvaeController extends Controller
     public function editDetail($id)
     {
         return view('admin.larvae.detail.edit', [
-            'larva' => $this->larvae->getById($id),
+            'larva'    => $this->larvae->getById($id),
             'tpaTypes' => $this->tpaType->getAll(),
         ]);
     }
@@ -308,12 +309,12 @@ class LarvaeController extends Controller
         try {
             $this->larvae->deleteDetail($id);
             return response()->json([
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => 'Detail larva berhasil dihapus'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => $th->getMessage()
             ]);
         }
@@ -322,21 +323,21 @@ class LarvaeController extends Controller
     public function filterMonth(Request $request)
     {
         $larvae = $this->larvae->filterMonth($request->month);
-        $data = $larvae->map(function ($data) {
+        $data   = $larvae->map(function ($data) {
             return [
                 'DT_RowIndex' => $data->id,
-                'larva_code' => $data->larva_code,
-                'district' => ucwords(strtolower($data->district->name)),
-                'location' => $data->locationType->name,
-                'settlement' => $data->settlementType->name,
+                'larva_code'  => $data->larva_code,
+                'district'    => ucwords(strtolower($data->district->name)),
+                'location'    => $data->locationType->name,
+                'settlement'  => $data->settlementType->name,
                 'environment' => $data->environmentType->name,
-                'building' => $data->buildingType->name,
-                'floor' => $data->floorType->name,
-                'action' => view('admin.larvae.column.action', compact('data'))->render(),
+                'building'    => $data->buildingType->name,
+                'floor'       => $data->floorType->name,
+                'action'      => view('admin.larvae.column.action', compact('data'))->render(),
             ];
         });
         return response()->json([
-            'data' => $data,
+            'data'   => $data,
             'larvae' => $larvae,
         ]);
     }
@@ -344,21 +345,21 @@ class LarvaeController extends Controller
     public function filterDateRange(Request $request)
     {
         $larvae = $this->larvae->filterDateRange($request->start_date, $request->end_date);
-        $data = $larvae->map(function ($data) {
+        $data   = $larvae->map(function ($data) {
             return [
                 'DT_RowIndex' => $data->id,
-                'larva_code' => $data->larva_code,
-                'district' => ucwords(strtolower($data->district->name)),
-                'location' => $data->locationType->name,
-                'settlement' => $data->settlementType->name,
+                'larva_code'  => $data->larva_code,
+                'district'    => ucwords(strtolower($data->district->name)),
+                'location'    => $data->locationType->name,
+                'settlement'  => $data->settlementType->name,
                 'environment' => $data->environmentType->name,
-                'building' => $data->buildingType->name,
-                'floor' => $data->floorType->name,
-                'action' => view('admin.larvae.column.action', compact('data'))->render(),
+                'building'    => $data->buildingType->name,
+                'floor'       => $data->floorType->name,
+                'action'      => view('admin.larvae.column.action', compact('data'))->render(),
             ];
         });
         return response()->json([
-            'data' => $data,
+            'data'   => $data,
             'larvae' => $larvae,
         ]);
     }

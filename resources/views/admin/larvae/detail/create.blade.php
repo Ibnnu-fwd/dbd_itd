@@ -24,8 +24,7 @@
                         required />
                     <x-input id="water_temperature" label="Suhu Air" name="water_temperature" type="number" required />
                     <x-input id="salinity" label="Salinitas" name="salinity" type="number" required />
-                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
-                        :value="$detailLarva->ph" />
+                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required />
                     <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true" required>
                         <option value="available">Ada</option>
                         <option value="not_available">Tidak Ada</option>
@@ -87,8 +86,7 @@
                                         required />
                                     <x-input id="water_temperature" label="Suhu Air" name="water_temperature" type="number" required />
                                     <x-input id="salinity" label="Salinitas" name="salinity" type="number" required />
-                                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required
-                            :value="$detailLarva->ph" />
+                                    <x-input id="ph" label="pH" name="ph" type="number" step="0.01" required />
                                     <x-select id="aquatic_plant" label="Jenis Tanaman Air" name="aquatic_plant" isFit="true"
                                         required>
                                         <option value="available">Ada</option>

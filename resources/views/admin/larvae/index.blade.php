@@ -77,6 +77,49 @@
     </x-card-container>
     @push('js-internal')
         <script>
+            function btnDelete(id) {
+                let url = "{{ route('admin.larvae.destroy', ':id') }}";
+                url = url.replace(':id', id);
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: 'Data berhasil dihapus.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $('#larvaeTable').DataTable().ajax.reload(null, false);
+                                    }
+                                });
+                            },
+                            error: function(xhr) {
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    text: 'Data gagal dihapus.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+
             $(function() {
                 $('#larvaeTable').DataTable({
                     processing: true,
@@ -134,6 +177,8 @@
                 for (let i = 0; i < larvae.length; i++) {
                     centerCoordinate.push([larvae[i].latitude, larvae[i].longitude]);
                 }
+
+                console.log(centerCoordinate);
                 let map = L.map('map').setView(centerCoordinate[0], 8);
 
                 // full screen
@@ -158,7 +203,7 @@
                     let marker = L.marker([larvae[i].latitude, larvae[i].longitude], {
                         icon: L.divIcon({
                             // image
-                            html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
+                            html: `<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">`,
                             className: 'text-white bg-transparent',
                             iconAnchor: [15, 15],
                             popupAnchor: [0, -15]
@@ -290,10 +335,12 @@
                             map.removeLayer(markers);
                             markers = L.markerClusterGroup();
                             for (let i = 0; i < response.larvae.length; i++) {
-                                let marker = L.marker([response.larvae[i].latitude, response.larvae[
-                                    i].longitude], {
+                                let marker = L.marker([response.larvae[i].latitude, response
+                                    .larvae[
+                                        i].longitude
+                                ], {
                                     icon: L.divIcon({
-                                        html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
+                                        html: `<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">`,
                                         className: 'text-white bg-transparent',
                                         // put popup on top of marker
                                         iconAnchor: [15, 15],
@@ -344,6 +391,7 @@
                         }
                     });
                 });
+
                 // filter range
                 $('#btnFilter').click(function(e) {
                     e.preventDefault();
@@ -412,10 +460,12 @@
                             map.removeLayer(markers);
                             markers = L.markerClusterGroup();
                             for (let i = 0; i < response.larvae.length; i++) {
-                                let marker = L.marker([response.larvae[i].latitude, response.larvae[
-                                    i].longitude], {
+                                let marker = L.marker([response.larvae[i].latitude, response
+                                    .larvae[
+                                        i].longitude
+                                ], {
                                     icon: L.divIcon({
-                                        html: `<img src="{{ asset('assets/images/larvae/icon.jpg') }}" class="w-6 h-6">`,
+                                        html: `<img src="{{ asset('assets/images/larva-icon.png') }}" class="w-6 h-6">`,
                                         className: 'text-white bg-transparent',
                                         iconAnchor: [15, 15],
                                         popupAnchor: [0, -15]

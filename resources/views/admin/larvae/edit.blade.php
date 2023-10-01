@@ -178,6 +178,51 @@
                     });
                 });
 
+                $('#btnSubmit').click(function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('admin.larvae.update', ':id') }}".replace(':id',
+                            "{{ $larva->id }}"),
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            _method: "PUT",
+                            regency_id: $('#regency_id').val(),
+                            district_id: $('#district_id').val(),
+                            village_id: $('#village_id').val(),
+                            address: $('#address').val(),
+                            location_type_id: $('#location_type_id').val(),
+                            settlement_type_id: $('#settlement_type_id').val(),
+                            environment_type_id: $('#environment_type_id').val(),
+                            building_type_id: $('#building_type_id').val(),
+                            floor_type_id: $('#floor_type_id').val(),
+                            latitude: $('#latitude').val(),
+                            longitude: $('#longitude').val(),
+                        },
+                        success: function(response) {
+                            if (response.status == 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href =
+                                            "{{ route('admin.larvae.index') }}";
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal',
+                                    text: response.message,
+                                });
+                            }
+                        }
+                    });
+                });
+
                 let map = L.map("map").setView([latitude, longitude], 13);
 
                 // tile google maps source
@@ -326,51 +371,6 @@
                             )
                             .openPopup();
                     }
-                });
-
-                $('#btnSubmit').click(function(e) {
-                    e.preventDefault();
-
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ route('admin.larvae.update', ':id') }}".replace(':id',
-                            "{{ $larva->id }}"),
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            _method: "PUT",
-                            regency_id: $('#regency_id').val(),
-                            district_id: $('#district_id').val(),
-                            village_id: $('#village_id').val(),
-                            address: $('#address').val(),
-                            location_type_id: $('#location_type_id').val(),
-                            settlement_type_id: $('#settlement_type_id').val(),
-                            environment_type_id: $('#environment_type_id').val(),
-                            building_type_id: $('#building_type_id').val(),
-                            floor_type_id: $('#floor_type_id').val(),
-                            latitude: $('#latitude').val(),
-                            longitude: $('#longitude').val(),
-                        },
-                        success: function(response) {
-                            if (response.status == 'success') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message,
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href =
-                                            "{{ route('admin.larvae.index') }}";
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal',
-                                    text: response.message,
-                                });
-                            }
-                        }
-                    });
                 });
             });
         </script>

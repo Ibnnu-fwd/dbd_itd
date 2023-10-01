@@ -8,6 +8,7 @@ interface LarvaeInterface
     public function getById($id);
     public function create($attributes);
     public function update($attributes, $id);
+    public function destroy($id);
 
     public function deleteDetail($id);
     public function createDetail($attributes, $id);
