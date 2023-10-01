@@ -760,6 +760,8 @@ class SampleRepository implements SampleInterface
             })->sum();
         })->sum();
 
+        // $totalLarva = Larvae::where('district_id', $districtId)->count();
+
         return $totalLarva;
     }
 }

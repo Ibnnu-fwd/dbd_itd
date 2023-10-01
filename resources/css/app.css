@@ -5,7 +5,7 @@
 table,
 th,
 td {
-    font-size: 0.75rem;
+    @apply text-sm
 }
 
 /* datatable thead th font weight normal */
@@ -19,7 +19,7 @@ table.dataTable thead th {
 .dataTables_paginate a,
 .dataTables_length label,
 .dataTables_filter label {
-    font-size: 0.75rem;
+    @apply text-sm;
 }
 
 .swal2-popup {
