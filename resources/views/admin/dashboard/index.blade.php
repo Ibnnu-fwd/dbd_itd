@@ -135,7 +135,7 @@
                 }
             }
 
-            const map = L.map('map').setView([-8.1624029, 113.717332], 8);
+            const map = L.map('map').setView([-7.2754417, 112.630282], 11.5);
 
             var markers = L.markerClusterGroup();
 

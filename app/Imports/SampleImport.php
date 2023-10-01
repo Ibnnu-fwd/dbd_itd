@@ -97,8 +97,18 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
     public function model(array $row)
     {
         $createdAt        = $row[0];
-        // excel date
-        $createdAt        = Date::excelToDateTimeObject($createdAt);
+        // Coba membuat objek DateTime
+        $dateTime = \DateTime::createFromFormat('n/j/Y', $createdAt);
+
+        // Periksa apakah objek DateTime berhasil dibuat
+        if ($dateTime !== false) {
+            // Objek DateTime berhasil dibuat, maka Anda dapat memanggil format() di sini
+            $createdAt = $dateTime->format('Y-m-d'); // Gantilah format sesuai kebutuhan Anda
+            echo $createdAt;
+        } else {
+            // Penanganan kesalahan jika konversi gagal
+            echo "Konversi tanggal gagal.";
+        }
         $province         = $this->province($row[1]);
         $regency          = $this->regency($row[2]);
         $district         = $this->district($row[3]);

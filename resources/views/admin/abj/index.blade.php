@@ -148,7 +148,7 @@
             }
         }
 
-        const map = L.map('map').setView([-8.1624029, 113.717332], 8);
+        const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
 
         L.tileLayer(
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
