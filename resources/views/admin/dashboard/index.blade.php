@@ -1,6 +1,52 @@
 <x-app-layout>
     <x-breadcrumb name="dashboard" />
-    <div id="map" class="z-0 mb-4" style="height: 350px; border-radius: 6px; margin-top:30px;"></div>
+    <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
+            <!-- Legenda -->
+            <div class="absolute bottom-0 right-0 p-2 bg-white shadow" style="z-index: 2;">
+                <h5 class="mb-2 legend-text ">Legend</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <span class="legend-color legend-green"></span>
+                        ABJ Tinggi
+                    </li>
+                    <li>
+                        <span class="legend-color legend-yellow"></span>
+                        ABJ Sedang
+                    </li>
+                    <li>
+                        <span class="legend-color legend-red"></span>
+                        ABJ Rendah
+                    </li>
+                    <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
+                </ul>
+            </div>
+            <!-- Peta -->
+            <div id="map" style="height: 100%; position: relative; z-index: 1;"></div>
+        </div>
+
+        <style>
+            .legend-color {
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                margin-right: 5px;
+                border: 1px solid #ccc;
+                border-radius: 2px;
+            }
+
+            .legend-green {
+                background-color: #1cc88a;
+            }
+
+            .legend-yellow {
+                background-color: #ffff00;
+            }
+
+            .legend-red {
+                background-color: #e74a3b;
+            }
+
+        </style>
     <div class="xl:grid grid-cols-2 gap-x-4">
         @if ($samplePerYear->count() > 0)
             <x-card-container style="height: 301px">
@@ -79,10 +125,15 @@
 
         <script>
             function getColor(abj_total) {
-                return abj_total > 90 ? '#1cc88a' :
-                    abj_total >= 15 && abj_total < 90 ? '#ff9671' :
-                    abj_total <= 15 ? '#e74a3b' :
-                    '#858796';
+                if (abj_total >= 95 && abj_total <= 100) {
+                    return '#1cc88a'; // ABJ Tinggi
+                } else if (abj_total >= 50 && abj_total < 95) {
+                    return '#ffff00'; // ABJ Sedang
+                } else if (abj_total < 50) {
+                    return '#e74a3b'; // ABJ Rendah
+                } else {
+                    return '#858796'; // Default
+                }
             }
 
             const map = L.map('map').setView([-8.1624029, 113.717332], 8);
@@ -99,7 +150,104 @@
                     accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
                 }
             ).addTo(map);
+                @if (count($abj) > 0)
+                function updateMapData() {
+                // Menggunakan fetch untuk mengambil data GeoJSON dari URL
+                let abj = Object.values(@json($abj));
+                fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const geojson = {
+                            type: 'FeatureCollection',
+                            features: []
+                        };
 
+                        data.features.forEach((feature) => {
+                            const properties = feature.properties;
+                            const kecamatan = properties.KECAMATAN;
+
+                            abj.forEach((abjItem) => {
+                                if (abjItem.district === kecamatan) {
+                                    // Sekarang Anda memiliki array koordinat dari fitur yang sesuai
+                                    const coordinates = feature.geometry.coordinates;
+
+                                    // Ubah koordinat jika diperlukan
+                                    const coordinates2 = coordinates[0];
+                                    // console.log(coordinates2);
+
+                                    geojson.features.push({
+                                        type: 'Feature',
+                                        geometry: {
+                                            type: 'Polygon',
+                                            coordinates: [coordinates2]
+                                        },
+                                        properties: {
+                                            color: getColor(abjItem.abj_total),
+                                            regency: abjItem.regency,
+                                            district: properties.KECAMATAN,
+                                            village: properties.KELURAHAN,
+                                            abj: abjItem.abj_total,
+                                            total_sample: abjItem.total_sample,
+                                            total_check: abjItem.total_check
+                                        }
+                                    });
+                                }
+                            });
+                        });
+
+                        L.geoJSON(geojson, {
+                            style: function(feature) {
+                                return {
+                                    fillColor: feature.properties.color,
+                                    color: feature.properties.color,
+                                    weight: 0.5,
+                                    fillOpacity: 0.5,
+                                };
+                            },
+                            onEachFeature: function(feature, layer) {
+                                layer.on('click', function(e) {
+                                    const coordinates = e.latlng;
+                                    const properties = feature.properties;
+
+                                    const popupContent = `
+                                        <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
+                                        <p><strong>Kecamatan:</strong> ${properties.district}</p>
+                                        <p><strong>ABJ:</strong> ${properties.abj}%</p>
+                                        <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
+                                        <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
+                                    `;
+
+                                    L.popup()
+                                        .setLatLng(coordinates)
+                                        .setContent(popupContent)
+                                        .openOn(map);
+
+                                    // Zoom to the clicked feature
+                                    map.fitBounds(layer.getBounds(), {
+                                        padding: [100, 100]
+                                    });
+                                });
+
+
+                                layer.on('mouseover', function(e) {
+                                    map.getContainer().style.cursor = 'pointer';
+                                });
+
+                                layer.on('mouseout', function(e) {
+                                    map.getContainer().style.cursor = '';
+                                });
+                            }
+                        }).addTo(map);
+                    })
+                    .catch((error) => {
+                        console.error("Gagal mengambil data GeoJSON:", error);
+                    });
+
+
+            }
+
+                updateMapData(); // map update
+            @endif
             let larvae = Object.values(@json($larvae));
             let sample = Object.values(@json($sample));
 
@@ -199,104 +347,7 @@
                 });
             @endif
 
-            @if (count($abj) > 0)
-            function updateMapData() {
-            // Menggunakan fetch untuk mengambil data GeoJSON dari URL
-            let abj = Object.values(@json($abj));
-            fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
-                .then((response) => response.json())
-                .then((data) => {
-                    const geojson = {
-                        type: 'FeatureCollection',
-                        features: []
-                    };
-
-                    data.features.forEach((feature) => {
-                        const properties = feature.properties;
-                        const kecamatan = properties.KECAMATAN;
-
-                        abj.forEach((abjItem) => {
-                            if (abjItem.district === kecamatan) {
-                                // Sekarang Anda memiliki array koordinat dari fitur yang sesuai
-                                const coordinates = feature.geometry.coordinates;
-
-                                // Ubah koordinat jika diperlukan
-                                const coordinates2 = coordinates[0];
-                                // console.log(coordinates2);
-
-                                geojson.features.push({
-                                    type: 'Feature',
-                                    geometry: {
-                                        type: 'Polygon',
-                                        coordinates: [coordinates2]
-                                    },
-                                    properties: {
-                                        color: getColor(abjItem.abj_total),
-                                        regency: abjItem.regency,
-                                        district: properties.KECAMATAN,
-                                        village: properties.KELURAHAN,
-                                        abj: abjItem.abj_total,
-                                        total_sample: abjItem.total_sample,
-                                        total_check: abjItem.total_check
-                                    }
-                                });
-                            }
-                        });
-                    });
-
-                    L.geoJSON(geojson, {
-                        style: function(feature) {
-                            return {
-                                fillColor: feature.properties.color,
-                                color: feature.properties.color,
-                                weight: 0.5,
-                                fillOpacity: 0.5,
-                            };
-                        },
-                        onEachFeature: function(feature, layer) {
-                            layer.on('click', function(e) {
-                                const coordinates = e.latlng;
-                                const properties = feature.properties;
-
-                                const popupContent = `
-                                    <p><strong>Kabupaten/Kota:</strong> ${properties.regency}</p>
-                                    <p><strong>Kecamatan:</strong> ${properties.district}</p>
-                                    <p><strong>ABJ:</strong> ${properties.abj}%</p>
-                                    <p><strong>Total Sampel:</strong> ${properties.total_sample}</p>
-                                    <p><strong>Total Pemeriksaan:</strong> ${properties.total_check}</p>
-                                `;
-
-                                L.popup()
-                                    .setLatLng(coordinates)
-                                    .setContent(popupContent)
-                                    .openOn(map);
-
-                                // Zoom to the clicked feature
-                                map.fitBounds(layer.getBounds(), {
-                                    padding: [100, 100]
-                                });
-                            });
-
-
-                            layer.on('mouseover', function(e) {
-                                map.getContainer().style.cursor = 'pointer';
-                            });
-
-                            layer.on('mouseout', function(e) {
-                                map.getContainer().style.cursor = '';
-                            });
-                        }
-                    }).addTo(map);
-                })
-                .catch((error) => {
-                    console.error("Gagal mengambil data GeoJSON:", error);
-                });
-
-
-        }
-
-                updateMapData(); // map update
-            @endif
+            
 
             // full screen
             L.control.fullscreen().addTo(map);

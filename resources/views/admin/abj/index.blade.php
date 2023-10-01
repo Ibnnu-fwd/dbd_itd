@@ -40,7 +40,7 @@
             }
 
             .legend-yellow {
-                background-color: #ff9671;
+                background-color: #ffff00;
             }
 
             .legend-red {
@@ -140,7 +140,7 @@
             if (abj_total >= 95 && abj_total <= 100) {
                 return '#1cc88a'; // ABJ Tinggi
             } else if (abj_total >= 50 && abj_total < 95) {
-                return '#ff9671'; // ABJ Sedang
+                return '#ffff00'; // ABJ Sedang
             } else if (abj_total < 50) {
                 return '#e74a3b'; // ABJ Rendah
             } else {
