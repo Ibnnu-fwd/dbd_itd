@@ -206,7 +206,7 @@ class LarvaeRepository implements LarvaeInterface
     public function destroy($id)
     {
         $larvae = $this->larvae->find($id);
-        $larvae->delete();
         $larvae->detailLarvaes()->delete();
+        $larvae->delete();
     }
 }
