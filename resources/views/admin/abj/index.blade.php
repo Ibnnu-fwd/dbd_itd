@@ -48,11 +48,11 @@
             }
 
         </style>
-        <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
+        <!-- <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
             <x-button type="button" data-modal-toggle="defaultModal" color="gray" type="button" class="justify-center">
                 Tambah
             </x-button>
-        </div>
+        </div> -->
         <table id="abjTable">
             <thead>
                 <tr>
