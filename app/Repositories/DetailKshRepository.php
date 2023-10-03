@@ -42,6 +42,7 @@ class DetailKshRepository implements DetailKshInterface
                 'larva_status' => $attributes['larva_status'] == 1 ? true : false,
                 'latitude'     => $attributes['latitude'],
                 'longitude'    => $attributes['longitude'],
+                'tpa_description' => $attributes['tpa_description'],
             ]);
         } catch (\Throwable $th) {
             throw $th;
@@ -98,6 +99,7 @@ class DetailKshRepository implements DetailKshInterface
                 'larva_status' => $attributes['larva_status'] == 1 ? true : false,
                 'latitude'     => $attributes['latitude'],
                 'longitude'    => $attributes['longitude'],
+                'tpa_description' => $attributes['tpa_description'],
             ]);
         } catch (\Throwable $th) {
             throw $th;

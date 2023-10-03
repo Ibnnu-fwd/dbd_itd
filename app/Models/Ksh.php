@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +8,8 @@ class Ksh extends Model
 {
     use HasFactory;
 
-    public $table = 'ksh';
+    protected $table = 'ksh';
+
     protected $fillable = [
         'latitude',
         'longitude',
@@ -49,6 +49,6 @@ class Ksh extends Model
 
     public function detailKsh()
     {
-        return $this->hasMany(DetailKsh::class, 'ksh_id', 'id');
+        return $this->hasMany(DetailKsh::class, 'ksh_id', 'id')->where('is_active', true);
     }
 }

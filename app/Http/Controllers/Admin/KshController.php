@@ -172,7 +172,11 @@ class KshController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->ksh->delete($id);
+        return response()->json([
+            'status' => true,
+            'message' => 'Data berhasil dihapus.',
+        ]);
     }
 
     // CUSTOM FUNCTION
@@ -192,12 +196,14 @@ class KshController extends Controller
             'larva_status' => ['required'],
             'latitude' => ['required'],
             'longitude' => ['required'],
+            'tpa_description'=>['required'],
         ], [
             'house_name.required' => 'Nama rumah tidak boleh kosong',
             'house_owner.required' => 'Nama pemilik rumah tidak boleh kosong',
             'larva_status.required' => 'Status larva tidak boleh kosong',
             'latitude.required' => 'Latitude tidak boleh kosong',
             'longitude.required' => 'Longitude tidak boleh kosong',
+            'tpa_description.required' => 'Deskripsi tpa tidak boleh kosong',
         ]);
 
         try {
@@ -225,12 +231,14 @@ class KshController extends Controller
             'larva_status' => ['required'],
             'latitude' => ['required'],
             'longitude' => ['required'],
+            'tpa_description'=>['required'],
         ], [
             'house_name.required' => 'Nama rumah tidak boleh kosong',
             'house_owner.required' => 'Nama pemilik rumah tidak boleh kosong',
             'larva_status.required' => 'Status larva tidak boleh kosong',
             'latitude.required' => 'Latitude tidak boleh kosong',
             'longitude.required' => 'Longitude tidak boleh kosong',
+            'tpa_description.required' => 'Deskripsi tpa tidak boleh kosong',
         ]);
 
         try {

@@ -13,6 +13,7 @@
                             <option value="{{ $tpaType->id }}">{{ $tpaType->name }}</option>
                         @endforeach
                     </x-select>
+                    <x-input id="tpa_description" name="tpa_description" label="Deskripsi Tpa" required class="max-w-xs" :value="old('tpa_description')" />
                     <div>
                         <p class="mb-2 text-xs 2xl:text-sm">Status Larva <span class="text-red-500">*</span></p>
                         <div class="flex items-center">

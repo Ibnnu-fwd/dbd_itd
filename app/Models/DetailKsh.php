@@ -20,7 +20,8 @@ class DetailKsh extends Model
         'larva_status',
         'created_by',
         'updated_by',
-        'is_active'
+        'is_active',
+        'tpa_description'
     ];
 
     // RELATION

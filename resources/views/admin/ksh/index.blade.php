@@ -28,6 +28,47 @@
     </x-card-container>
     @push('js-internal')
         <script>
+            function btnDelete(id, name) {
+                let url = "{{ route('admin.ksh.destroy', ':id') }}";
+                url = url.replace(':id', id);
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: `Apakah anda yakin ingin menghapus sampel ${name}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Tidak',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            method: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.status) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: response.message
+                                    }).then(() => {
+                                        $('#sampleTable').DataTable().ajax.reload();
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: response.message
+                                    })
+                                }
+                            }
+                        });
+                    }
+                });
+            }
             $(function () {
                 $('#kshTable').DataTable({
                     processing: true,

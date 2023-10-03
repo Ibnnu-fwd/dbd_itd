@@ -21,7 +21,13 @@ class KshRepository implements KshInterface
 
     public function getAll()
     {
-        $samples = $this->ksh->with(['regency', 'district', 'village', 'detailKsh'])->get();
+        $samples = $this->ksh
+            ->with(['regency', 'district', 'village', 'detailKsh' => function ($query) {
+                $query->where('is_active', true);
+            }])
+            ->where('is_active', true) // Filter data utama Ksh
+            ->get();
+
 
         $samples->map(function ($sample) {
             $sample->total_sample = $sample->detailKsh->count();
@@ -99,6 +105,12 @@ class KshRepository implements KshInterface
     {
         return User::find($attributes['id'])->update([
             'is_active' => $attributes['status'],
+        ]);
+    }
+    public function delete($id)
+    {
+        return $this->ksh->find($id)->update([
+            'is_active' => false,
         ]);
     }
 }

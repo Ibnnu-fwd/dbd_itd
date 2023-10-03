@@ -15,6 +15,7 @@
                     <th rowspan="2">Rumah</th>
                     <th rowspan="2">Pemilik Rumah</th>
                     <th rowspan="2">Jenis Penampungan Air</th>
+                    <th rowspan="2">Deskripsi Tpa</th>
                     <th colspan="2">Status Larva</th>
                     <th rowspan="2">Aksi</th>
                 </tr>
@@ -49,6 +50,10 @@
                         {
                             data: 'tpa_type',
                             name: 'tpa_type',
+                        },
+                        {
+                            data: 'tpa_description',
+                            name: 'tpa_description',
                         },
                         {
                             data: 'larva_status_true',
