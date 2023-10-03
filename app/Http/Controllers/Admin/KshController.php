@@ -173,6 +173,7 @@ class KshController extends Controller
     public function destroy(string $id)
     {
         $this->ksh->delete($id);
+        $this->ksh->delete_abj($id);
         return response()->json([
             'status' => true,
             'message' => 'Data berhasil dihapus.',

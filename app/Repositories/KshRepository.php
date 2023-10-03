@@ -112,5 +112,12 @@ class KshRepository implements KshInterface
         return $this->ksh->find($id)->update([
             'is_active' => false,
         ]);
+       
+    }
+    public function delete_abj($id)
+    {
+        return $this->abj->find($id)->update([
+            'is_active' => false,
+        ]);
     }
 }

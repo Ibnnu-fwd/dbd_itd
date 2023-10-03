@@ -19,8 +19,12 @@ class AbjRepository implements AbjInterface
 
     public function getAllGroupByDistrict()
     {
-        $abj = $this->abj->with('district', 'village', 'ksh', 'ksh.district', 'ksh.village', 'ksh.detailKsh', 'ksh.detailKsh.tpaType')->get()->groupBy('district_id');
-
+        $abj = $this->abj
+            ->with('district', 'village', 'ksh', 'ksh.district', 'ksh.village', 'ksh.detailKsh', 'ksh.detailKsh.tpaType')
+            ->where('is_active', true)
+            ->get()
+            ->groupBy('district_id');
+            
         $data = [];
 
         foreach ($abj as $key => $value) {
