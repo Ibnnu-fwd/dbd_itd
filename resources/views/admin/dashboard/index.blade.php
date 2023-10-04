@@ -5,18 +5,14 @@
         <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-xs 2xl:text-sm" style="z-index: 2;">
             <h5 class="mb-2 legend-text ">Legend</h5>
             <ul class="list-unstyled">
-                <li>
-                    <span class="legend-color legend-green"></span>
-                    ABJ Tinggi
-                </li>
-                <li>
-                    <span class="legend-color legend-yellow"></span>
-                    ABJ Sedang
-                </li>
-                <li>
-                    <span class="legend-color legend-red"></span>
-                    ABJ Rendah
-                </li>
+            <li>
+                        <span class="legend-color legend-green"></span>
+                        ABJ Normal
+                    </li>
+                    <li>
+                        <span class="legend-color legend-red"></span>
+                        ABJ Tidak Normal
+                    </li>
                 <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
             </ul>
         </div>
@@ -124,16 +120,12 @@
 
         <script>
             function getColor(abj_total) {
-                if (abj_total >= 95 && abj_total <= 100) {
-                    return '#1cc88a'; // ABJ Tinggi
-                } else if (abj_total >= 50 && abj_total < 95) {
-                    return '#ffff00'; // ABJ Sedang
-                } else if (abj_total < 50) {
-                    return '#e74a3b'; // ABJ Rendah
-                } else {
-                    return '#858796'; // Default
-                }
-            }
+            if (abj_total <= 95) {
+                return '#1cc88a'; // ABJ Sedang
+            } else{
+                return '#e74a3b'; // ABJ Rendah
+            } 
+        }
 
             const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
 
