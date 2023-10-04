@@ -8,11 +8,7 @@
                 <ul class="list-unstyled">
                     <li>
                         <span class="legend-color legend-green"></span>
-                        ABJ Tinggi
-                    </li>
-                    <li>
-                        <span class="legend-color legend-yellow"></span>
-                        ABJ Sedang
+                        ABJ Normal
                     </li>
                     <li>
                         <span class="legend-color legend-red"></span>
@@ -46,7 +42,6 @@
             .legend-red {
                 background-color: #e74a3b;
             }
-
         </style>
         <!-- <div class="flex flex-col gap-3 md:flex-row md:justify-end mb-4">
             <x-button type="button" data-modal-toggle="defaultModal" color="gray" type="button" class="justify-center">
@@ -137,15 +132,11 @@
         });
 
         function getColor(abj_total) {
-            if (abj_total >= 95 && abj_total <= 100) {
-                return '#1cc88a'; // ABJ Tinggi
-            } else if (abj_total >= 50 && abj_total < 95) {
-                return '#ffff00'; // ABJ Sedang
-            } else if (abj_total < 50) {
+            if (abj_total <= 95) {
+                return '#1cc88a'; // ABJ Sedang
+            } else{
                 return '#e74a3b'; // ABJ Rendah
-            } else {
-                return '#858796'; // Default
-            }
+            } 
         }
 
         const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
@@ -164,6 +155,7 @@
         function updateMapData() {
             // Menggunakan fetch untuk mengambil data GeoJSON dari URL
             let abj = Object.values(@json($abj));
+            console.log(abj);
             fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
                 .then((response) => response.json())
                 .then((data) => {
