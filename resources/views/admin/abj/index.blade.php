@@ -12,7 +12,7 @@
                     </li>
                     <li>
                         <span class="legend-color legend-red"></span>
-                        ABJ Rendah
+                        ABJ Tidak Normal
                     </li>
                     <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
                 </ul>
