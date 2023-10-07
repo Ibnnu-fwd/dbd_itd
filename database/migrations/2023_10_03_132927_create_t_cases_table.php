@@ -15,12 +15,15 @@ class CreateTCasesTable extends Migration
     {
         Schema::create('t_cases', function (Blueprint $table) {
             $table->id();
-            $table->integer('date');
+            $table->date('date');
             $table->string('vector_type'); // Ubah jenis data sesuai kebutuhan, misalnya enum atau varchar
             $table->integer('cases_total');
             $table->char('regency_id')->nullable();
             $table->char('district_id')->nullable();
             $table->char('village_id')->nullable();
+            $table->foreign('regency_id')->references('id')->on('regencies');
+            $table->foreign('district_id')->references('id')->on('districts');
+            $table->foreign('village_id')->references('id')->on('villages');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);
