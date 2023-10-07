@@ -9,7 +9,7 @@ class TCases extends Model
 {
     use HasFactory;
 
-    protected $table = 'T_Cases';
+    protected $table = 't_cases';
 
     protected $fillable = [
         'date',
