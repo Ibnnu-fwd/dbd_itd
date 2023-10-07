@@ -1,6 +1,63 @@
 <x-app-layout>
     <x-breadcrumb name="tcases" />
     <x-card-container>
+        <div class="lg:flex gap-x-3 mb-4">
+            <div class="flex items-center space-x-2" style="width: 200px;">
+                <label for="filterMonth" class="text-sm font-medium">Bulan:</label>
+                <select id="filterMonth" class="form-select" aria-label="Filter bulan">
+                    <option value="01">Januari</option>
+                    <option value="02">Februari</option>
+                    <option value="03">Maret</option>
+                    <option value="04">April</option>
+                    <option value="05">Mei</option>
+                    <option value="06">Juni</option>
+                    <option value="07">Juli</option>
+                    <option value="08">Agustus</option>
+                    <option value="09">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
+                </select>
+            </div>
+            <div class="flex items-center space-x-2" style="width: 200px;">
+                <label for="filterYear" class="text-sm font-medium">Tahun:</label>
+                <select id="filterYear" class="form-select" aria-label="Filter tahun">
+                    <!-- Tambahkan opsi tahun sesuai dengan kebutuhan Anda -->
+                </select>
+            </div>
+            <x-link-button id="filterButton" color="gray" class="py-2.5 mb-1.5">
+                Filter
+            </x-link-button>
+        </div>
+        <script>
+            // Fungsi untuk mengisi dropdown tahun
+            function populateYears() {
+                const currentYear = new Date().getFullYear();
+                const selectYear = document.getElementById('filterYear');
+
+                for (let year = currentYear; year >= 1000; year--) {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    selectYear.appendChild(option);
+                }
+            }
+
+            // Event handler untuk tombol "Filter"
+            document.getElementById('filterButton').addEventListener('click', function() {
+                const selectedMonth = document.getElementById('filterMonth').value;
+                const selectedYear = document.getElementById('filterYear').value;
+
+                // Lakukan filter berdasarkan nilai bulan dan tahun yang dipilih
+                // Anda dapat menambahkan logika filter data di sini
+                console.log('Bulan yang dipilih:', selectedMonth);
+                console.log('Tahun yang dipilih:', selectedYear);
+            });
+
+            // Panggil fungsi untuk mengisi dropdown tahun saat halaman dimuat
+            populateYears();
+        </script>
+
         <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
             <!-- Legenda -->
             <div class="absolute bottom-0 right-0 p-2 bg-white shadow" style="z-index: 2;">
@@ -151,6 +208,7 @@
                 accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
             }
         ).addTo(map);
+
         function updateMapData() {
             let tcases = Object.values(@json($tcases));
             fetch("{{ asset('assets/geojson/surabaya.geojson') }}")
@@ -166,71 +224,88 @@
 
                         tcases.forEach((tcasesItem) => {
 
-                            // console.log(kecamatan);
-                            if (tcasesItem.district.toUpperCase() === kecamatan.toUpperCase()) {
-                                // Sekarang Anda memiliki array koordinat dari fitur yang sesuai
-                                const coordinates = feature.geometry.coordinates;
-                                // Ubah koordinat jika diperlukan
-                                const coordinates2 = coordinates[0];
-                                // console.log(tcasesItem.cases_total);
+                            document.getElementById('filterButton').addEventListener('click', function() {
+                                const selectedMonth = document.getElementById('filterMonth').value;
+                                const selectedYear = document.getElementById('filterYear').value;
 
-                                geojson.features.push({
-                                    type: 'Feature',
-                                    geometry: {
-                                        type: 'Polygon',
-                                        coordinates: [coordinates2]
-                                    },
-                                    properties: {
-                                        color: getColor(tcasesItem.cases_total),
-                                        district: properties.KECAMATAN,
-                                        village: properties.KELURAHAN,
-                                        totalCase: tcasesItem.cases_total,
-                                    }
+                                // Lakukan filter data
+                                const filteredData = tcases.filter(function(tcasesItem) {
+                                    const date = new Date(tcasesItem.date);
+                                    const itemMonth = date.getMonth() + 1; // Ingat, bulan dimulai dari 0 (Januari) hingga 11 (Desember)
+                                    const itemYear = date.getFullYear();
+
+                                    return itemMonth === parseInt(selectedMonth) && itemYear === parseInt(selectedYear);
                                 });
-                            }
-                        });
-                    });
-                    L.geoJSON(geojson, {
-                        style: function(feature) {
-                            return {
-                                fillColor: feature.properties.color,
-                                color: feature.properties.color,
-                                weight: 0.5,
-                                fillOpacity: 0.5,
-                            };
-                        },
-                        onEachFeature: function(feature, layer) {
-                            layer.on('click', function(e) {
-                                const coordinates = e.latlng;
-                                const properties = feature.properties;
 
-                                const popupContent = `
+                                filteredData.forEach(function(item) {
+                                    // console.log(kecamatan);
+                                    if (tcasesItem.district.toUpperCase() === kecamatan.toUpperCase() && tcasesItem.date === item.date) {
+                                        const coordinates = feature.geometry.coordinates;
+                                        // Ubah koordinat jika diperlukan
+                                        const coordinates2 = coordinates[0];
+
+                                        // console.log(coordinates);
+                                        geojson.features.push({
+                                            type: 'Feature',
+                                            geometry: {
+                                                type: 'Polygon',
+                                                coordinates: [coordinates2]
+                                            },
+                                            properties: {
+                                                color: getColor(tcasesItem.cases_total),
+                                                district: properties.KECAMATAN,
+                                                village: properties.KELURAHAN,
+                                                totalCase: tcasesItem.cases_total,
+                                            }
+                                        });
+                                        L.geoJSON(geojson, {
+                                            style: function(feature) {
+                                                return {
+                                                    fillColor: feature.properties.color,
+                                                    color: feature.properties.color,
+                                                    weight: 0.5,
+                                                    fillOpacity: 0.5,
+                                                };
+                                            },
+                                            onEachFeature: function(feature, layer) {
+                                                layer.on('click', function(e) {
+                                                    const coordinates = e.latlng;
+                                                    const properties = feature.properties;
+
+                                                    const popupContent = `
                                     <p><strong>Kecamatan:</strong> ${properties.district}</p>
                                     <p><strong>Kelurahan:</strong> ${properties.village}</p>
                                     <p><strong>Total Kasus:</strong> ${properties.totalCase}</p>
                                 `;
 
-                                L.popup()
-                                    .setLatLng(coordinates)
-                                    .setContent(popupContent)
-                                    .openOn(map);
+                                                    L.popup()
+                                                        .setLatLng(coordinates)
+                                                        .setContent(popupContent)
+                                                        .openOn(map);
 
-                                // Zoom to the clicked feature
-                                map.fitBounds(layer.getBounds(), {
-                                    padding: [100, 100]
+                                                    // Zoom to the clicked feature
+                                                    map.fitBounds(layer.getBounds(), {
+                                                        padding: [100, 100]
+                                                    });
+                                                });
+
+
+                                                layer.on('mouseover', function(e) {
+                                                    map.getContainer().style.cursor = 'pointer';
+                                                });
+
+                                                layer.on('mouseout', function(e) {
+                                                    map.getContainer().style.cursor = '';
+                                                });
+                                            }
+                                        }).addTo(map);
+                                    }
                                 });
                             });
 
+                        });
+                    });
 
-                            layer.on('mouseover', function(e) {
-                                map.getContainer().style.cursor = 'pointer';
-                            });
-
-                            layer.on('mouseout', function(e) {
-                                map.getContainer().style.cursor = '';
-                            });
-                        }
-                    }).addTo(map);
                 })
                 .catch((error) => {
                     console.error("Gagal mengambil data GeoJSON:", error);
