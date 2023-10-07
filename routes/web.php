@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableAgentController;
 use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
+use App\Http\Controllers\Admin\TCasesController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LarvaeController as UserLarvaeController;
@@ -171,6 +172,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('user/{id}/update-user-account', [UserController::class, 'updateUserAccount'])->name('admin.user.update-user-account');
     Route::post('user/update-profile-picture', [UserController::class, 'updateProfilePicture'])->name('admin.user.update-profile-picture');
     Route::resource('user', UserController::class, ['as' => 'admin']);
+
+    // Tcases
+    Route::get('tcases', [TCasesController::class, 'index'])->name('admin.tcases.index');
+    Route::get('tcases/create', [TCasesController::class, 'create'])->name('admin.tcases.create');
+    Route::post('tcases/store', [TCasesController::class, 'store'])->name('admin.tcases.store');
+    Route::get('tcases/{id}/edit', [TCasesController::class, 'edit'])->name('admin.tcases.edit');
+    Route::resource('tcases', TCasesController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';

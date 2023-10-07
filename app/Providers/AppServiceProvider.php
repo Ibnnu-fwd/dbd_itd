@@ -39,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\Interface\KshInterface::class, \App\Repositories\KshRepository::class);
         $this->app->bind(\App\Repositories\Interface\DetailKshInterface::class, \App\Repositories\DetailKshRepository::class);
         $this->app->bind(\App\Repositories\Interface\AbjInterface::class, \App\Repositories\AbjRepository::class);
+        $this->app->bind(\App\Repositories\Interface\TCasesInterface::class, \App\Repositories\TCasesRepository::class);
     }
 
     /**

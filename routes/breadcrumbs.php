@@ -392,3 +392,15 @@ Breadcrumbs::for('user', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Pengguna', route('admin.user.index'));
 });
+
+
+// ------------- Kasus ----------
+Breadcrumbs::for('tcases', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard'); // Gantilah 'admin.dashboard' dengan parent yang sesuai
+    $trail->push('Kasus', route('admin.tcases.index'));
+});
+
+Breadcrumbs::for('tcases.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('tcases');
+    $trail->push('Tambah', route('admin.tcases.create'));
+});
