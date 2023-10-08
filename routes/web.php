@@ -178,6 +178,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('tcases/create', [TCasesController::class, 'create'])->name('admin.tcases.create');
     Route::post('tcases/store', [TCasesController::class, 'store'])->name('admin.tcases.store');
     Route::get('tcases/{id}/edit', [TCasesController::class, 'edit'])->name('admin.tcases.edit');
+    Route::post('tcases/importexcel', [TCasesController::class, 'importexcel'])->name('admin.tcases.importexcel');
     Route::resource('tcases', TCasesController::class, ['as' => 'admin']);
 });
 

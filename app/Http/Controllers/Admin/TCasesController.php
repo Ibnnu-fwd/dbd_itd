@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Imports\TcasesImport;
 use App\Repositories\Interface\RegencyInterface;
 use App\Models\TCases;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Repositories\Interface\TCasesInterface;
 
 class TCasesController extends Controller
@@ -23,18 +25,18 @@ class TCasesController extends Controller
     {
         if ($request->ajax()) {
             return datatables()
-                ->of(TCases::query()->where('is_active', true)) // Gunakan query builder dari model TCases
+                ->of(TCases::query()->where('is_active', true))
                 ->addColumn('date', function ($data) {
                     return $data->date;
                 })
                 ->addColumn('regency', function ($data) {
-                    return ucwords(strtolower($data->regency->name));
+                    return $data->regency ? ucwords(strtolower($data->regency->name)) : "--";
                 })
                 ->addColumn('district', function ($data) {
-                    return ucwords(strtolower($data->district->name));
+                    return $data->district ? ucwords(strtolower($data->district->name)) : "--";
                 })
                 ->addColumn('village', function ($data) {
-                    return ucwords(strtolower($data->village->name));
+                    return $data->village ? ucwords(strtolower($data->village->name)) : "--";
                 })
                 ->addColumn('vector_type', function ($data) {
                     return $data->vector_type;
@@ -50,11 +52,16 @@ class TCasesController extends Controller
         }
         $tcases = TCases::where('is_active', true)->get();
         $data = $tcases->map(function ($item) {
+
+            $regencyName = $item->regency ? ucwords(strtolower($item->regency->name)) : "--";
+            $districtName = $item->district ? ucwords(strtolower($item->district->name)) : "--";
+            $villageName = $item->village ? ucwords(strtolower($item->village->name)) : "--";
+
             return [
                 'date' => $item->date,
-                'regency' => ucwords(strtolower($item->regency->name)),
-                'district' => ucwords(strtolower($item->district->name)),
-                'village' => ucwords(strtolower($item->village->name)),
+                'regency' => $regencyName,
+                'district' => $districtName,
+                'village' => $villageName,
                 'regency_id' => $item->regency_id,
                 'district_id' => $item->district_id,
                 'village_id' => $item->village_id,
@@ -62,6 +69,7 @@ class TCasesController extends Controller
                 'cases_total' => $item->cases_total,
             ];
         });
+
 
         return view('admin.tcases.index', ['tcases' => $data]);
     }
@@ -118,6 +126,20 @@ class TCasesController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
+    }
+    public function importexcel(Request $request)
+    {
+        $data = $request->file('import_file');
+
+        $nama_file = $data->getClientOriginalName();
+        $data->move('TcasesData', $nama_file);
+
+        Excel::import(new TcasesImport, \public_path('/TcasesData/' . $nama_file));
+
+        // Setelah impor selesai, hapus file Excel
+        unlink(\public_path('/TcasesData/' . $nama_file));
+
+        return \redirect()->back();
     }
 
 
