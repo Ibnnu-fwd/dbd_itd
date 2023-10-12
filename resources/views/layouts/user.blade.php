@@ -50,7 +50,7 @@
             <nav class="border-gray-200 px-2 lg:px-6 py-2.5 lg:mx-0 mx-2">
                 <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                     <a href="/" class="flex items-center">
-                        <img src="{{ asset('assets/images/logo.png') }}" class="mr-3 h-8 sm:h-12" alt="Logo" />
+                        <img src="{{ asset('assets/images/logo.png') }}" class="mr-3 h-8 sm:h-10" alt="Logo" />
                     </a>
                     <div class="flex items-center lg:order-2">
                         @if (auth()->check())
@@ -85,16 +85,17 @@
                                         </div>
                                     </div>
                                     <div class="py-2">
-                                            <a href="{{route('admin.dashboard')}}" class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
-                                                <i class="fas fa-tachometer-alt mr-2"></i>
-                                                <span>Dashboard</span>
-                                            </a>
-                                            @csrf
-                                            <button type="submit"
-                                                class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
-                                                <i class="fas fa-sign-out-alt mr-2"></i>
-                                                <span>Keluar</span>
-                                            </button>
+                                        <a href="{{ route('admin.dashboard') }}"
+                                            class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                            <i class="fas fa-tachometer-alt mr-2"></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                        @csrf
+                                        <button type="submit"
+                                            class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                            <i class="fas fa-sign-out-alt mr-2"></i>
+                                            <span>Keluar</span>
+                                        </button>
                                         </form>
                                     </div>
                                 </div>

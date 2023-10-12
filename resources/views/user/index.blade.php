@@ -6,8 +6,8 @@
                 <h1
                     class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-4xl xl:text-5xl dark:text-white">
                     <span
-                        class="text-transparent bg-clip-text bg-gradient-to-r to-purple-500 from-purple-700">Streamlined
-                        Vector,</span> <br>Monitoring System
+                        class="text-transparent bg-clip-text bg-gradient-to-r to-purple-500 from-purple-700">System</span>
+                    <br>Monitoring Vector
                 </h1>
                 <p class="max-w-2xl mb-6 text-gray-500 lg:mb-8 md:text-sm lg:text-md dark:text-gray-400">
                     Collecting data from various sources and displaying it in a single dashboard is a challenge. We are
@@ -107,7 +107,7 @@
                 <h2 class="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                     Mosquito Vector <br>Distribution Data
                 </h2>
-                <p class="mb-6 text-gray-500 md:text-xs leading-5">
+                <p class="mb-6 text-gray-500 text-xs md:text-sm leading-5">
                     We already have a database of mosquito distribution data in the area that was collected by our team
                     and the community. Hope you can know the distribution of mosquitoes based on type, location and
                     other variables.
@@ -127,7 +127,7 @@
                 <h2 class="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                     Larval Dispersal <br>Data
                 </h2>
-                <p class="mb-6 text-gray-500 md:text-xs leading-5">
+                <p class="mb-6 text-gray-500 text-xs md:text-sm leading-5">
                     We have been collecting the existence of larvae in the area grouped by the type of larvae, district,
                     and village. So you can know the number of larvae in your area and take action to eradicate them.
                 </p>
@@ -150,7 +150,7 @@
                 <h2 class="mb-4 text-2xl tracking-tight font-extrabold text-gray-900 dark:text-white">
                     Visualization of <br>Larva-Free Counts
                 </h2>
-                <p class="mb-6 text-gray-500 md:text-xs leading-5">
+                <p class="mb-6 text-gray-500 text-xs md:text-sm leading-5">
                     We have been collecting the existence of mosquitoes in the area grouped by the type of mosquitoes,
                     and counted the number of mosquitoes that are free of larvae
                 </p>

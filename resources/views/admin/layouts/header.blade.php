@@ -14,15 +14,14 @@
                     </svg>
                 </button>
                 <a href="/" class="flex ml-2 md:mr-24">
-                    <img src="{{asset('assets/images/logo.png')}}" class="h-8 mr-3" alt="FlowBite Logo" />
+                    <img src="{{ asset('assets/images/logo.png') }}" class="h-10 mr-3" alt="FlowBite Logo" />
                 </a>
             </div>
             <div class="flex items-center">
                 <div class="flex items-center ml-3">
                     <div>
-                        <button type="button"
-                            class="flex text-sm  rounded-full focus:ring-4"
-                            aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                        <button type="button" class="flex text-sm  rounded-full focus:ring-4" aria-expanded="false"
+                            data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
                             <img class="w-8 h-8 rounded-full"
                                 src="{{ auth()->user()->profile_picture
