@@ -133,9 +133,9 @@
 
         function getColor(abj_total) {
             if (abj_total <= 95) {
-                return '#1cc88a'; // ABJ Sedang
+                return '#e74a3b'; // ABJ Sedang
             } else{
-                return '#e74a3b'; // ABJ Rendah
+                return '#1cc88a'; // ABJ Rendah1cc88a
             } 
         }
 

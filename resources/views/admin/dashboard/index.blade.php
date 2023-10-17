@@ -121,10 +121,11 @@
         <script>
             function getColor(abj_total) {
             if (abj_total <= 95) {
-                return '#1cc88a'; // ABJ Sedang
+                return '#e74a3b'; // ABJ Sedang
             } else{
-                return '#e74a3b'; // ABJ Rendah
+                return '#1cc88a'; // ABJ Rendah1cc88a
             } 
+
         }
 
             const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
