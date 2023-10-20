@@ -10,6 +10,7 @@ class KshControllerApi extends Controller
 {
     public function index()
     {
+        // Retrieve Ksh data
         $kshData = Ksh::all();
 
         // Iterate through each Ksh data and calculate total_sample for each one
@@ -18,8 +19,16 @@ class KshControllerApi extends Controller
             $ksh->total_sample = $totalSample;
         }
 
-        return response()->json($kshData, 200);
+        // Now, you want to add the $abjData transformation code
+        $abjData = $kshData->map(function ($item) {
+            $item['district'] = $item->district->name; // Change 'name' to the desired column name
+            return $item;
+        });
+
+        // Return the modified $abjData as JSON response
+        return response()->json($abjData, 200);
     }
+
 
     public function show($id)
     {

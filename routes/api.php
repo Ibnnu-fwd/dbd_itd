@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Abj get data
 Route::get('/abj132[]-23*09@#!', [AbjControllerApi::class, 'index']);
+Route::get('/abj/search', [AbjControllerApi::class, 'search']);
 // Cara get data abj
 // abj132%5B%5D-23%2A09%40%23%21
 
