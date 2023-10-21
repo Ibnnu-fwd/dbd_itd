@@ -86,6 +86,15 @@ class KshControllerApi extends Controller
             'updated_by',
             'is_active' => 1,
         ];
+        $dataabj = [
+            'district_id' => 3578090,
+            'village_id' => 3578090006,
+            'ksh_id' => 1,
+            'abj_total' => 10,
+            'created_by'=> 1,
+            'updated_by',
+            'is_active'=> 1
+        ];
         // Membuat entri baru dalam model "DetailKsh" menggunakan atribut-atribut dari data dummy
         $detailKsh = new DetailKsh();
         $detailKsh->fill($data); // Mengisi model dengan data dummy
