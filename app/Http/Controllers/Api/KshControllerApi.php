@@ -6,6 +6,7 @@ use App\Models\Ksh;
 use App\Models\District;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Abj;
 use App\Models\DetailKsh;
 use App\Models\Regency;
 
@@ -106,6 +107,10 @@ class KshControllerApi extends Controller
         $ksh->fill($datakecamatan);
 
         $ksh->save();
+        $abj = new Abj();
+        $abj->fill($dataabj);
+
+        $abj->save();
         // Mengembalikan respons JSON dengan status 200
         return response()->json(200);
     }
