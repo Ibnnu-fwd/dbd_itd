@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 class DetailSampleVirusRepository implements DetailSampleVirusInterface
 {
     private $detailSampleVirus;
+
     private $detailSampleMorphotype;
+
     private $detailSampleSerotype;
 
     public function __construct(
@@ -19,9 +21,9 @@ class DetailSampleVirusRepository implements DetailSampleVirusInterface
         DetailSampleMorphotype $detailSampleMorphotype,
         DetailSampleSerotype $detailSampleSerotype
     ) {
-        $this->detailSampleVirus        = $detailSampleVirus;
-        $this->detailSampleMorphotype   = $detailSampleMorphotype;
-        $this->detailSampleSerotype     = $detailSampleSerotype;
+        $this->detailSampleVirus = $detailSampleVirus;
+        $this->detailSampleMorphotype = $detailSampleMorphotype;
+        $this->detailSampleSerotype = $detailSampleSerotype;
     }
 
     public function getById($id)
@@ -34,50 +36,50 @@ class DetailSampleVirusRepository implements DetailSampleVirusInterface
         $sample_id = $this->detailSampleVirus->find($detailSampleVirusId)->sample_id;
 
         $this->detailSampleMorphotype->create([
-            'detail_sample_virus_id'    => $detailSampleVirusId,
-            'morphotype_id'             => 1,
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id' => 1,
             'amount' => $attributes['morphotype_1'] ?? 0,
         ]);
 
         $this->detailSampleMorphotype->create([
-            'detail_sample_virus_id'    => $detailSampleVirusId,
-            'morphotype_id'             => 2,
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id' => 2,
             'amount' => $attributes['morphotype_2'] ?? 0,
         ]);
 
         $this->detailSampleMorphotype->create([
-            'detail_sample_virus_id'    => $detailSampleVirusId,
-            'morphotype_id'             => 3,
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id' => 3,
             'amount' => $attributes['morphotype_3'] ?? 0,
         ]);
 
         $this->detailSampleMorphotype->create([
-            'detail_sample_virus_id'    => $detailSampleVirusId,
-            'morphotype_id'             => 4,
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id' => 4,
             'amount' => $attributes['morphotype_4'] ?? 0,
         ]);
 
         $this->detailSampleMorphotype->create([
-            'detail_sample_virus_id'    => $detailSampleVirusId,
-            'morphotype_id'             => 5,
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id' => 5,
             'amount' => $attributes['morphotype_5'] ?? 0,
         ]);
 
         $this->detailSampleMorphotype->create([
-            'detail_sample_virus_id'    => $detailSampleVirusId,
-            'morphotype_id'             => 6,
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id' => 6,
             'amount' => $attributes['morphotype_6'] ?? 0,
         ]);
 
         $this->detailSampleMorphotype->create([
-            'detail_sample_virus_id'    => $detailSampleVirusId,
-            'morphotype_id'             => 7,
+            'detail_sample_virus_id' => $detailSampleVirusId,
+            'morphotype_id' => 7,
             'amount' => $attributes['morphotype_7'] ?? 0,
         ]);
 
         $this->detailSampleMorphotype->create([
             'detail_sample_virus_id' => $detailSampleVirusId,
-            'morphotype_id'          => 8,
+            'morphotype_id' => 8,
             'amount' => $attributes['unidentified'] ?? 0,
         ]);
 

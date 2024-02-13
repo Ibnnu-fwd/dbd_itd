@@ -3,7 +3,7 @@
     <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900">
         <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
             <article class="mx-auto w-full max-w-3xl format format-sm sm:format-base lg:format-lg">
-                <div class="text-xs 2xl:text-sm">
+                <div class="text-sm">
                     <div class="xl:flex items-start justify-between gap-x-16">
                         <div>
                             <h2 class="from-blue-400 to-purple-700 bg-gradient-to-r bg-clip-text text-transparent">
@@ -50,7 +50,7 @@
                         better Surabaya. This title can also motivate and inspire others to contribute and become agents
                         of change in their communities.
                     </p>
-                    <section class="space-x-3 flex text-xs 2xl:text-sm">
+                    <section class="space-x-3 flex text-sm">
                         <div class="flex flex-col items-center">
                             <img class="w-20 h-20 rounded object-cover order-1"
                                 src="{{ asset('assets/images/ksh/ksh1.jpg') }}" alt="Large avatar">
@@ -66,12 +66,12 @@
                     </section>
                 </div>
 
-                <p class="leading-6 text-xs 2xl:text-sm">
+                <p class="leading-6 text-sm">
                     We have collected samples of larvae from different places and have analyzed them. The data is shown
                     in the form of graphs and charts below.
                 </p>
 
-                <div class="text-xs 2xl:text-sm">
+                <div class="text-sm">
                     <h3>
                         Visualizations of Larvae Data
                     </h3>

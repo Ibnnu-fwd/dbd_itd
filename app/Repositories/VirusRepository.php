@@ -28,7 +28,7 @@ class VirusRepository implements VirusInterface
     public function create(array $attributes)
     {
         if (isset($attributes['image'])) {
-            $filename = uniqid() . '.' . $attributes['image']->extension();
+            $filename = uniqid().'.'.$attributes['image']->extension();
             $attributes['image']->storeAs('public/virus', $filename);
 
             $attributes['image'] = $filename;
@@ -37,7 +37,7 @@ class VirusRepository implements VirusInterface
         return $this->virus->create([
             'name' => $attributes['name'],
             'description' => $attributes['description'] ?? null,
-            'image' => $attributes['image'] ?? null
+            'image' => $attributes['image'] ?? null,
         ]);
     }
 
@@ -47,10 +47,10 @@ class VirusRepository implements VirusInterface
         if (isset($attributes['image'])) {
             $oldFile = $virus->image;
             if ($oldFile) {
-                Storage::delete('public/virus/' . $oldFile);
+                Storage::delete('public/virus/'.$oldFile);
             }
 
-            $filename = uniqid() . '.' . $attributes['image']->extension();
+            $filename = uniqid().'.'.$attributes['image']->extension();
             $attributes['image']->storeAs('public/virus', $filename);
 
             $attributes['image'] = $filename;
@@ -59,7 +59,7 @@ class VirusRepository implements VirusInterface
         return $virus->update([
             'name' => $attributes['name'],
             'description' => $attributes['description'] ?? null,
-            'image' => $attributes['image'] ?? null
+            'image' => $attributes['image'] ?? null,
         ]);
     }
 

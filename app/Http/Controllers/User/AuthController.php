@@ -16,6 +16,7 @@ class AuthController extends Controller
 
         try {
             $user = User::where('email', $request->email)->firstOrFail();
+
             return redirect()->route('admin.user.reset-password-form')->with('success', 'Email ditemukan');
         } catch (\Throwable $th) {
             return redirect()->route('password.request')->with('error', 'Email tidak ditemukan');
@@ -39,6 +40,7 @@ class AuthController extends Controller
             $user->update([
                 'password' => bcrypt($request->new_password),
             ]);
+
             return redirect()->route('login')->with('success', 'Password berhasil diubah');
         } catch (\Throwable $th) {
             return redirect()->route('admin.user.reset-password-form')->with('error', 'Email tidak ditemukan');

@@ -11,27 +11,29 @@ class SettlementTypeController extends Controller
 {
     private $settlementType;
 
-    public function __construct(SettlementTypeInterface $settlementType) {
+    public function __construct(SettlementTypeInterface $settlementType)
+    {
         $this->settlementType = $settlementType;
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->settlementType->getAll())
-            ->addColumn('name', function($data) {
-                return $data->name;
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.settlement-type.column.action', ['data' => $data]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->settlementType->getAll())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.settlement-type.column.action', ['data' => $data]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
+
         return view('admin.settlement-type.index');
     }
 
@@ -73,7 +75,7 @@ class SettlementTypeController extends Controller
     public function edit(string $id)
     {
         return view('admin.settlement-type.edit', [
-            'settlementType' => $this->settlementType->getById($id)
+            'settlementType' => $this->settlementType->getById($id),
         ]);
     }
 
@@ -89,6 +91,7 @@ class SettlementTypeController extends Controller
         ]);
 
         $this->settlementType->update($id, $request->all());
+
         return redirect()->route('admin.settlement-type.index')->with('success', 'Jenis Pemukiman Berhasil Diubah');
     }
 
@@ -98,9 +101,10 @@ class SettlementTypeController extends Controller
     public function destroy(string $id)
     {
         $this->settlementType->delete($id);
+
         return response()->json([
             'status' => true,
-            'message' => 'Jenis Pemukiman Berhasil Dihapus'
+            'message' => 'Jenis Pemukiman Berhasil Dihapus',
         ]);
     }
 }

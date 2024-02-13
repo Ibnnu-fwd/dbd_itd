@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interface\VirusInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class VirusController extends Controller
 {
@@ -61,6 +60,7 @@ class VirusController extends Controller
 
         try {
             $this->virus->create($request->all());
+
             return redirect()->route('admin.virus.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data');
@@ -81,7 +81,7 @@ class VirusController extends Controller
     public function edit(string $id)
     {
         return view('admin.virus.edit', [
-            'virus' => $this->virus->getById($id)
+            'virus' => $this->virus->getById($id),
         ]);
     }
 
@@ -91,13 +91,14 @@ class VirusController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => ['required', 'unique:viruses,name,' . $id],
+            'name' => ['required', 'unique:viruses,name,'.$id],
             'description' => ['nullable'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
         ]);
 
         try {
             $this->virus->update($id, $request->all());
+
             return redirect()->route('admin.virus.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -111,9 +112,10 @@ class VirusController extends Controller
     {
         try {
             $this->virus->delete($id);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Data berhasil dihapus'
+                'message' => 'Data berhasil dihapus',
             ]);
         } catch (\Throwable $th) {
             dd($th->getMessage());
@@ -124,6 +126,7 @@ class VirusController extends Controller
     public function list(Request $request)
     {
         $virus = $this->virus->getAll();
+
         return response()->json($virus);
     }
 }

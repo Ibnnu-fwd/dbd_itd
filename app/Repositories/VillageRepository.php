@@ -22,7 +22,7 @@ class VillageRepository implements VillageInterface
     public function search($search)
     {
         return $this->village->with(['regency', 'district', 'province'])
-            ->where('name', 'like', '%' . $search . '%')
+            ->where('name', 'like', '%'.$search.'%')
             ->get();
     }
 
@@ -36,7 +36,7 @@ class VillageRepository implements VillageInterface
         return $this->village->create([
             'id' => $this->village->generateId(),
             'name' => $attributes['name'],
-            'district_id' => $attributes['district_id']
+            'district_id' => $attributes['district_id'],
         ]);
     }
 
@@ -44,7 +44,7 @@ class VillageRepository implements VillageInterface
     {
         return $this->village->find($id)->update([
             'name' => $attributes['name'],
-            'district_id' => $attributes['district_id']
+            'district_id' => $attributes['district_id'],
         ]);
     }
 

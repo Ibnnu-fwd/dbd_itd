@@ -50,13 +50,14 @@ class FloorTypeController extends Controller
         $request->validate([
             'name' => ['required', Rule::unique('floor_types', 'name')->where(function ($query) {
                 return $query->where('is_active', 1);
-            })]
+            })],
         ], [
             'name.required' => 'Jenis lantai tidak boleh kosong',
-            'name.unique' => 'Jenis lantai sudah ada'
+            'name.unique' => 'Jenis lantai sudah ada',
         ]);
 
         $this->floorType->create($request->all());
+
         return redirect()->route('admin.floor-type.index')->with('success', 'Jenis lantai berhasil ditambahkan');
     }
 
@@ -74,7 +75,7 @@ class FloorTypeController extends Controller
     public function edit(string $id)
     {
         return view('admin.floor-type.edit', [
-            'floorType' => $this->floorType->getById($id)
+            'floorType' => $this->floorType->getById($id),
         ]);
     }
 
@@ -86,13 +87,14 @@ class FloorTypeController extends Controller
         $request->validate([
             'name' => ['required', Rule::unique('floor_types', 'name')->where(function ($query) {
                 return $query->where('is_active', 1);
-            })]
+            })],
         ], [
             'name.required' => 'Jenis lantai tidak boleh kosong',
-            'name.unique' => 'Jenis lantai sudah ada'
+            'name.unique' => 'Jenis lantai sudah ada',
         ]);
 
         $this->floorType->update($id, $request->all());
+
         return redirect()->route('admin.floor-type.index')->with('success', 'Jenis lantai berhasil diubah');
     }
 
@@ -102,9 +104,10 @@ class FloorTypeController extends Controller
     public function destroy(string $id)
     {
         $this->floorType->delete($id);
+
         return response()->json([
             'status' => true,
-            'message' => 'Jenis lantai berhasil dihapus'
+            'message' => 'Jenis lantai berhasil dihapus',
         ]);
     }
 }

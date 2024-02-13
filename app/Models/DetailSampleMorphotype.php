@@ -10,10 +10,11 @@ class DetailSampleMorphotype extends Model
     use HasFactory;
 
     public $table = 'detail_sample_morphotypes';
+
     protected $fillable = [
         'detail_sample_virus_id',
         'morphotype_id',
-        'amount'
+        'amount',
     ];
 
     // RELATIONSHIPS

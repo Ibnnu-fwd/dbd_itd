@@ -9,7 +9,9 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 class DetailSampleSheet implements FromCollection, WithHeadings, WithTitle
 {
     private $virusId;
+
     private $detailSample;
+
     private $title;
 
     // create a sheet based on each virus
@@ -27,8 +29,7 @@ class DetailSampleSheet implements FromCollection, WithHeadings, WithTitle
         foreach ($this->detailSample as $detailSample) {
             foreach ($detailSample->detailSampleMorphotypes as $morphotype) {
                 $morphotype_number = null;
-                if($morphotype->morphotype->name == 'Morfotipe 1')
-                {
+                if ($morphotype->morphotype->name == 'Morfotipe 1') {
                     $morphotype_number = 1;
                 } elseif ($morphotype->morphotype->name == 'Morfotipe 2') {
                     $morphotype_number = 2;
@@ -43,7 +44,6 @@ class DetailSampleSheet implements FromCollection, WithHeadings, WithTitle
                 } elseif ($morphotype->morphotype->name == 'Morfotipe 7') {
                     $morphotype_number = 7;
                 }
-
 
                 $data[] = [
                     $morphotype_number,
@@ -79,6 +79,7 @@ class DetailSampleSheet implements FromCollection, WithHeadings, WithTitle
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 }

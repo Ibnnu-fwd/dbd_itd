@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 class LarvaeController extends Controller
 {
     private $larvae;
+
     private $regency;
 
-    public function __construct(LarvaeInterface $larvae, RegencyInterface $regency) {
+    public function __construct(LarvaeInterface $larvae, RegencyInterface $regency)
+    {
         $this->larvae = $larvae;
         $this->regency = $regency;
     }
@@ -28,14 +30,14 @@ class LarvaeController extends Controller
     public function filterMapYear(Request $request)
     {
         return response()->json([
-            'larvae' => $this->larvae->filterMapYear($request->year)
+            'larvae' => $this->larvae->filterMapYear($request->year),
         ]);
     }
 
     public function filterMapRegency(Request $request)
     {
         return response()->json([
-            'larvae' => $this->larvae->filterMapRegency($request->regency_id)
+            'larvae' => $this->larvae->filterMapRegency($request->regency_id),
         ]);
     }
 }

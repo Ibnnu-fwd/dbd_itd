@@ -21,10 +21,10 @@
                             </x-button>
                             <div class="block md:flex items-center justify-end mt-4">
                                 {{-- <a href="{{ route('register') }}"
-                                    class="text-xs 2xl:text-sm font-medium text-gray-500 hover:underline">Belum punya
+                                    class="text-sm font-medium text-gray-500 hover:underline">Belum punya
                                     akun?</a> --}}
                                 <a href="{{ route('password.request') }}"
-                                    class="text-xs 2xl:text-sm font-medium text-gray-500 hover:underline">Lupa kata
+                                    class="text-sm font-medium text-gray-500 hover:underline">Lupa kata
                                     sandi?</a>
                             </div>
                         </div>

@@ -10,10 +10,11 @@ class DetailSampleSerotype extends Model
     use HasFactory;
 
     public $table = 'detail_sample_serotypes';
+
     protected $fillable = [
         'sample_id',
         'serotype_id',
-        'status'
+        'status',
     ];
 
     // RELATIONSHIPS

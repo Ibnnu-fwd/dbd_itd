@@ -59,7 +59,7 @@
                         <x-input-datepicker id="birthday" name="birthday" label="Tanggal Lahir" required />
                         <x-textarea id="address" name="address" label="Alamat" required />
                         <x-input id="email" type="email" name="email" label="Email" required />
-                        <span class="text-xs 2xl:text-sm"><span class="text-error">*</span> Password akan dikirimkan ke
+                        <span class="text-sm"><span class="text-error">*</span> Password akan dikirimkan ke
                             email yang dimasukkan</span>
                     </div>
                     <div class="flex flex-col gap-2 md:flex-row md:justify-end mt-6 items-end">
@@ -78,8 +78,7 @@
 
     @push('js-internal')
         <script>
-            function changeStatus(id)
-            {
+            function changeStatus(id) {
                 let status = $('#status-' + id).val();
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -97,8 +96,7 @@
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
-                                if(response.status === 'success')
-                                {
+                                if (response.status === 'success') {
                                     Swal.fire({
                                         icon: 'success',
                                         title: 'Berhasil',

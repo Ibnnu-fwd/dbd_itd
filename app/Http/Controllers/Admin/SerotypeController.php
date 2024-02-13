@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Interface\SerotypeInterface;
-use App\Repositories\Interface\VirusInterface;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -12,23 +11,24 @@ class SerotypeController extends Controller
 {
     private $serotype;
 
-    public function __construct(SerotypeInterface $serotype) {
+    public function __construct(SerotypeInterface $serotype)
+    {
         $this->serotype = $serotype;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->serotype->getAll())
-            ->addColumn('name', function($data) {
-                return $data->name ;
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.serotype.column.action', compact('data'));
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->serotype->getAll())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.serotype.column.action', compact('data'));
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('admin.serotype.index');
@@ -55,6 +55,7 @@ class SerotypeController extends Controller
         ]);
 
         $this->serotype->create($request->all());
+
         return redirect()->route('admin.serotype.index')->with('success', 'Serotipe berhasil ditambahkan');
     }
 
@@ -66,7 +67,7 @@ class SerotypeController extends Controller
     public function edit(string $id)
     {
         return view('admin.serotype.edit', [
-            'serotype' => $this->serotype->getById($id)
+            'serotype' => $this->serotype->getById($id),
         ]);
     }
 
@@ -80,6 +81,7 @@ class SerotypeController extends Controller
         ]);
 
         $this->serotype->update($id, $request->all());
+
         return redirect()->route('admin.serotype.index')->with('success', 'Serotipe berhasil diubah');
     }
 
@@ -89,9 +91,10 @@ class SerotypeController extends Controller
     public function destroy(string $id)
     {
         $this->serotype->delete($id);
+
         return response()->json([
             'status' => true,
-            'message' => 'Serotipe berhasil dihapus'
+            'message' => 'Serotipe berhasil dihapus',
         ]);
     }
 }

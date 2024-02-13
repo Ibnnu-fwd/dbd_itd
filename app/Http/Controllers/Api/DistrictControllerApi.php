@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\District;
+use Illuminate\Http\Request;
 
 class DistrictControllerApi extends Controller
 {
     public function index(Request $request)
     {
         $page = $request->input('page', 1);
-        
+
         // Jumlah item yang akan ditampilkan dalam setiap halaman
         $perPage = 10;
 
         // Mengambil data dengan paginasi
         $districts = District::paginate($perPage, ['*'], 'page', $page);
+
         return response()->json($districts);
     }
 
@@ -24,7 +25,7 @@ class DistrictControllerApi extends Controller
     {
         $district = District::find($id);
 
-        if (!$district) {
+        if (! $district) {
             return response()->json(['message' => 'District not found'], 404);
         }
 

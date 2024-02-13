@@ -4,13 +4,13 @@ namespace App\Repositories;
 
 use App\Models\Province;
 use App\Repositories\Interface\ProvinceInterface;
-use Illuminate\Support\Facades\DB;
 
 class ProvinceRepository implements ProvinceInterface
 {
     private $province;
 
-    public function __construct(Province $province) {
+    public function __construct(Province $province)
+    {
         $this->province = $province;
     }
 
@@ -18,10 +18,12 @@ class ProvinceRepository implements ProvinceInterface
     {
         return $this->province->with('regencies')->get();
     }
+
     public function getById(string $id)
     {
 
     }
+
     public function create(array $data)
     {
         return $this->province->create($data);

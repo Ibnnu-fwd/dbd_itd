@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 class VectorController extends Controller
 {
     private $sample;
+
     private $regency;
 
-    public function __construct(SampleInterface $sample, RegencyInterface $regency) {
+    public function __construct(SampleInterface $sample, RegencyInterface $regency)
+    {
         $this->sample = $sample;
         $this->regency = $regency;
     }
@@ -23,42 +25,42 @@ class VectorController extends Controller
             'samples' => $this->sample->getAllForUser(date('Y'), null),
             'samplePerYear' => $this->sample->getSamplePerYear(date('Y')),
             'samplePerDistrict' => $this->sample->getHighestSampleInDistrictPerYear(date('Y')),
-            'regencies' => $this->regency->getAll()
+            'regencies' => $this->regency->getAll(),
         ]);
     }
 
     public function filterYear(Request $request)
     {
         return response()->json([
-            'samplePerYear' => $this->sample->getSamplePerYear($request->year)
+            'samplePerYear' => $this->sample->getSamplePerYear($request->year),
         ]);
     }
 
     public function filterYearDistrict(Request $request)
     {
         return response()->json([
-            'samplePerDistrict' => $this->sample->getHighestSampleInDistrictPerYear($request->year)
+            'samplePerDistrict' => $this->sample->getHighestSampleInDistrictPerYear($request->year),
         ]);
     }
 
     public function filterRegency(Request $request)
     {
         return response()->json([
-            'samples' => $this->sample->getAllSampleByRegency($request->regency_id)
+            'samples' => $this->sample->getAllSampleByRegency($request->regency_id),
         ]);
     }
 
     public function filterMapYear(Request $request)
     {
         return response()->json([
-            'samples' => $this->sample->getAllForUser($request->year, null)
+            'samples' => $this->sample->getAllForUser($request->year, null),
         ]);
     }
 
     public function filterMapRegency(Request $request)
     {
         return response()->json([
-            'samples' => $this->sample->getAllForUser(null, $request->regency_id)
+            'samples' => $this->sample->getAllForUser(null, $request->regency_id),
         ]);
     }
 }

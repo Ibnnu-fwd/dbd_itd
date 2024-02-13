@@ -9,7 +9,8 @@ class LocationTypeRepository implements LocationTypeInterface
 {
     private $locationType;
 
-    public function __construct(LocationType $locationType) {
+    public function __construct(LocationType $locationType)
+    {
         $this->locationType = $locationType;
     }
 
@@ -35,6 +36,7 @@ class LocationTypeRepository implements LocationTypeInterface
         $locationType = $this->locationType->findOrFail($id)->update([
             'name' => $attributes['name'],
         ]);
+
         return $locationType;
     }
 

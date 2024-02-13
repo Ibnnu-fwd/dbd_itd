@@ -3,8 +3,8 @@
     <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900">
         <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
             <article class="mx-auto w-full max-w-3xl format format-sm sm:format-base lg:format-lg">
-                <div class="text-xs 2xl:text-sm">
-                    <div class="text-xs 2xl:text-sm">
+                <div class="text-sm">
+                    <div class="text-sm">
                         <div class="xl:grid grid-cols-3 items-center">
                             <h2 class="col-span-2">
                                 Visualizations of Larvae Data
@@ -25,7 +25,7 @@
                                 </x-select>
                             </div>
                         </div>
-                        <p class="leading-6 text-xs 2xl:text-sm mb-4">
+                        <p class="leading-6 text-sm mb-4">
                             We have collected samples of larvae presence, and we have found that the most common larvae
                             in our
                             area is the mosquito. You can see the data we have collected below.
@@ -37,7 +37,7 @@
                         @else
                             <h3 class="text-center">Larvae data is empty</h3>
                         @endif
-                        <p class="text-center text-xs 2xl:text-sm italic">
+                        <p class="text-center text-sm italic">
                             <span class="text-error">*</span>
                             This map shows the location of the samples collected by the user and it all have been
                             clustered to make it easier to see
@@ -100,7 +100,7 @@
                         seeking blood. The life cycle usually takes a few weeks, but when conditions are right, it can
                         take only 10 days.
                     </p>
-                    <section class="space-x-3 flex text-xs 2xl:text-sm">
+                    <section class="space-x-3 flex text-sm">
                         <div class="flex flex-col items-center">
                             <img class="w-20 h-20 rounded object-cover order-1"
                                 src="{{ asset('assets/images/larvae/larva1.webp') }}" alt="Large avatar">
@@ -116,12 +116,12 @@
                     </section>
                 </div>
 
-                <p class="leading-6 text-xs 2xl:text-sm">
+                <p class="leading-6 text-sm">
                     We have collected samples of larvae from different places and have analyzed them. The data is shown
                     in the form of graphs and charts below.
                 </p>
 
-                <div class="text-xs 2xl:text-sm">
+                <div class="text-sm">
                     <h3>
                         Visualizations of Larvae Data
                     </h3>

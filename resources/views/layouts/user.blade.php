@@ -56,7 +56,7 @@
                         @if (auth()->check())
                             <div class="flex md:order-2">
                                 <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName"
-                                    class="flex items-center text-xs 2xl:text-sm font-medium text-gray-900 hover:text-purple-600 dark:hover:text-purple-500 md:mr-0"
+                                    class="flex items-center text-sm font-medium text-gray-900 hover:text-purple-600 dark:hover:text-purple-500 md:mr-0"
                                     type="button">
                                     <span class="sr-only">Open user menu</span>
                                     {{-- <img class="w-8 h-8 mr-2 rounded-full"
@@ -76,7 +76,7 @@
                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
                                     style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(1336.67px, 114.167px, 0px);"
                                     data-popper-placement="bottom">
-                                    <div class="px-4 py-3 text-xs 2xl:text-sm text-gray-900 dark:text-white">
+                                    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
                                         <div class="font-medium ">
                                             {{ auth()->user()->role }}
                                         </div>
@@ -86,13 +86,13 @@
                                     </div>
                                     <div class="py-2">
                                         <a href="{{ route('admin.dashboard') }}"
-                                            class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                            class="flex w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
                                             <i class="fas fa-tachometer-alt mr-2"></i>
                                             <span>Dashboard</span>
                                         </a>
                                         @csrf
                                         <button type="submit"
-                                            class="flex w-full px-4 py-2 text-xs 2xl:text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                            class="flex w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
                                             <i class="fas fa-sign-out-alt mr-2"></i>
                                             <span>Keluar</span>
                                         </button>
@@ -113,12 +113,12 @@
                             </div>
                         @else
                             <x-link-button route="{{ route('login') }}"
-                                class="hidden lg:inline-block text-xs 2xl:text-sm bg-primary">
+                                class="hidden lg:inline-block text-sm bg-primary">
                                 Login
                             </x-link-button>
                         @endif
                         <button data-collapse-toggle="mobile-menu-2" type="button"
-                            class="inline-flex items-center p-2 ml-1 text-xs 2xl:text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                            class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
                             aria-controls="mobile-menu-2" aria-expanded="false">
                             <span class="sr-only">Open main menu</span>
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
@@ -140,30 +140,30 @@
                         <ul class="flex flex-col mt-4 lg:flex-row lg:space-x-8 lg:mt-0">
                             <li>
                                 <a href="/"
-                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.index') ? 'text-primary font-medium' : 'text-gray-700' }} rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 text-xs 2xl:text-sm">Beranda</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.index') ? 'text-primary font-medium' : 'text-gray-700' }} rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 text-sm">Beranda</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.vector') }}"
-                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.vector') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Vector</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.vector') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-sm">Vector</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.larvae') }}"
-                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.larvae') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">Larvae</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.larvae') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-sm">Larvae</a>
                             </li>
                             <li>
                                 <a href="{{ route('user.ksh') }}"
-                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.ksh') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-xs 2xl:text-sm">KSH</a>
+                                    class="block py-2 pr-4 pl-3 {{ request()->routeIs('user.ksh') ? 'text-primary font-medium' : 'text-gray-700' }} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0  text-sm">KSH</a>
                             </li>
                             <li class="lg:hidden">
                                 @if (auth()->check())
                                     <form action="{{ route('logout') }}" method="POST">
                                         @csrf
                                         <button type="submit"
-                                            class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 text-xs 2xl:text-sm">Logout</button>
+                                            class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 text-sm">Logout</button>
                                     </form>
                                 @else
                                     <a href="{{ route('login') }}"
-                                        class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 text-xs 2xl:text-sm">Login</a>
+                                        class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 text-sm">Login</a>
                                 @endif
                             </li>
                         </ul>
@@ -175,7 +175,7 @@
         {{ $slot }}
 
         <footer class="sm:flex sm:items-center sm:justify-center p-4 sm:p-6 xl:p-8 ">
-            <p class="mb-4 text-xs 2xl:text-sm font-light text-center text-gray-500 dark:text-gray-400 sm:mb-0">
+            <p class="mb-4 text-sm font-light text-center text-gray-500 dark:text-gray-400 sm:mb-0">
                 &copy; 2023 <a href="/" class="hover:underline" target="_blank">Sivemo.com</a>.
                 All
                 rights reserved.

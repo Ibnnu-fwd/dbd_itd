@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Virus;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class VirusSeeder extends Seeder
@@ -16,7 +15,7 @@ class VirusSeeder extends Seeder
         $viruses = [
             ['name' => 'Aedes Aegepty'],
             ['name' => 'Aedes Albopictus'],
-            ['name' => 'Culex']
+            ['name' => 'Culex'],
         ];
 
         Virus::insert($viruses);

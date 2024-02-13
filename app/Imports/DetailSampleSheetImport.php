@@ -6,14 +6,14 @@ use App\Models\DetailSampleMorphotype;
 use App\Models\DetailSampleSerotype;
 use App\Models\Morphotype;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Concerns\WithTitle;
 
 class DetailSampleSheetImport implements ToModel, WithStartRow
 {
     public $virusId;
+
     public $detailSample;
+
     public $title;
 
     public function __construct($virusId, $detailSample, $title)
@@ -30,7 +30,7 @@ class DetailSampleSheetImport implements ToModel, WithStartRow
 
     public function model(array $row)
     {
-        $morphotypeName = 'Morfotipe ' . $row[0];
+        $morphotypeName = 'Morfotipe '.$row[0];
 
         $data = [];
         $data = [

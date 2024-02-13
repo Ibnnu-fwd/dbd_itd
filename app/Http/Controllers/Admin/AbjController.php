@@ -8,43 +8,43 @@ use Illuminate\Http\Request;
 
 class AbjController extends Controller
 {
-
     private $abj;
 
-    public function __construct(AbjInterface $abj) {
+    public function __construct(AbjInterface $abj)
+    {
         $this->abj = $abj;
     }
 
     public function index(Request $request)
     {
         // return $this->abj->getAllGroupByDistrict();
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->abj->getAllGroupByDistrict())
-            ->addColumn('district', function($data) {
-                return $data['district'];
-            })
-            ->addColumn('total_sample', function($data) {
-                return $data['total_sample'];
-            })
-            ->addColumn('total_check', function($data) {
-                return $data['total_check'];
-            })
+                ->of($this->abj->getAllGroupByDistrict())
+                ->addColumn('district', function ($data) {
+                    return $data['district'];
+                })
+                ->addColumn('total_sample', function ($data) {
+                    return $data['total_sample'];
+                })
+                ->addColumn('total_check', function ($data) {
+                    return $data['total_check'];
+                })
             // ->addColumn('location', function($data) {
             //     return view('admin.abj.column.location', ['data' => $data['location']]);
             // })
-            ->addColumn('abj', function($data) {
-                return view('admin.abj.column.abj_total', ['data' => $data]);
-            })
-            ->addColumn('created_at', function($data) {
-                return $data['created_at'];
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->addColumn('abj', function ($data) {
+                    return view('admin.abj.column.abj_total', ['data' => $data]);
+                })
+                ->addColumn('created_at', function ($data) {
+                    return $data['created_at'];
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
+
         return view('admin.abj.index', [
-            'abj' => $this->abj->getAllGroupByDistrict()
+            'abj' => $this->abj->getAllGroupByDistrict(),
         ]);
     }
 

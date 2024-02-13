@@ -26,10 +26,10 @@
                             </svg>
                         </div>
                         <input name="startDate" type="text"
-                            class="border border-gray-300 text-gray-900 text-xs 2xl:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
                             placeholder="Pilih tanggal mulai" autocomplete="off">
                     </div>
-                    <span class="mx-4 text-gray-500 text-xs 2xl:text-sm mb-2">sampai</span>
+                    <span class="mx-4 text-gray-500 text-sm mb-2">sampai</span>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -40,7 +40,7 @@
                             </svg>
                         </div>
                         <input name="endDate" type="text"
-                            class="border border-gray-300 text-gray-900 text-xs 2xl:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
                             placeholder="Pilih tanggal berakhir" autocomplete="off">
                     </div>
                     <x-link-button id="btnFilter" color="gray" class="py-2.5 mb-1.5">

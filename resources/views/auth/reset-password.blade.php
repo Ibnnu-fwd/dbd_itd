@@ -21,7 +21,7 @@
 
                         <div class="flex flex-col gap-3 md:flex-row md:justify-between mt-6 items-center">
                             <a href="{{ route('login') }}"
-                                class="text-xs 2xl:text-sm font-medium text-gray-500 hover:underline">Kembali</a>
+                                class="text-sm font-medium text-gray-500 hover:underline">Kembali</a>
                             <x-button type="submit" class="bg-primary">
                                 {{ __('Ubah Password') }}
                             </x-button>

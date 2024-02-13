@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\Api\RegencyControllerApi;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AbjControllerApi;
+use App\Http\Controllers\Api\DataKasusControllerApi;
 use App\Http\Controllers\Api\DistrictControllerApi;
 use App\Http\Controllers\Api\KshControllerApi;
-use App\Http\Controllers\Api\DataKasusControllerApi; 
-use App\Http\Controllers\Api\UserControllerApi; 
+use App\Http\Controllers\Api\RegencyControllerApi;
+use App\Http\Controllers\Api\UserControllerApi;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,9 +60,3 @@ Route::delete('/cases/{id}', [DataKasusControllerApi::class, 'destroy']);
 
 // login
 Route::post('/login', [UserControllerApi::class, 'login']);
-
-
-
-
-
-

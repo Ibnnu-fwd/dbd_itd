@@ -6,7 +6,6 @@ use App\Models\District;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Village;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +20,6 @@ class LocationSeeder extends Seeder
         Regency::truncate();
         District::truncate();
         Village::truncate();
-
 
         // read csv file and insert data into database
         $file = fopen(database_path('dumps/provinces.csv'), 'r');

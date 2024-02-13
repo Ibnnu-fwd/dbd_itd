@@ -9,7 +9,8 @@ class BuildingTypeRepository implements BuildingTypeInterface
 {
     private $buildingType;
 
-    public function __construct(BuildingType $buildingType) {
+    public function __construct(BuildingType $buildingType)
+    {
         $this->buildingType = $buildingType;
     }
 
@@ -36,6 +37,7 @@ class BuildingTypeRepository implements BuildingTypeInterface
         $buildingType->update([
             'name' => $attributes['name'],
         ]);
+
         return $buildingType;
     }
 
@@ -45,6 +47,7 @@ class BuildingTypeRepository implements BuildingTypeInterface
         $buildingType->update([
             'is_active' => 0,
         ]);
+
         return $buildingType;
     }
 }

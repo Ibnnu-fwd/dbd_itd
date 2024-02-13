@@ -12,23 +12,24 @@ class MorphotypeController extends Controller
 {
     private $morphotype;
 
-    public function __construct(MorphotypeInterface $morphotype) {
+    public function __construct(MorphotypeInterface $morphotype)
+    {
         $this->morphotype = $morphotype;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->morphotype->getAll())
-            ->addColumn('name', function($data) {
-                return $data->name;
-            })
-            ->addColumn('action', function($data) {
-                return  view('admin.morphotype.column.action', compact('data'));
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->morphotype->getAll())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.morphotype.column.action', compact('data'));
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('admin.morphotype.index');
@@ -53,6 +54,7 @@ class MorphotypeController extends Controller
 
         try {
             $this->morphotype->create($request->all());
+
             return redirect()->route('admin.morphotype.index')->with('success', 'Morfotipe baru berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()->route('admin.morphotype.index')->with('error', $th->getMessage());
@@ -67,7 +69,7 @@ class MorphotypeController extends Controller
     public function edit(string $id)
     {
         return view('admin.morphotype.edit', [
-            'morphotype' => $this->morphotype->getById($id)
+            'morphotype' => $this->morphotype->getById($id),
         ]);
     }
 
@@ -82,6 +84,7 @@ class MorphotypeController extends Controller
 
         try {
             $this->morphotype->update($id, $request->all());
+
             return redirect()->route('admin.morphotype.index')->with('success', 'Morfotipe berhasil diperbarui');
         } catch (\Throwable $th) {
             return redirect()->route('admin.morphotype.index')->with('error', 'Terjadi kesalahan saat memperbarui morfotipe');
@@ -91,6 +94,7 @@ class MorphotypeController extends Controller
     public function destroy(string $id)
     {
         $this->morphotype->delete($id);
+
         return response()->json(['status' => true, 'message' => 'Morfotipe berhasil dihapus']);
     }
 
@@ -102,7 +106,7 @@ class MorphotypeController extends Controller
         foreach ($morphotypes as $morphotype) {
             $arr_data->push([
                 'id' => $morphotype->id,
-                'text' => $morphotype->name
+                'text' => $morphotype->name,
             ]);
         }
 

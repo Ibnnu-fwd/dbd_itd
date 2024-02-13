@@ -9,6 +9,7 @@ use App\Repositories\Interface\RegencyInterface;
 class RegencyRepository implements RegencyInterface
 {
     private $regency;
+
     private $province;
 
     public function __construct(Regency $regency, Province $province)

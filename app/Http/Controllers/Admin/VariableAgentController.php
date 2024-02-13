@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class VariableAgentController extends Controller
 {
     private $sample;
+
     private $regency;
 
     public function __construct(SampleInterface $sample, RegencyInterface $regency)
@@ -54,7 +55,7 @@ class VariableAgentController extends Controller
                     return $data['district'];
                 })
                 ->addColumn('location', function ($data) {
-                    return $data['latitude'] . ', ' . $data['longitude'];
+                    return $data['latitude'].', '.$data['longitude'];
                 })
                 ->addColumn('count', function ($data) {
                     return $data['count'] ?? 0;
@@ -62,7 +63,7 @@ class VariableAgentController extends Controller
                 ->addColumn('type', function ($data) {
                     return view('admin.variable-agent.column.type', compact('data'));
                 })
-                ->addColumn('created_at', function($data) {
+                ->addColumn('created_at', function ($data) {
                     return Carbon::parse($data['created_at'])->locale('id')->isoFormat('D MMMM Y');
                 })
                 ->addIndexColumn()
@@ -96,7 +97,7 @@ class VariableAgentController extends Controller
         $data = $samples->map(function ($data) {
             return [
                 'district' => $data['district'],
-                'location' => $data['latitude'] . ', ' . $data['longitude'],
+                'location' => $data['latitude'].', '.$data['longitude'],
                 'count' => $data['count'] ?? 0,
                 'type' => view('admin.variable-agent.column.type', compact('data'))->render(),
                 'created_at' => Carbon::parse($data['created_at'])->locale('id')->isoFormat('D MMMM Y'),
@@ -115,7 +116,7 @@ class VariableAgentController extends Controller
         $data = $samples->map(function ($data) {
             return [
                 'district' => $data['district'],
-                'location' => $data['latitude'] . ', ' . $data['longitude'],
+                'location' => $data['latitude'].', '.$data['longitude'],
                 'count' => $data['count'] ?? 0,
                 'type' => view('admin.variable-agent.column.type', compact('data'))->render(),
                 'created_at' => Carbon::parse($data['created_at'])->locale('id')->isoFormat('D MMMM Y'),

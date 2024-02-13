@@ -12,16 +12,19 @@ use Illuminate\Support\Facades\DB;
 class DetailKshRepository implements DetailKshInterface
 {
     private $abj;
+
     private $detailKsh;
+
     private $tpaType;
+
     private $ksh;
 
     public function __construct(Abj $abj, DetailKsh $detailKsh, TpaType $tpaType, Ksh $ksh)
     {
-        $this->abj       = $abj;
+        $this->abj = $abj;
         $this->detailKsh = $detailKsh;
-        $this->tpaType   = $tpaType;
-        $this->ksh       = $ksh;
+        $this->tpaType = $tpaType;
+        $this->ksh = $ksh;
     }
 
     public function getById($id)
@@ -35,13 +38,13 @@ class DetailKshRepository implements DetailKshInterface
 
         try {
             $this->detailKsh->create([
-                'ksh_id'       => $id,
-                'house_name'   => $attributes['house_name'],
-                'house_owner'  => $attributes['house_owner'],
-                'tpa_type_id'  => $attributes['tpa_type_id'],
+                'ksh_id' => $id,
+                'house_name' => $attributes['house_name'],
+                'house_owner' => $attributes['house_owner'],
+                'tpa_type_id' => $attributes['tpa_type_id'],
                 'larva_status' => $attributes['larva_status'] == 1 ? true : false,
-                'latitude'     => $attributes['latitude'],
-                'longitude'    => $attributes['longitude'],
+                'latitude' => $attributes['latitude'],
+                'longitude' => $attributes['longitude'],
                 'tpa_description' => $attributes['tpa_description'],
             ]);
         } catch (\Throwable $th) {
@@ -53,8 +56,8 @@ class DetailKshRepository implements DetailKshInterface
             $abj = $this->abj->where('ksh_id', $id)->first();
 
             $negativeLarvaCount = 0;
-            $ksh                = $this->ksh->find($id);
-            $detailKsh          = $ksh->detailKsh;
+            $ksh = $this->ksh->find($id);
+            $detailKsh = $ksh->detailKsh;
 
             if ($abj == null) {
                 foreach ($detailKsh as $detail) {
@@ -63,11 +66,11 @@ class DetailKshRepository implements DetailKshInterface
                     }
                 }
                 $this->abj->create([
-                    'regency_id'  => $ksh->regency_id,
+                    'regency_id' => $ksh->regency_id,
                     'district_id' => $ksh->district_id,
-                    'village_id'  => $ksh->village_id,
-                    'ksh_id'      => $id,
-                    'abj_total'   => ($negativeLarvaCount / $detailKsh->count()) * 100
+                    'village_id' => $ksh->village_id,
+                    'ksh_id' => $id,
+                    'abj_total' => ($negativeLarvaCount / $detailKsh->count()) * 100,
                 ]);
             } else {
                 foreach ($detailKsh as $detail) {
@@ -76,7 +79,7 @@ class DetailKshRepository implements DetailKshInterface
                     }
                 }
                 $abj->update([
-                    'abj_total' => ($negativeLarvaCount / $detailKsh->count()) * 100
+                    'abj_total' => ($negativeLarvaCount / $detailKsh->count()) * 100,
                 ]);
             }
         } catch (\Throwable $th) {
@@ -93,12 +96,12 @@ class DetailKshRepository implements DetailKshInterface
 
         try {
             $this->detailKsh->find($id)->update([
-                'house_name'   => $attributes['house_name'],
-                'house_owner'  => $attributes['house_owner'],
-                'tpa_type_id'  => $attributes['tpa_type_id'],
+                'house_name' => $attributes['house_name'],
+                'house_owner' => $attributes['house_owner'],
+                'tpa_type_id' => $attributes['tpa_type_id'],
                 'larva_status' => $attributes['larva_status'] == 1 ? true : false,
-                'latitude'     => $attributes['latitude'],
-                'longitude'    => $attributes['longitude'],
+                'latitude' => $attributes['latitude'],
+                'longitude' => $attributes['longitude'],
                 'tpa_description' => $attributes['tpa_description'],
             ]);
         } catch (\Throwable $th) {
@@ -108,11 +111,11 @@ class DetailKshRepository implements DetailKshInterface
 
         try {
             $detailKsh = $this->detailKsh->find($id);
-            $ksh       = $detailKsh->ksh;
-            $abj       = $this->abj->where('ksh_id', $ksh->id)->first();
+            $ksh = $detailKsh->ksh;
+            $abj = $this->abj->where('ksh_id', $ksh->id)->first();
 
             $negativeLarvaCount = 0;
-            $detailKsh          = $ksh->detailKsh;
+            $detailKsh = $ksh->detailKsh;
 
             foreach ($detailKsh as $detail) {
                 if ($detail->larva_status == 0) {
@@ -121,7 +124,7 @@ class DetailKshRepository implements DetailKshInterface
             }
 
             $abj->update([
-                'abj_total' => ($negativeLarvaCount / $detailKsh->count()) * 100
+                'abj_total' => ($negativeLarvaCount / $detailKsh->count()) * 100,
             ]);
         } catch (\Throwable $th) {
             throw $th;

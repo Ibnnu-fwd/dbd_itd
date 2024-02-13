@@ -10,6 +10,7 @@ class DetailSampleVirus extends Model
     use HasFactory;
 
     public $table = 'detail_sample_viruses';
+
     protected $fillable = [
         'sample_id',
         'virus_id',

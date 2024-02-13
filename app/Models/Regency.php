@@ -10,11 +10,12 @@ class Regency extends Model
     use HasFactory;
 
     public $table = 'regencies';
+
     protected $fillable = [
         'id',
         'province_id',
         'name',
-        'is_active'
+        'is_active',
     ];
 
     // RELATIONSHIPS
@@ -52,7 +53,7 @@ class Regency extends Model
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%');
+            $query->where('name', 'like', '%'.$search.'%');
         });
     }
 

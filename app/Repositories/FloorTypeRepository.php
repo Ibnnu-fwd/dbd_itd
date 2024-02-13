@@ -9,7 +9,8 @@ class FloorTypeRepository implements FloorTypeInterface
 {
     private $floorType;
 
-    public function __construct(FloorType $floorType) {
+    public function __construct(FloorType $floorType)
+    {
         $this->floorType = $floorType;
     }
 

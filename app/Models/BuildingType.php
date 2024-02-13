@@ -13,7 +13,7 @@ class BuildingType extends Model
 
     protected $fillable = [
         'name',
-        'is_active'
+        'is_active',
     ];
 
     public function scopeActive($query)
@@ -26,5 +26,4 @@ class BuildingType extends Model
     {
         return $this->hasMany(Larvae::class);
     }
-
 }

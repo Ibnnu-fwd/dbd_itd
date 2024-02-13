@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -21,7 +20,7 @@ class UserSeeder extends Seeder
             'phone' => '+6281515144981',
             'email' => 'admin@mail.com',
             'password' => password_hash('password', PASSWORD_DEFAULT),
-            'role' => 'admin'
+            'role' => 'admin',
         ]);
     }
 }

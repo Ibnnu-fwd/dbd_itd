@@ -6,12 +6,13 @@ use App\Models\District;
 use App\Models\Province;
 use App\Models\Regency;
 use App\Repositories\Interface\DistrictInterface;
-use Illuminate\Support\Facades\DB;
 
 class DistrictRepository implements DistrictInterface
 {
     private $province;
+
     private $regency;
+
     private $district;
 
     public function __construct(District $district, Province $province, Regency $regency)
@@ -34,7 +35,7 @@ class DistrictRepository implements DistrictInterface
     public function search($search)
     {
         return $this->district->with(['province', 'regency'])
-            ->where('name', 'like', '%' . $search . '%')->get();
+            ->where('name', 'like', '%'.$search.'%')->get();
     }
 
     public function create(array $attributes)

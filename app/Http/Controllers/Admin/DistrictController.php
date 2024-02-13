@@ -7,12 +7,13 @@ use App\Repositories\Interface\DistrictInterface;
 use App\Repositories\Interface\ProvinceInterface;
 use App\Repositories\Interface\RegencyInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class DistrictController extends Controller
 {
     private $district;
+
     private $province;
+
     private $regency;
 
     public function __construct(DistrictInterface $district, ProvinceInterface $province, RegencyInterface $regency)
@@ -21,6 +22,7 @@ class DistrictController extends Controller
         $this->province = $province;
         $this->regency = $regency;
     }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -41,6 +43,7 @@ class DistrictController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.district.index');
     }
 
@@ -96,6 +99,7 @@ class DistrictController extends Controller
     public function list(Request $request)
     {
         $districts = $this->district->getByRegency($request->regency_id);
+
         return response()->json($districts);
     }
 }

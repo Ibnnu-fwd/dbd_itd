@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Map;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MapsSeeder extends Seeder
@@ -15,7 +14,7 @@ class MapsSeeder extends Seeder
     {
         $json = file_get_contents(public_path('assets/geojson/surabaya.geojson'));
         $json = json_decode($json, true);
-        foreach ($json as  $value) {
+        foreach ($json as $value) {
             Map::create([
                 'province' => $value['province'],
                 'regency' => $value['district'],

@@ -11,23 +11,19 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 // use App\Models\SampleMethod;
-use App\Models\Village;
-use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithValidation, WithChunkReading
+class SampleImport implements ToModel, WithChunkReading, WithMultipleSheets, WithStartRow, WithValidation
 {
     public function sheets(): array
     {
         return [
-            0 => $this
+            0 => $this,
         ];
     }
 
@@ -51,16 +47,16 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
     public function rules(): array
     {
         return [
-            '*.0'  => 'required',
-            '*.1'  => 'required',
-            '*.2'  => 'required',
-            '*.3'  => 'required',
-            '*.4'  => 'required',
-            '*.5'  => 'required',
-            '*.6'  => 'required',
-            '*.7'  => 'required',
-            '*.8'  => 'required',
-            '*.9'  => 'nullable',
+            '*.0' => 'required',
+            '*.1' => 'required',
+            '*.2' => 'required',
+            '*.3' => 'required',
+            '*.4' => 'required',
+            '*.5' => 'required',
+            '*.6' => 'required',
+            '*.7' => 'required',
+            '*.8' => 'required',
+            '*.9' => 'nullable',
             '*.10' => 'nullable',
             '*.11' => 'nullable',
             '*.12' => 'nullable',
@@ -96,7 +92,7 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
 
     public function model(array $row)
     {
-        $createdAt        = $row[0];
+        $createdAt = $row[0];
         // Coba membuat objek DateTime
         $dateTime = \DateTime::createFromFormat('n/j/Y', $createdAt);
 
@@ -107,23 +103,23 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
             echo $createdAt;
         } else {
             // Penanganan kesalahan jika konversi gagal
-            echo "Konversi tanggal gagal.";
+            echo 'Konversi tanggal gagal.';
         }
-        $province         = $this->province($row[1]);
-        $regency          = $this->regency($row[2]);
-        $district         = $this->district($row[3]);
-        $village          = $this->village($row[4]);
-        $locationType     = $this->locationType($row[5]);
-        $locationName     = $row[6];
+        $province = $this->province($row[1]);
+        $regency = $this->regency($row[2]);
+        $district = $this->district($row[3]);
+        $village = $this->village($row[4]);
+        $locationType = $this->locationType($row[5]);
+        $locationName = $row[6];
         $publicHealthName = $row[7];
-        $latitude         = str_replace(',', '.', $row[8]);
-        $longitude        = str_replace(',', '.', $row[9]);
-        $sampleCode       = $this->generateSampleCode();
-        $sample           = Sample::where('sample_code', $sampleCode)->first();
+        $latitude = str_replace(',', '.', $row[8]);
+        $longitude = str_replace(',', '.', $row[9]);
+        $sampleCode = $this->generateSampleCode();
+        $sample = Sample::where('sample_code', $sampleCode)->first();
 
-        $aedesAegypti    = (int) $row[10] ?? 0;
+        $aedesAegypti = (int) $row[10] ?? 0;
         $aedesAlbopictus = (int) $row[11] ?? 0;
-        $culex           = (int) $row[12] ?? 0;
+        $culex = (int) $row[12] ?? 0;
 
         $morphotype1 = (int) $row[13] ?? 0;
         $morphotype2 = (int) $row[14] ?? 0;
@@ -138,7 +134,7 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
             // check morphotype there's no value, then unidentified = aedesAegypti
             if ($morphotype1 == 0 && $morphotype2 == 0 && $morphotype3 == 0 && $morphotype4 == 0 && $morphotype5 == 0 && $morphotype6 == 0 && $morphotype7 == 0) {
                 $unidentified = $aedesAegypti;
-            } else if ($morphotype1 != 0 || $morphotype2 != 0 || $morphotype3 != 0 || $morphotype4 != 0 || $morphotype5 != 0 || $morphotype6 != 0 || $morphotype7 != 0) {
+            } elseif ($morphotype1 != 0 || $morphotype2 != 0 || $morphotype3 != 0 || $morphotype4 != 0 || $morphotype5 != 0 || $morphotype6 != 0 || $morphotype7 != 0) {
                 $unidentified = $aedesAegypti - ($morphotype1 + $morphotype2 + $morphotype3 + $morphotype4 + $morphotype5 + $morphotype6 + $morphotype7);
             }
 
@@ -163,26 +159,26 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
             return null;
         } else {
             $sample = Sample::create([
-                'sample_code'        => $sampleCode,
-                'file_code'          => $this->fileCode,
-                'created_at'         => $createdAt,
-                'province_id'        => $province,
-                'regency_id'         => $regency,
-                'district_id'        => $district,
-                'village_id'         => $village,
-                'location_type_id'   => $locationType,
-                'location_name'      => $locationName,
+                'sample_code' => $sampleCode,
+                'file_code' => $this->fileCode,
+                'created_at' => $createdAt,
+                'province_id' => $province,
+                'regency_id' => $regency,
+                'district_id' => $district,
+                'village_id' => $village,
+                'location_type_id' => $locationType,
+                'location_name' => $locationName,
                 'public_health_name' => $publicHealthName,
-                'latitude'           => $latitude,
-                'longitude'          => $longitude,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
             ]);
 
             // insert aedes albopictus
             if ($aedesAlbopictus != 0) {
                 DetailSampleVirus::create([
                     'sample_id' => $sample->id,
-                    'virus_id'  => 2,
-                    'amount'    => $aedesAlbopictus,
+                    'virus_id' => 2,
+                    'amount' => $aedesAlbopictus,
                 ]);
             }
 
@@ -190,98 +186,98 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
             if ($culex != 0) {
                 DetailSampleVirus::create([
                     'sample_id' => $sample->id,
-                    'virus_id'  => 3,
-                    'amount'    => $culex,
+                    'virus_id' => 3,
+                    'amount' => $culex,
                 ]);
             }
 
             if ($aedesAegypti != 0) {
                 $detailSampleVirus = DetailSampleVirus::create([
-                    'sample_id'      => $sample->id,
-                    'virus_id'       => 1,
-                    'identification' => 1
+                    'sample_id' => $sample->id,
+                    'virus_id' => 1,
+                    'identification' => 1,
                 ]);
                 if ($unidentified != 0) {
                     DetailSampleMorphotype::create([
                         'detail_sample_virus_id' => $detailSampleVirus->id,
-                        'morphotype_id'          => 8,
-                        'amount'                 => $unidentified,
+                        'morphotype_id' => 8,
+                        'amount' => $unidentified,
                     ]);
                 } else {
                     DetailSampleMorphotype::create([
                         'detail_sample_virus_id' => $detailSampleVirus->id,
-                        'morphotype_id'          => 8,
-                        'amount'                 => 0,
+                        'morphotype_id' => 8,
+                        'amount' => 0,
                     ]);
                 }
 
                 DetailSampleMorphotype::create([
                     'detail_sample_virus_id' => $detailSampleVirus->id,
-                    'morphotype_id'          => 1,
-                    'amount'                 => $morphotype1,
+                    'morphotype_id' => 1,
+                    'amount' => $morphotype1,
                 ]);
 
                 DetailSampleMorphotype::create([
                     'detail_sample_virus_id' => $detailSampleVirus->id,
-                    'morphotype_id'          => 2,
-                    'amount'                 => $morphotype2,
+                    'morphotype_id' => 2,
+                    'amount' => $morphotype2,
                 ]);
 
                 DetailSampleMorphotype::create([
                     'detail_sample_virus_id' => $detailSampleVirus->id,
-                    'morphotype_id'          => 3,
-                    'amount'                 => $morphotype3,
+                    'morphotype_id' => 3,
+                    'amount' => $morphotype3,
                 ]);
 
                 DetailSampleMorphotype::create([
                     'detail_sample_virus_id' => $detailSampleVirus->id,
-                    'morphotype_id'          => 4,
-                    'amount'                 => $morphotype4,
+                    'morphotype_id' => 4,
+                    'amount' => $morphotype4,
                 ]);
 
                 DetailSampleMorphotype::create([
                     'detail_sample_virus_id' => $detailSampleVirus->id,
-                    'morphotype_id'          => 5,
-                    'amount'                 => $morphotype5,
+                    'morphotype_id' => 5,
+                    'amount' => $morphotype5,
                 ]);
 
                 DetailSampleMorphotype::create([
                     'detail_sample_virus_id' => $detailSampleVirus->id,
-                    'morphotype_id'          => 6,
-                    'amount'                 => $morphotype6,
+                    'morphotype_id' => 6,
+                    'amount' => $morphotype6,
                 ]);
 
                 DetailSampleMorphotype::create([
                     'detail_sample_virus_id' => $detailSampleVirus->id,
-                    'morphotype_id'          => 7,
-                    'amount'                 => $morphotype7,
+                    'morphotype_id' => 7,
+                    'amount' => $morphotype7,
                 ]);
             }
         }
 
         if ($denv1 != 0) {
             DetailSampleSerotype::create([
-                'sample_id'   => $sample->id,
+                'sample_id' => $sample->id,
                 'serotype_id' => 1,
-                'status'      => $denv1,
+                'status' => $denv1,
             ]);
 
             DetailSampleSerotype::create([
-                'sample_id'   => $sample->id,
+                'sample_id' => $sample->id,
                 'serotype_id' => 2,
-                'status'      => $denv2,
+                'status' => $denv2,
             ]);
 
             DetailSampleSerotype::create([
-                'sample_id'   => $sample->id,
+                'sample_id' => $sample->id,
                 'serotype_id' => 3,
-                'status'      => $denv3,
+                'status' => $denv3,
             ]);
 
             DetailSampleSerotype::create([
-                'sample_id'   => $sample->id,
+                'sample_id' => $sample->id,
                 'serotype_id' => 4,
-                'status'      => $denv4,
+                'status' => $denv4,
             ]);
         }
     }
@@ -289,38 +285,42 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
     public function generateSampleCode()
     {
         $lastSample = Sample::orderBy('id', 'desc')->first();
-        $lastId     = $lastSample ? $lastSample->id : 0;
-        $year       = date('Y');
-        $code       = 'SC-' . $year . '-' . sprintf('%04s', $lastId + 1);
+        $lastId = $lastSample ? $lastSample->id : 0;
+        $year = date('Y');
+        $code = 'SC-'.$year.'-'.sprintf('%04s', $lastId + 1);
+
         return $code;
     }
 
     public function province($province)
     {
         $province = strtoupper($province);
-        $province = Province::where('name', 'like', '%' .  $province . '%')->first();
+        $province = Province::where('name', 'like', '%'.$province.'%')->first();
+
         return $province->id;
     }
 
     public function regency($regency)
     {
         $regency = strtoupper($regency);
-        $regency = Regency::where('name', 'like', '%' . $regency . '%')->first();
+        $regency = Regency::where('name', 'like', '%'.$regency.'%')->first();
 
         return $regency->id ?? null;
     }
 
     public function district($param)
     {
-        $param    = strtoupper($param);
-        $district = District::where('name', 'like', '%' . $param . '%')->first();
+        $param = strtoupper($param);
+        $district = District::where('name', 'like', '%'.$param.'%')->first();
+
         return $district->id ?? null;
     }
 
     public function village($param)
     {
-        $param   = strtoupper($param);
+        $param = strtoupper($param);
         $village = DB::table('villages')->where('name', $param)->cursor();
+
         return $village->first()->id;
     }
 
@@ -339,14 +339,16 @@ class SampleImport implements ToModel, WithStartRow, WithMultipleSheets, WithVal
 
     public function locationType($param)
     {
-        $param        = strtoupper($param);
-        $locationType = LocationType::where('name', 'like', '%' . $param . '%')->first();
+        $param = strtoupper($param);
+        $locationType = LocationType::where('name', 'like', '%'.$param.'%')->first();
         if ($locationType == null) {
             $locationType = LocationType::create([
-                'name' => $param
+                'name' => $param,
             ]);
+
             return $locationType->id;
         }
+
         return $locationType->id;
     }
 }

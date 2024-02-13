@@ -26,10 +26,10 @@
                             </svg>
                         </div>
                         <input name="startDate" type="text"
-                            class="border border-gray-300 text-gray-900 text-xs 2xl:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
                             placeholder="Pilih tanggal mulai" autocomplete="off">
                     </div>
-                    <span class="mx-4 text-gray-500 text-xs 2xl:text-sm mb-2">sampai</span>
+                    <span class="mx-4 text-gray-500 text-sm mb-2">sampai</span>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -40,7 +40,7 @@
                             </svg>
                         </div>
                         <input name="endDate" type="text"
-                            class="border border-gray-300 text-gray-900 text-xs 2xl:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full pl-10 p-3 mb-1.5"
                             placeholder="Pilih tanggal berakhir" autocomplete="off">
                     </div>
                     <x-link-button id="btnFilter" color="gray" class="py-2.5 mb-1.5">
@@ -96,38 +96,38 @@
                 });
 
                 let samples = Object.values(@json($samples));
-            // set last lat long of sample
-            let lastSample = samples[samples.length - 1];
-            let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 14);
+                // set last lat long of sample
+                let lastSample = samples[samples.length - 1];
+                let map = L.map('map').setView([lastSample.latitude, lastSample.longitude], 14);
 
-            L.tileLayer(
-                'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-                    maxZoom: 18,
-                    id: 'mapbox/light-v11',
-                    tileSize: 512,
-                    zoomOffset: -1,
-                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
-                }
-            ).addTo(map);
+                L.tileLayer(
+                    'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                        maxZoom: 18,
+                        id: 'mapbox/light-v11',
+                        tileSize: 512,
+                        zoomOffset: -1,
+                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                    }
+                ).addTo(map);
 
-            map.attributionControl.setPrefix(false);
-            map.zoomControl.remove();
+                map.attributionControl.setPrefix(false);
+                map.zoomControl.remove();
 
-            let markers = L.markerClusterGroup();
+                let markers = L.markerClusterGroup();
 
-            samples.forEach(function(sample) {
-                let marker = L.marker([sample.latitude, sample.longitude], {
-                    icon: L.divIcon({
-                        // using image
-                        html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
-                        backgroundSize: 'contain',
-                        className: 'marker bg-transparent',
-                        iconAnchor: [15, 15],
-                        popupAnchor: [0, -15]
-                    })
-                });
-                marker.bindPopup(
-                    `
+                samples.forEach(function(sample) {
+                    let marker = L.marker([sample.latitude, sample.longitude], {
+                        icon: L.divIcon({
+                            // using image
+                            html: `<img src="{{ asset('assets/images/vector/mosquito-icon.png') }}" class="w-6 h-6">`,
+                            backgroundSize: 'contain',
+                            className: 'marker bg-transparent',
+                            iconAnchor: [15, 15],
+                            popupAnchor: [0, -15]
+                        })
+                    });
+                    marker.bindPopup(
+                        `
                         <table class="border-collapse border-none">
                             <tbody>
                                 <tr>
@@ -171,26 +171,26 @@
                                     <td class="p-0">Jumlah</td>
                                 </tr>
                                 ` +
-                    sample.type.map(function(type) {
-                        return `
+                        sample.type.map(function(type) {
+                            return `
                                         <tr>
                                             <td class="p-0">${type.name}</td>
                                             <td class="p-0">${type.amount}</td>
                                         </tr>
                                     `;
-                    }).join('') +
-                    `
+                        }).join('') +
+                        `
                             </tbody>
                         </table>
                     `
-                );
-                markers.addLayer(marker);
-            });
+                    );
+                    markers.addLayer(marker);
+                });
 
-            // add fullscreen button
-            map.addControl(new L.Control.Fullscreen());
+                // add fullscreen button
+                map.addControl(new L.Control.Fullscreen());
 
-            map.addLayer(markers);
+                map.addLayer(markers);
 
                 // filter
                 $('#filterType').on('change', function() {
@@ -314,12 +314,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                                <tr>
-                                                                                    <td>${type.name}</td>
-                                                                                    <td>:</td>
-                                                                                    <td>${type.amount}</td>
-                                                                                </tr>
-                                                                            `;
+                                                                                        <tr>
+                                                                                            <td>${type.name}</td>
+                                                                                            <td>:</td>
+                                                                                            <td>${type.amount}</td>
+                                                                                        </tr>
+                                                                                    `;
                                                         }).join('')
                                                     }
                                                 </table>
@@ -442,12 +442,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                                <tr>
-                                                                                    <td>${type.name}</td>
-                                                                                    <td>:</td>
-                                                                                    <td>${type.amount}</td>
-                                                                                </tr>
-                                                                            `;
+                                                                                        <tr>
+                                                                                            <td>${type.name}</td>
+                                                                                            <td>:</td>
+                                                                                            <td>${type.amount}</td>
+                                                                                        </tr>
+                                                                                    `;
                                                         }).join('')
                                                     }
                                                 </table>

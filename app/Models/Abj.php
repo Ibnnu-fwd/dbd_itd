@@ -9,7 +9,8 @@ class Abj extends Model
 {
     use HasFactory;
 
-    public    $table    = 'abj';
+    public $table = 'abj';
+
     protected $fillable = [
         'district_id',
         'village_id',
@@ -17,7 +18,7 @@ class Abj extends Model
         'abj_total',
         'created_by',
         'updated_by',
-        'is_active'
+        'is_active',
     ];
 
     // RELATIONSHIP

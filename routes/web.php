@@ -16,17 +16,17 @@ use App\Http\Controllers\Admin\SampleController;
 use App\Http\Controllers\Admin\SampleMethodController;
 use App\Http\Controllers\Admin\SerotypeController;
 use App\Http\Controllers\Admin\SettlementTypeController;
+use App\Http\Controllers\Admin\TCasesController;
 use App\Http\Controllers\Admin\TpaTypeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableAgentController;
 use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\VirusController;
-use App\Http\Controllers\Admin\TCasesController;
+use App\Http\Controllers\ClusteringController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LarvaeController as UserLarvaeController;
 use App\Http\Controllers\User\VectorController;
-use App\Models\Map;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -180,6 +180,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('tcases/{id}/edit', [TCasesController::class, 'edit'])->name('admin.tcases.edit');
     Route::post('tcases/importexcel', [TCasesController::class, 'importexcel'])->name('admin.tcases.importexcel');
     Route::resource('tcases', TCasesController::class, ['as' => 'admin']);
+
+    // Cluster
+    Route::get('cluster', [ClusteringController::class, 'index'])->name('admin.cluster.index');
+    Route::post('cluster/import', [ClusteringController::class, 'import'])->name('admin.cluster.import');
+    Route::get('cluster/clustering', [ClusteringController::class, 'clustering'])->name('admin.cluster.clustering');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

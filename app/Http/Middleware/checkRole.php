@@ -16,10 +16,12 @@ class checkRole
             }
         } else {
             auth()->logout();
+
             return redirect('/')->with('error', 'Akun anda tidak aktif. Silahkan hubungi administrator.');
         }
 
         auth()->logout();
+
         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
 }

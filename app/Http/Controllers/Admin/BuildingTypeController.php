@@ -11,26 +11,27 @@ class BuildingTypeController extends Controller
 {
     private $buildingType;
 
-    public function __construct(BuildingTypeInterface $buildingType) {
+    public function __construct(BuildingTypeInterface $buildingType)
+    {
         $this->buildingType = $buildingType;
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->buildingType->getAll())
-            ->addColumn('name', function($data) {
-                return $data->name;
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.building-type.column.action', ['data' => $data]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->buildingType->getAll())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.building-type.column.action', ['data' => $data]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('admin.building-type.index');
@@ -56,6 +57,7 @@ class BuildingTypeController extends Controller
         ]);
 
         $this->buildingType->create($request->all());
+
         return redirect()->route('admin.building-type.index')->with('success', 'Jenis Bangunan Berhasil Ditambahkan');
     }
 
@@ -89,6 +91,7 @@ class BuildingTypeController extends Controller
         ]);
 
         $this->buildingType->update($id, $request->all());
+
         return redirect()->route('admin.building-type.index')->with('success', 'Jenis Bangunan Berhasil Diubah');
     }
 
@@ -98,9 +101,10 @@ class BuildingTypeController extends Controller
     public function destroy(string $id)
     {
         $this->buildingType->delete($id);
+
         return response()->json([
             'status' => true,
-            'message' => 'Jenis Bangunan Berhasil Dihapus'
+            'message' => 'Jenis Bangunan Berhasil Dihapus',
         ]);
     }
 }

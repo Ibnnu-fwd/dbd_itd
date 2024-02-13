@@ -25,15 +25,25 @@ use Maatwebsite\Excel\Validators\ValidationException;
 class SampleController extends Controller
 {
     private $sample;
+
     private $sampleMethod;
+
     private $province;
+
     private $regency;
+
     private $district;
+
     private $village;
+
     private $morphotype;
+
     private $viruses;
+
     private $serotype;
+
     private $locationType;
+
     private $detailSampleVirus;
 
     public function __construct(
@@ -72,9 +82,10 @@ class SampleController extends Controller
                     return $data->sample_code;
                 })
                 ->addColumn('address', function ($data) {
-                    $address = $data->village->name . ', ' . $data->district->name . ', ' . $data->regency->name . ', ' . $data->province->name;
+                    $address = $data->village->name.', '.$data->district->name.', '.$data->regency->name.', '.$data->province->name;
 
                     $address = strtolower($address);
+
                     return ucwords($address);
                 })
                 ->addColumn('location', function ($data) {
@@ -141,9 +152,11 @@ class SampleController extends Controller
 
         try {
             $this->sample->create($request->all());
+
             return redirect()->route('admin.sample.index')->with('success', 'Data berhasil disimpan.');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
@@ -206,9 +219,11 @@ class SampleController extends Controller
         try {
             $this->sample->update($id, $request->all());
             $sample = $this->sample->getById($id);
+
             return redirect()->route('admin.sample.detail-sample', $sample)->with('success', 'Sampel berhasil diubah');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
@@ -219,9 +234,10 @@ class SampleController extends Controller
     public function destroy(string $id)
     {
         $this->sample->delete($id);
+
         return response()->json([
             'status' => true,
-            'message' => 'Data berhasil dihapus.'
+            'message' => 'Data berhasil dihapus.',
         ]);
     }
 
@@ -238,7 +254,7 @@ class SampleController extends Controller
         return view('admin.sample.detail-sample-virus', [
             'sample' => $this->detailSampleVirus->getById($id),
             'morphotypes' => $this->morphotype->getAll(),
-            'serotypes' => $this->serotype->getAll()
+            'serotypes' => $this->serotype->getAll(),
         ]);
     }
 
@@ -247,6 +263,7 @@ class SampleController extends Controller
         try {
             $this->detailSampleVirus->store($request->all(), $id);
             $sample = $this->sample->getById($id);
+
             return redirect()->route('admin.sample.detail-sample.virus', $sample)->with('success', 'Data berhasil disimpan.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
@@ -257,6 +274,7 @@ class SampleController extends Controller
     {
         try {
             $this->detailSampleVirus->deleteDetailSampleVirusMorphotype($request->detailSampleMorphotypeId);
+
             return response()->json(true);
         } catch (\Throwable $th) {
             return response()->json(false);
@@ -269,14 +287,16 @@ class SampleController extends Controller
         if ($detailSample->virus_id == 1 && $detailSample->identification == 1) {
             try {
                 $this->detailSampleVirus->delete($id);
+
                 return response()->json(true);
             } catch (\Throwable $th) {
                 dd($th->getMessage());
+
                 return response()->json(false);
             }
-        } elseif($detailSample->virus_id == 1 && $detailSample->identification == 0 || $detailSample->virus_id != 1)
-        {
+        } elseif ($detailSample->virus_id == 1 && $detailSample->identification == 0 || $detailSample->virus_id != 1) {
             DetailSampleVirus::where('id', $id)->delete();
+
             return response()->json(true);
         }
     }
@@ -284,18 +304,19 @@ class SampleController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'import_file' => ['required', 'mimes:xls,xlsx']
+            'import_file' => ['required', 'mimes:xls,xlsx'],
         ]);
 
         try {
             $fileCode = uniqid();
             Excel::import(new SampleImport($fileCode), $request->file('import_file'));
-            $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
+            $filename = $fileCode.'.'.$request->file('import_file')->getClientOriginalExtension();
             $request->file('import_file')->storeAs('public/sample-imported', $filename);
+
             return redirect()->route('admin.sample.index')->with('success', 'Data berhasil diimport.');
         } catch (ValidationException $th) {
             return view('admin.sample.index', [
-                'failures' => $th->failures() ?? null
+                'failures' => $th->failures() ?? null,
             ]);
         }
     }
@@ -304,17 +325,19 @@ class SampleController extends Controller
     {
         $request->validate([
             'import_file' => ['required', 'mimes:xls,xlsx'],
-            'sample_id' => ['required']
+            'sample_id' => ['required'],
         ]);
 
         try {
             $fileCode = uniqid();
             Excel::import(new DetailSampleImport($request->sample_id), $request->file('import_file'));
+
             // $filename = $fileCode . '.' . $request->file('import_file')->getClientOriginalExtension();
             // $request->file('import_file')->storeAs('public/detail-sample-imported', $filename);
             return redirect()->back()->with('success', 'Data berhasil diimport.');
         } catch (ValidationException $th) {
             dd($th->getMessage());
+
             return view('admin.sample.detail-sample', [
                 'failures' => $th->failures() ?? null,
                 'sample' => $this->sample->detailSample($request->sample_id),
@@ -325,7 +348,8 @@ class SampleController extends Controller
     public function exportDetailSample($id)
     {
         $sample = $this->sample->getById($id);
-        return Excel::download(new DetailSampleExport($id), 'DETAIL SAMPLE_' . $sample->sample_code . uniqid() . '.xlsx');
+
+        return Excel::download(new DetailSampleExport($id), 'DETAIL SAMPLE_'.$sample->sample_code.uniqid().'.xlsx');
     }
 
     public function updateSingleAmountDetailSampleVirus($id, Request $request)
@@ -360,6 +384,7 @@ class SampleController extends Controller
     {
         $this->detailSampleVirus->update($request->all(), $id);
         $sample = $this->sample->getById($this->detailSampleVirus->getById($id)->sample_id);
+
         return redirect()->route('admin.sample.detail-sample', $sample)->with('success', 'Data berhasil diubah.');
     }
 }

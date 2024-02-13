@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\TCases;
+use Illuminate\Http\Request;
 
 class DataKasusControllerApi extends Controller
 {
@@ -12,6 +12,7 @@ class DataKasusControllerApi extends Controller
     public function index()
     {
         $cases = TCases::all();
+
         return response()->json($cases, 200);
     }
 
@@ -20,7 +21,7 @@ class DataKasusControllerApi extends Controller
     {
         $case = TCases::find($id);
 
-        if (!$case) {
+        if (! $case) {
             return response()->json(['message' => 'Case not found'], 404);
         }
 
@@ -41,7 +42,7 @@ class DataKasusControllerApi extends Controller
     {
         $case = TCases::find($id);
 
-        if (!$case) {
+        if (! $case) {
             return response()->json(['message' => 'Case not found'], 404);
         }
 
@@ -56,7 +57,7 @@ class DataKasusControllerApi extends Controller
     {
         $case = TCases::find($id);
 
-        if (!$case) {
+        if (! $case) {
             return response()->json(['message' => 'Case not found'], 404);
         }
 

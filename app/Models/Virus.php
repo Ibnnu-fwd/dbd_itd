@@ -10,10 +10,11 @@ class Virus extends Model
     use HasFactory;
 
     public $table = 'viruses';
+
     protected $fillable = [
         'name',
         'description',
-        'image'
+        'image',
     ];
 
     // RElATIONSHIP

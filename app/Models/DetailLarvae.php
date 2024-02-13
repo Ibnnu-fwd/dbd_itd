@@ -10,6 +10,7 @@ class DetailLarvae extends Model
     use HasFactory;
 
     public $table = 'detail_larvae';
+
     protected $fillable = [
         'larva_id',
         'tpa_type_id',
@@ -20,7 +21,7 @@ class DetailLarvae extends Model
         'salinity',
         'ph',
         'detail_tpa',
-        'aquatic_plant'
+        'aquatic_plant',
     ];
 
     // RELATIONSHIPS

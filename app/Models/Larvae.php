@@ -10,6 +10,7 @@ class Larvae extends Model
     use HasFactory;
 
     public $table = 'larvae';
+
     protected $fillable = [
         'larva_code', // ADD THIS LINE
         'regency_id',
@@ -25,7 +26,7 @@ class Larvae extends Model
         'longitude',
         'created_by',
         'updated_by',
-        'is_active'
+        'is_active',
     ];
 
     // RELATIONSHIP
@@ -93,14 +94,15 @@ class Larvae extends Model
     public function generateLarvaCode() // ADD THIS FUNCTION
     {
         // LC-yearmonthdate-0001
-        $larvaCode = 'LC-' . date('Ymd') . '-0001';
-        $lastLarva = $this->where('larva_code', 'like', '%' . date('Ymd') . '%')->orderBy('larva_code', 'desc')->first();
+        $larvaCode = 'LC-'.date('Ymd').'-0001';
+        $lastLarva = $this->where('larva_code', 'like', '%'.date('Ymd').'%')->orderBy('larva_code', 'desc')->first();
         if ($lastLarva) {
             $larvaCode = $lastLarva->larva_code;
             $larvaCode = explode('-', $larvaCode);
             $larvaCode = $larvaCode[2] + 1;
-            $larvaCode = 'LC-' . date('Ymd') . '-' . str_pad($larvaCode, 4, '0', STR_PAD_LEFT);
+            $larvaCode = 'LC-'.date('Ymd').'-'.str_pad($larvaCode, 4, '0', STR_PAD_LEFT);
         }
+
         return $larvaCode;
     }
 }

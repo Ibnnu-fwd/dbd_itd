@@ -10,9 +10,10 @@ class Serotype extends Model
     use HasFactory;
 
     public $table = 'serotypes';
+
     protected $fillable = [
         'name',
-        'is_active'
+        'is_active',
     ];
 
     // SCOPES

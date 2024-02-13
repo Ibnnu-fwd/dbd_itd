@@ -9,7 +9,7 @@
         $color .
         '-800 focus:ring-4 focus:outline-none focus:ring-' .
         $color .
-        '-300 font-medium rounded-lg text-xs 2xl:text-sm p-2.5 text-center inline-flex items-center dark:bg-' .
+        '-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center dark:bg-' .
         $color .
         '-600 dark:hover:bg-' .
         $color .

@@ -3,7 +3,7 @@
     <x-card-container>
         <div class="sm:grid grid-cols-3 gap-x-4">
             <div>
-                <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Lokasi</p>
+                <p class="text-sm font-semibold mb-6">Detail Lokasi</p>
                 <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
                     @foreach ($regencies as $regency)
                         <option value="{{ $regency->id }}" {{ $regency->id == $larva->regency_id ? 'selected' : '' }}>
@@ -21,7 +21,7 @@
                     value="{{ $larva->address ?? '' }}" />
             </div>
             <div>
-                <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Demografi</p>
+                <p class="text-sm font-semibold mb-6">Detail Demografi</p>
                 <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true" required>
                     @foreach ($locationTypes as $locationType)
                         <option value="{{ $locationType->id }}"
@@ -61,7 +61,7 @@
                 </x-select>
             </div>
             <div>
-                <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Koordinat</p>
+                <p class="text-sm font-semibold mb-6">Detail Koordinat</p>
                 <div class="sm:grid grid-cols-2 gap-x-4">
                     <x-input id="latitude" label="Latitude" name="latitude" type="text" required
                         :value="$larva->latitude" />

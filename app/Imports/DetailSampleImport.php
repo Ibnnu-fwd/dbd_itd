@@ -4,14 +4,12 @@ namespace App\Imports;
 
 use App\Models\DetailSampleVirus;
 use App\Models\Virus;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class DetailSampleImport implements WithMultipleSheets
 {
-
     private $sampleId;
+
     public function __construct($sampleId)
     {
         $this->sampleId = $sampleId;
@@ -28,7 +26,6 @@ class DetailSampleImport implements WithMultipleSheets
             $virus = Virus::find($detailSample[0]->virus_id);
             $sheets[] = new DetailSampleSheetImport($detailSample[0]->virus_id, $detailSample, $virus->name);
         }
-
 
         return $sheets;
     }

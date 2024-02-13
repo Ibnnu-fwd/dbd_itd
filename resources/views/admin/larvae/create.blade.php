@@ -3,7 +3,7 @@
     <x-card-container>
         <div class="sm:grid grid-cols-3 gap-x-4">
             <div>
-                <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Lokasi</p>
+                <p class="text-sm font-semibold mb-6">Detail Lokasi</p>
                 <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
                     @foreach ($regencies as $regency)
                         <option value="{{ $regency->id }}">{{ $regency->name }}</option>
@@ -14,7 +14,7 @@
                 <x-textarea id="address" label="Alamat" name="address" isFit="true" required />
             </div>
             <div>
-                <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Demografi</p>
+                <p class="text-sm font-semibold mb-6">Detail Demografi</p>
                 <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true" required>
                     @foreach ($locationTypes as $locationType)
                         <option value="{{ $locationType->id }}">{{ $locationType->name }}</option>
@@ -44,7 +44,7 @@
                 </x-select>
             </div>
             <div>
-                <p class="text-xs 2xl:text-sm font-semibold mb-4">Detail Koordinat</p>
+                <p class="text-sm font-semibold mb-4">Detail Koordinat</p>
                 <div class="sm:grid grid-cols-2 gap-x-4">
                     <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
                     <x-input id="longitude" label="Longitude" name="longitude" type="text" required />
@@ -58,7 +58,7 @@
         </div>
 
         <div class="xl:flex justify-between items-center mt-8">
-            <p class="text-xs 2xl:text-sm font-semibold mb-6 mt-8">Detail Pemeriksaan</p>
+            <p class="text-sm font-semibold mb-6 mt-8">Detail Pemeriksaan</p>
             <x-button id="btnAddLarva" color="gray" class="w-full md:w-auto justify-center">
                 <span>Tambah Detail</span>
             </x-button>

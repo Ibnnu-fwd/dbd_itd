@@ -93,18 +93,19 @@ class UserController extends Controller
             $oldProfilePicture = $user->profile_picture;
 
             if ($oldProfilePicture != null) {
-                $oldProfilePicturePath = public_path('storage/profile-picture' . $oldProfilePicture);
+                $oldProfilePicturePath = public_path('storage/profile-picture'.$oldProfilePicture);
                 if (file_exists($oldProfilePicturePath)) {
                     unlink($oldProfilePicturePath);
                 }
             }
 
-            $filename = uniqid() . '.' . $request->profile_picture->extension();
+            $filename = uniqid().'.'.$request->profile_picture->extension();
             $request->profile_picture->storeAs('public/profile-picture', $filename);
 
             $user->profile_picture = $filename;
 
             $user->save();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Berhasil mengubah foto profil',
@@ -140,7 +141,7 @@ class UserController extends Controller
             }
 
             // check if old password is valid
-            if (!Hash::check($request->old_password, $user->password)) {
+            if (! Hash::check($request->old_password, $user->password)) {
                 return redirect()->back()->with('error', 'Password lama tidak valid');
             }
 

@@ -6,7 +6,7 @@
             @method('PUT')
             <div class="sm:grid grid-cols-3 gap-x-4">
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Sampling</p>
+                    <p class="text-sm font-semibold mb-6">Detail Sampling</p>
                     <x-input id="public_health_name" label="Pukesmas" name="public_health_name" type="text"
                         :value="$sample->public_health_name" />
                     <x-input id="location_name" label="Nama Lokasi" name="location_name" type="text" required
@@ -23,7 +23,7 @@
                         :value="$sample->description" />
                 </div>
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Lokasi</p>
+                    <p class="text-sm font-semibold mb-6">Detail Lokasi</p>
                     <x-select id="province_id" label="Provinsi" name="province_id" isFit="true" required>
                         @foreach ($provinces as $province)
                             <option value="{{ $province->id }}"
@@ -34,10 +34,10 @@
                     <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required />
                     <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required />
                     <x-select id="village_id" label="Desa" name="village_id" isFit="true" required />
-                    <p id="address" class="text-xs 2xl:text-sm"></p>
+                    <p id="address" class="text-sm"></p>
                 </div>
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-4">Detail Koordinat</p>
+                    <p class="text-sm font-semibold mb-4">Detail Koordinat</p>
                     <div class="sm:grid grid-cols-2 gap-x-4">
                         <x-input id="latitude" label="Latitude" name="latitude" type="text" required
                             :value="$sample->latitude" />
@@ -53,7 +53,7 @@
             </div>
             <hr class="my-6 border-gray-100">
 
-            <div class="p-4 text-xs 2xl:text-sm text-gray-800 rounded-lg bg-gray-100 mb-3" role="alert">
+            <div class="p-4 text-sm text-gray-800 rounded-lg bg-gray-100 mb-3" role="alert">
                 <span class="font-semibold">Keterangan:</span>
                 <ul class="list-decimal mt-2">
                     <li class="list-inside">
@@ -76,7 +76,7 @@
                             {{ $detailSampleVirus->virus_id == $virus->id ? 'checked disabled' : '' }} @endforeach
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                             <label for="virus-{{ $virus->id }}-checkbox-list"
-                                class="w-full py-3 ml-2 text-xs 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">{{ $virus->name }}</label>
+                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $virus->name }}</label>
                         </div>
                     </li>
                 @endforeach

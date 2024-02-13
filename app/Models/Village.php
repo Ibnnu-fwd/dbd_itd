@@ -10,13 +10,13 @@ class Village extends Model
     use HasFactory;
 
     public $table = 'villages';
+
     protected $fillable = [
         'id',
         'district_id',
         'name',
-        'is_active'
+        'is_active',
     ];
-
 
     // RELATIONSHIPS
     public function district()
@@ -58,7 +58,7 @@ class Village extends Model
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%');
+            $query->where('name', 'like', '%'.$search.'%');
         });
     }
 
@@ -88,6 +88,7 @@ class Village extends Model
         $lastVillage = $this->orderBy('id', 'desc')->first();
         $lastId = $lastVillage ? $lastVillage->id : 0;
         $newId = $lastId + 1;
+
         return $newId;
     }
 }

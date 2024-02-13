@@ -9,7 +9,8 @@ class Map extends Model
 {
     use HasFactory;
 
-    public  $table = 'maps';
+    public $table = 'maps';
+
     protected $fillable = [
         'province',
         'regency',
@@ -20,6 +21,6 @@ class Map extends Model
 
     // cast coordinates to array
     protected $casts = [
-        'coordinates' => 'array'
+        'coordinates' => 'array',
     ];
 }

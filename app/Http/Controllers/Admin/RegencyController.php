@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Interface\ProvinceInterface;
 use App\Repositories\Interface\RegencyInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class RegencyController extends Controller
 {
     private $regency;
+
     private $province;
 
     public function __construct(RegencyInterface $regency, ProvinceInterface $province)
@@ -27,7 +27,7 @@ class RegencyController extends Controller
                 ->addColumn('regency', function ($data) {
                     return $data->name;
                 })
-                ->addColumn('province', function($data) {
+                ->addColumn('province', function ($data) {
                     return $data->province->name;
                 })
                 ->addColumn('action', function ($data) {
@@ -36,6 +36,7 @@ class RegencyController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.regency.index');
     }
 
@@ -91,6 +92,7 @@ class RegencyController extends Controller
     public function list(Request $regency)
     {
         $regency = $this->regency->getByProvince($regency->province_id);
+
         return response()->json($regency);
     }
 }

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\Interface\LocationTypeInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 
 class LocationTypeController extends Controller
@@ -16,6 +15,7 @@ class LocationTypeController extends Controller
     {
         $this->locationType = $locationType;
     }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -30,6 +30,7 @@ class LocationTypeController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.location-type.index');
     }
 
@@ -49,10 +50,11 @@ class LocationTypeController extends Controller
         $request->validate([
             'name' => ['required', Rule::unique('location_types', 'name')->where(function ($query) {
                 return $query->where('is_active', 1);
-            })]
+            })],
         ]);
 
         $this->locationType->create($request->all());
+
         return redirect()->route('admin.location-type.index')->with('success', 'Jenis lokasi baru berhasil ditambahkan!');
     }
 
@@ -70,7 +72,7 @@ class LocationTypeController extends Controller
     public function edit(string $id)
     {
         return view('admin.location-type.edit', [
-            'locationType' => $this->locationType->getById($id)
+            'locationType' => $this->locationType->getById($id),
         ]);
     }
 
@@ -82,10 +84,11 @@ class LocationTypeController extends Controller
         $request->validate([
             'name' => ['required', Rule::unique('location_types', 'name')->where(function ($query) {
                 return $query->where('is_active', 1);
-            })]
+            })],
         ]);
 
         $this->locationType->update($id, $request->all());
+
         return redirect()->route('admin.location-type.index')->with('success', 'Jenis lokasi berhasil diperbarui!');
     }
 
@@ -96,14 +99,15 @@ class LocationTypeController extends Controller
     {
         try {
             $this->locationType->delete($id);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Jenis lokasi berhasil dihapus!'
+                'message' => 'Jenis lokasi berhasil dihapus!',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => 'Jenis lokasi gagal dihapus!'
+                'message' => 'Jenis lokasi gagal dihapus!',
             ]);
         }
     }

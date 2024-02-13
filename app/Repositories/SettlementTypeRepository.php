@@ -2,14 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Repositories\Interface\SettlementTypeInterface;
 use App\Models\SettlementType;
+use App\Repositories\Interface\SettlementTypeInterface;
 
 class SettlementTypeRepository implements SettlementTypeInterface
 {
     private $settlementType;
 
-    public function __construct(SettlementType $settlementType) {
+    public function __construct(SettlementType $settlementType)
+    {
         $this->settlementType = $settlementType;
     }
 
@@ -36,6 +37,7 @@ class SettlementTypeRepository implements SettlementTypeInterface
         $settlementType->update([
             'name' => $attributes['name'],
         ]);
+
         return $settlementType;
     }
 
@@ -45,6 +47,7 @@ class SettlementTypeRepository implements SettlementTypeInterface
         $settlementType->update([
             'is_active' => 0,
         ]);
+
         return $settlementType;
     }
 }

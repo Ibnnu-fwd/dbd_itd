@@ -1,4 +1,6 @@
-<?php // routes/breadcrumbs.php
+<?php
+
+// routes/breadcrumbs.php
 
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
@@ -393,7 +395,6 @@ Breadcrumbs::for('user', function (BreadcrumbTrail $trail) {
     $trail->push('Pengguna', route('admin.user.index'));
 });
 
-
 // ------------- Kasus ----------
 Breadcrumbs::for('tcases', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard'); // Gantilah 'admin.dashboard' dengan parent yang sesuai
@@ -403,4 +404,16 @@ Breadcrumbs::for('tcases', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('tcases.create', function (BreadcrumbTrail $trail) {
     $trail->parent('tcases');
     $trail->push('Tambah', route('admin.tcases.create'));
+});
+
+// ------------- Cluster ----------
+Breadcrumbs::for('cluster.index', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Cluster');
+    $trail->push('Sampel');
+});
+
+Breadcrumbs::for('cluster.clustering', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Klasterisasi');
 });

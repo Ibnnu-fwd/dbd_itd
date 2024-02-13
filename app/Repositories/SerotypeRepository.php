@@ -9,7 +9,8 @@ class SerotypeRepository implements SerotypeInterface
 {
     private $serotype;
 
-    public function __construct(Serotype $serotype) {
+    public function __construct(Serotype $serotype)
+    {
         $this->serotype = $serotype;
     }
 

@@ -13,7 +13,7 @@ class Province extends Model
 
     protected $fillable = [
         'name',
-        'is_active'
+        'is_active',
     ];
 
     // RELATIONSHIPS
@@ -42,7 +42,7 @@ class Province extends Model
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%');
+            $query->where('name', 'like', '%'.$search.'%');
         });
     }
 

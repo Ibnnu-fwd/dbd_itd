@@ -5,31 +5,34 @@
             @csrf
             <div class="sm:grid sm:grid-cols-2 sm:gap-4">
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Lokasi</p>
-                    <x-input id="house_name" name="house_name" label="Nama Rumah" required class="max-w-xs" :value="old('house_name')" />
-                    <x-input id="house_owner" name="house_owner" label="Nama Pemilik Rumah" required class="max-w-xs" :value="old('house_owner')" />
+                    <p class="text-sm font-semibold mb-6">Detail Lokasi</p>
+                    <x-input id="house_name" name="house_name" label="Nama Rumah" required class="max-w-xs"
+                        :value="old('house_name')" />
+                    <x-input id="house_owner" name="house_owner" label="Nama Pemilik Rumah" required class="max-w-xs"
+                        :value="old('house_owner')" />
                     <x-select id="tpa_type_id" label="Jenis TPA" name="tpa_type_id">
                         @foreach ($tpaTypes as $tpaType)
                             <option value="{{ $tpaType->id }}">{{ $tpaType->name }}</option>
                         @endforeach
                     </x-select>
-                    <x-input id="tpa_description" name="tpa_description" label="Deskripsi Tpa" required class="max-w-xs" :value="old('tpa_description')" />
+                    <x-input id="tpa_description" name="tpa_description" label="Deskripsi Tpa" required class="max-w-xs"
+                        :value="old('tpa_description')" />
                     <div>
-                        <p class="mb-2 text-xs 2xl:text-sm">Status Larva <span class="text-red-500">*</span></p>
+                        <p class="mb-2 text-sm">Status Larva <span class="text-red-500">*</span></p>
                         <div class="flex items-center">
                             <div class="flex items-center mr-2">
                                 <input id="positive-list-radio-license" type="radio" value="1"
                                     name="larva_status"
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
                                 <label for="positive-list-radio-license"
-                                    class="w-full py-3 ml-2 text-xs 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">Ada</label>
+                                    class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ada</label>
                             </div>
                             <div class="flex items-center">
                                 <input id="negative-list-radio-license" type="radio" value="0"
                                     name="larva_status"
                                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" />
                                 <label for="negative-list-radio-license"
-                                    class="w-full py-3 ml-2 text-xs 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">
+                                    class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                     Tidak Ada
                                 </label>
                             </div>
@@ -40,7 +43,7 @@
                     </div>
                 </div>
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-4">Detail Koordinat</p>
+                    <p class="text-sm font-semibold mb-4">Detail Koordinat</p>
                     <div class="sm:grid grid-cols-2 gap-x-4">
                         <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
                         <x-input id="longitude" label="Longitude" name="longitude" type="text" required />

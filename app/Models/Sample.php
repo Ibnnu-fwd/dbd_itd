@@ -9,7 +9,8 @@ class Sample extends Model
 {
     use HasFactory;
 
-    public $table = "samples";
+    public $table = 'samples';
+
     protected $fillable = [
         'sample_code',
         'file_code',
@@ -26,7 +27,7 @@ class Sample extends Model
         'created_by',
         'updated_by',
         'is_active',
-        'description'
+        'description',
     ];
 
     // SCOPES
@@ -92,7 +93,8 @@ class Sample extends Model
         $lastSample = $this->orderBy('id', 'desc')->first();
         $lastId = $lastSample ? $lastSample->id : 0;
         $year = date('Y');
-        $code = 'SC-' . $year . '-' . sprintf('%04s', $lastId + 1);
+        $code = 'SC-'.$year.'-'.sprintf('%04s', $lastId + 1);
+
         return $code;
     }
 }

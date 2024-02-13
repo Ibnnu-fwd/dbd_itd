@@ -15,7 +15,7 @@
         @foreach ($sample->detailSampleViruses as $detailSample)
             <x-card-container class="mb-4 md:mb-0">
                 <div class="flex justify-between items-center">
-                    <h3 class="font-semibold text-xs 2xl:text-sm">
+                    <h3 class="font-semibold text-sm">
                         {{ $detailSample->virus->name }}
                     </h3>
                     <div class="sm:flex gap-x-2">
@@ -28,59 +28,55 @@
                 </div>
 
                 @if ($detailSample->virus_id == 1 && $detailSample->identification == 0)
-                    <h3 class="text-xs 2xl:text-sm">
+                    <h3 class="text-sm">
                         Total Individu: {{ $detailSample->amount }}
                     </h3>
                 @elseif ($detailSample->virus_id == 1 && $detailSample->identification == 1)
                     @if ($detailSample->detailSampleMorphotypes->count() > 0)
-                        <div class="xl:flex items-center justify-between text-xs 2xl:text-sm mt-5">
+                        <div class="xl:flex items-center justify-between text-sm mt-5">
                             <h3 class="">
                                 Total Individu
                             </h3>
                             <span class="font-semibold">
-                                {{
-                                    $detailSample->detailSampleMorphotypes->sum('amount')
-                                }}
+                                {{ $detailSample->detailSampleMorphotypes->sum('amount') }}
                             </span>
                         </div>
                         <hr class="my-3">
                         <ul class="list-inside">
                             @foreach ($detailSample->detailSampleMorphotypes as $item)
-                            <li class="text-xs 2xl:text-sm mb-2 flex justify-between items-center">
-                                <span class="">{{ $item->morphotype->name }}</span>
-                                <span class="font-semibold">{{ $item->amount }}</span>
-                            </li>
+                                <li class="text-sm mb-2 flex justify-between items-center">
+                                    <span class="">{{ $item->morphotype->name }}</span>
+                                    <span class="font-semibold">{{ $item->amount }}</span>
+                                </li>
                             @endforeach
                         </ul>
                         <br>
-                        <h3 class="text-xs 2xl:text-sm font-semibold mt-2">
+                        <h3 class="text-sm font-semibold mt-2">
                             Detail Serotipe
                         </h3>
                         <hr class="my-3">
                         <ul class="list-inside">
                             @foreach ($sample->detailSampleSerotypes as $item)
-                            <li class="text-xs 2xl:text-sm mb-2 flex justify-between items-center">
-                                <span class="">{{ $item->serotype->name }}</span>
-                                <span class="">{{ $item->status == 1 ? '✓' : '✕' }}</span>
-                            </li>
+                                <li class="text-sm mb-2 flex justify-between items-center">
+                                    <span class="">{{ $item->serotype->name }}</span>
+                                    <span class="">{{ $item->status == 1 ? '✓' : '✕' }}</span>
+                                </li>
                             @endforeach
                         </ul>
                     @else
-                        <div class="p-4 text-xs 2xl:text-sm text-gray-800 rounded-lg bg-gray-100 mt-4" role="alert">
+                        <div class="p-4 text-sm text-gray-800 rounded-lg bg-gray-100 mt-4" role="alert">
                             <span class="">Data Sampling Kosong</span>
                         </div>
                     @endif
                 @elseif ($detailSample->virus_id != 1 && $detailSample->identification == null)
-                <div class="xl:flex items-center justify-between text-xs 2xl:text-sm mt-5">
-                    <h3 class="">
-                        Total Individu
-                    </h3>
-                    <span class="font-semibold">
-                        {{
-                            $detailSample->amount
-                        }}
-                    </span>
-                </div>
+                    <div class="xl:flex items-center justify-between text-sm mt-5">
+                        <h3 class="">
+                            Total Individu
+                        </h3>
+                        <span class="font-semibold">
+                            {{ $detailSample->amount }}
+                        </span>
+                    </div>
                 @endif
             </x-card-container>
         @endforeach

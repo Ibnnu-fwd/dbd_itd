@@ -37,7 +37,7 @@
                         </svg>
                     </div>
                     <h3 class="mb-2 text-sm 2xl:text-md font-bold dark:text-white">Integrity</h3>
-                    <p class="text-gray-500 dark:text-gray-400 text-xs 2xl:text-sm leading-5">
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-5">
                         Every data that we collect is guaranteed to be accurate and reliable. We also provide a data log
                         to
                         ensure that the data is not manipulated.
@@ -54,7 +54,7 @@
                         </svg>
                     </div>
                     <h3 class="mb-2 text-sm 2xl:text-md font-bold dark:text-white">Efficient</h3>
-                    <p class="text-gray-500 dark:text-gray-400 text-xs 2xl:text-sm leading-5">
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-5">
                         We provide a dashboard that is easy to understand and use. You can also access it from anywhere
                         and anytime
                     </p>
@@ -72,7 +72,7 @@
                     <h3 class="mb-2 text-sm 2xl:text-md font-bold dark:text-white">
                         Sychronized
                     </h3>
-                    <p class="text-gray-500 dark:text-gray-400 text-xs 2xl:text-sm leading-5">
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-5">
                         Every data that we collect is synchronized with the server. So you dont have to worry about
                         losing data.
                     </p>

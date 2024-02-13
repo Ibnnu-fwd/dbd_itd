@@ -2,7 +2,7 @@
     <x-breadcrumb name="larvae.detail.create" :data="$larva" />
     <x-card-container>
         <div class="xl:flex justify-between items-center mt-8">
-            <p class="text-xs 2xl:text-sm font-semibold mb-6 mt-8">Detail Pemeriksaan</p>
+            <p class="text-sm font-semibold mb-6 mt-8">Detail Pemeriksaan</p>
             <x-button id="btnAddLarva" color="gray" class="w-full md:w-auto justify-center">
                 <span class="mr-2">Tambah Detail </span> (<span id="countDetailLarva">1</span>)
             </x-button>

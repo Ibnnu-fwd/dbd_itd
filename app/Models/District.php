@@ -10,11 +10,12 @@ class District extends Model
     use HasFactory;
 
     public $table = 'districts';
+
     protected $fillable = [
         'id',
         'regency_id',
         'name',
-        'is_active'
+        'is_active',
     ];
 
     // RELATIONSHIPS
@@ -57,7 +58,7 @@ class District extends Model
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%');
+            $query->where('name', 'like', '%'.$search.'%');
         });
     }
 

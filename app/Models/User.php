@@ -9,8 +9,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    const ADMIN_ROLE    = 'admin';
-    const KHS_ROLE      = 'khs';
+    const ADMIN_ROLE = 'admin';
+
+    const KHS_ROLE = 'khs';
 
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -24,7 +25,7 @@ class User extends Authenticatable
         'password',
         'role',
         'is_active',
-        'profile_picture'
+        'profile_picture',
     ];
 
     /**
@@ -76,9 +77,9 @@ class User extends Authenticatable
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%')
-                ->orWhere('phone', 'like', '%' . $search . '%');
+            $query->where('name', 'like', '%'.$search.'%')
+                ->orWhere('email', 'like', '%'.$search.'%')
+                ->orWhere('phone', 'like', '%'.$search.'%');
         });
     }
 

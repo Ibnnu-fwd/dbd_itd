@@ -30,6 +30,7 @@ class TpaTypeController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.tpa-type.index');
     }
 
@@ -53,6 +54,7 @@ class TpaTypeController extends Controller
         ]);
 
         $this->tpaType->create($request->all());
+
         return redirect()->route('admin.tpa-type.index')->with('success', 'Tipe TPA berhasil ditambahkan');
     }
 
@@ -70,7 +72,7 @@ class TpaTypeController extends Controller
     public function edit(string $id)
     {
         return view('admin.tpa-type.edit', [
-            'tpaType' => $this->tpaType->getById($id)
+            'tpaType' => $this->tpaType->getById($id),
         ]);
     }
 
@@ -85,10 +87,11 @@ class TpaTypeController extends Controller
             })],
         ], [
             'name.required' => 'Nama jenis TPA tidak boleh kosong',
-            'name.unique' => 'Nama jenis TPA sudah terdaftar'
+            'name.unique' => 'Nama jenis TPA sudah terdaftar',
         ]);
 
         $this->tpaType->update($id, $request->all());
+
         return redirect()->route('admin.tpa-type.index')->with('success', 'Tipe TPA berhasil diperbarui');
     }
 
@@ -98,9 +101,10 @@ class TpaTypeController extends Controller
     public function destroy(string $id)
     {
         $this->tpaType->delete($id);
+
         return response()->json([
             'status' => true,
-            'message' => 'Tipe TPA berhasil dihapus'
+            'message' => 'Tipe TPA berhasil dihapus',
         ]);
     }
 }

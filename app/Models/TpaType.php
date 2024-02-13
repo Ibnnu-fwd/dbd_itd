@@ -20,7 +20,7 @@ class TpaType extends Model
 
     protected $fillable = [
         'name',
-        'is_active'
+        'is_active',
     ];
 
     // RELATIONSHIPS
@@ -38,7 +38,4 @@ class TpaType extends Model
     {
         return $this->hasMany(DetailKsh::class, 'tpa_type_id', 'id');
     }
-
-
-
 }

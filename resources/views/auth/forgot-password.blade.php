@@ -11,7 +11,7 @@
             <div
                 class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                    <div class="mb-4 text-xs 2xl:text-sm text-gray-600">
+                    <div class="mb-4 text-sm text-gray-600">
                         {{ __('Lupa password? Silahkan isi email kamu, kami akan melakukan verifikasi untuk mengganti password kamu.') }}
                     </div>
                     <form class="space-y-4 md:space-y-6" action="{{ route('admin.user.check-email') }}" method="POST">
@@ -19,7 +19,7 @@
                         <x-input id="email" label="Email" name="email" type="text" required />
                         <div class="flex flex-col gap-3 md:flex-row md:justify-between mt-6 items-center">
                             <a href="{{ route('login') }}"
-                                class="text-xs 2xl:text-sm font-medium text-gray-500 hover:underline">Kembali</a>
+                                class="text-sm font-medium text-gray-500 hover:underline">Kembali</a>
                             <x-button type="submit" class="bg-primary">
                                 {{ __('Verifikasi Email') }}
                             </x-button>
@@ -32,7 +32,7 @@
 
     @push('js-internal')
         <script>
-            $(function () {
+            $(function() {
                 @if (Session::has('error'))
                     Swal.fire({
                         icon: 'error',

@@ -3,8 +3,8 @@
     <main class="pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900">
         <div class="flex justify-between px-4 mx-auto max-w-screen-xl ">
             <article class="mx-auto w-full max-w-3xl format format-sm sm:format-base lg:format-lg">
-                <div class="text-xs 2xl:text-sm">
-                    <div class="text-xs 2xl:text-sm">
+                <div class="text-sm">
+                    <div class="text-sm">
                         <div class="xl:grid grid-cols-3 items-center">
                             <h2 class="col-span-2">
                                 Visualizations of Vector Data
@@ -25,7 +25,7 @@
                                 </x-select>
                             </div>
                         </div>
-                        <p class="leading-6 text-xs 2xl:text-sm mb-4">
+                        <p class="leading-6 text-sm mb-4">
                             We have collected samples of vector presence, and we have found that the most common vector
                             in our
                             area is the mosquito. You can see the data we have collected below.
@@ -33,14 +33,14 @@
                         <div id="mapContainer">
                             <div id="map" class="z-0 mb-4" style="height: 300px; border-radius: 6px"></div>
                         </div>
-                        <p class="text-center text-xs 2xl:text-sm italic">
+                        <p class="text-center text-sm italic">
                             <span class="text-error">*</span>
                             This map shows the location of the samples collected by the user and it all have been
                             clustered to make it easier to see
                         </p>
                         <div class="mb-8">
                             <div class="xl:grid grid-cols-3 items-center">
-                                <h3 class="text-xs 2xl:text-sm col-span-2">
+                                <h3 class="text-sm col-span-2">
                                     Sample of Year: <span class="font-bold" id="labelYear">{{ date('Y') }}</span>
                                 </h3>
                                 <x-select name="samplePerYearFilter" id="samplePerYearFilter" label="Tahun">
@@ -54,14 +54,14 @@
                             <div style="height: 220px" id="samplePerYearContainer">
                                 <canvas id="samplePerYear"></canvas>
                             </div>
-                            <p class="text-center text-xs 2xl:text-sm italic">
+                            <p class="text-center text-sm italic">
                                 <span class="text-error">*</span>
                                 This chart shows the number of samples collected per month in the year selected
                             </p>
                         </div>
                         <div>
                             <div class="xl:grid grid-cols-3 gap-x-4 items-center">
-                                <h3 class="text-xs 2xl:text-sm col-span-2">
+                                <h3 class="text-sm col-span-2">
                                     Sample Per District: <span class="font-bold"
                                         id="labelYearDistrict">{{ date('Y') }}</span>
                                 </h3>
@@ -86,7 +86,7 @@
                             <div style="height: 220px" id="samplePerYearDistrictContainer">
                                 <canvas id="samplePerDistrict"></canvas>
                             </div>
-                            <p class="text-center text-xs 2xl:text-sm italic">
+                            <p class="text-center text-sm italic">
                                 <span class="text-error">*</span>
                                 This chart shows the number of samples collected per district in the year selected
                             </p>
@@ -118,32 +118,32 @@
                         and adult. During
                         each stage of their life cycle the mosquito looks distinctly different than any other life
                         stage.</p>
-                    <section class="space-x-3 flex text-xs 2xl:text-sm">
+                    <section class="space-x-3 flex text-sm">
                         <div class="flex flex-col items-center">
                             <img class="w-20 h-20 rounded object-cover order-1"
                                 src="{{ asset('assets/images/vector/egg.jpg') }}" alt="Large avatar">
-                            <span class="text-center text-xs 2xl:text-sm order-2">
+                            <span class="text-center text-sm order-2">
                                 Egg
                             </span>
                         </div>
                         <div class="flex flex-col items-center">
                             <img class="w-20 h-20 rounded object-cover order-1"
                                 src="{{ asset('assets/images/vector/larva.jpg') }}" alt="Large avatar">
-                            <span class="text-center text-xs 2xl:text-sm order-2">
+                            <span class="text-center text-sm order-2">
                                 Larva
                             </span>
                         </div>
                         <div class="flex flex-col items-center">
                             <img class="w-20 h-20 rounded object-cover order-1"
                                 src="{{ asset('assets/images/vector/pupa.jpg') }}" alt="Large avatar">
-                            <span class="text-center text-xs 2xl:text-sm order-2">
+                            <span class="text-center text-sm order-2">
                                 Pupa
                             </span>
                         </div>
                         <div class="flex flex-col items-center">
                             <img class="w-20 h-20 rounded object-cover order-1"
                                 src="{{ asset('assets/images/vector/mosquito.jpg') }}" alt="Large avatar">
-                            <span class="text-center text-xs 2xl:text-sm order-2">
+                            <span class="text-center text-sm order-2">
                                 Adult Mosquito
                             </span>
                         </div>

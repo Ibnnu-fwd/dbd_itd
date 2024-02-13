@@ -5,7 +5,7 @@
             @csrf
             <div class="sm:grid grid-cols-3 gap-x-4">
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Sampling</p>
+                    <p class="text-sm font-semibold mb-6">Detail Sampling</p>
                     <x-input id="public_health_name" label="Pukesmas" name="public_health_name" type="text" />
                     <x-input id="location_name" label="Nama Lokasi" name="location_name" type="text" required />
                     <x-select id="location_type_id" label="Jenis Lokasi" name="location_type_id" isFit="true"
@@ -17,7 +17,7 @@
                     <x-textarea id="description" label="Keterangan" name="description" type="text" />
                 </div>
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Lokasi</p>
+                    <p class="text-sm font-semibold mb-6">Detail Lokasi</p>
                     <x-select id="province_id" label="Provinsi" name="province_id" isFit="true" required>
                         @foreach ($provinces as $province)
                             <option value="{{ $province->id }}">{{ $province->name }}</option>
@@ -26,10 +26,10 @@
                     <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required />
                     <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required />
                     <x-select id="village_id" label="Desa" name="village_id" isFit="true" required />
-                    <p id="address" class="text-xs 2xl:text-sm"></p>
+                    <p id="address" class="text-sm"></p>
                 </div>
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-4">Detail Koordinat</p>
+                    <p class="text-sm font-semibold mb-4">Detail Koordinat</p>
                     <div class="sm:grid grid-cols-2 gap-x-4">
                         <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
                         <x-input id="longitude" label="Longitude" name="longitude" type="text" required />
@@ -43,7 +43,7 @@
             </div>
             <hr class="my-6 border-gray-100">
 
-            <div class="p-4 text-xs 2xl:text-sm text-gray-800 rounded-lg bg-gray-100 mb-3" role="alert">
+            <div class="p-4 text-sm text-gray-800 rounded-lg bg-gray-100 mb-3" role="alert">
                 Jenis vektor yang anda pilih akan menjadi jenis vektor yang akan diambil sampelnya dan akan diisi
                 kemudian
                 data morfotipe dan serotipenya
@@ -57,7 +57,7 @@
                                 value="{{ $virus->id }}" name="viruses[]" onchange="checkVirus({{ $virus->id }})"
                                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                             <label for="virus-{{ $virus->id }}-checkbox-list"
-                                class="w-full py-3 ml-2 text-xs 2xl:text-sm font-medium text-gray-900 dark:text-gray-300">{{ $virus->name }}</label>
+                                class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $virus->name }}</label>
                         </div>
                     </li>
                 @endforeach
@@ -76,14 +76,16 @@
                     </x-select>
                 </li>
                 <li class="hidden" id="albopictusAmountContainer">
-                    <x-input id="albopictus_amount" label="Total Individu Albopictus" name="albopictus_amount" type="number" />
+                    <x-input id="albopictus_amount" label="Total Individu Albopictus" name="albopictus_amount"
+                        type="number" />
                 <li class="hidden" id="culexAmountContainer">
                     <x-input id="culex_amount" label="Total Individu Culex" name="culex_amount" type="number" />
                 </li>
             </ul>
 
             <div class="hidden xl:w-1/5" id="aedesAegyptiAmountContainer">
-                <x-input id="aedes_aegypti_amount" label="Total Individu Aegypti" name="aedes_aegypti_amount" type="number" />
+                <x-input id="aedes_aegypti_amount" label="Total Individu Aegypti" name="aedes_aegypti_amount"
+                    type="number" />
             </div>
 
             @error('viruses')
@@ -408,24 +410,24 @@
         <script>
             function checkVirus(id) {
                 // check if aedes aegypti is checked
-                let aedesAegypti    = $('#virus-1-checkbox-list').is(':checked');
+                let aedesAegypti = $('#virus-1-checkbox-list').is(':checked');
                 let aedesAlbopictus = $('#virus-2-checkbox-list').is(':checked');
-                let culex           = $('#virus-3-checkbox-list').is(':checked');
+                let culex = $('#virus-3-checkbox-list').is(':checked');
 
-                if(aedesAegypti) {
+                if (aedesAegypti) {
                     $('#aegyptiIdentificationContainer').removeClass('hidden');
                 } else {
                     $('#aegyptiIdentificationContainer').addClass('hidden');
                     $('#aedesAegyptiAmountContainer').addClass('hidden');
                 }
 
-                if(aedesAlbopictus) {
+                if (aedesAlbopictus) {
                     $('#albopictusAmountContainer').removeClass('hidden');
                 } else {
                     $('#albopictusAmountContainer').addClass('hidden');
                 }
 
-                if(culex) {
+                if (culex) {
                     $('#culexAmountContainer').removeClass('hidden');
                 } else {
                     $('#culexAmountContainer').addClass('hidden');
@@ -435,8 +437,7 @@
             $('#aedesAegyptiIdentification').change(function(e) {
                 e.preventDefault();
                 let value = $(this).val();
-                if(value == 0)
-                {
+                if (value == 0) {
                     $('#aedesAegyptiAmountContainer').removeClass('hidden');
                 } else {
                     $('#aedesAegyptiAmountContainer').addClass('hidden');

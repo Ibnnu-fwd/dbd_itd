@@ -28,7 +28,6 @@ class DetailSampleExport implements WithMultipleSheets
             $sheets[] = new DetailSampleSheet($detailSample[0]->virus_id, $detailSample, $virus->name);
         }
 
-
         return $sheets;
     }
 }

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-breadcrumb name="sample" />
     @isset($failures)
-        <div id="alert-2" class="text-xs 2xl:text-sm flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+        <div id="alert-2" class="text-sm flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
             role="alert">
             <span class="sr-only">Info</span>
             <div>

@@ -31,6 +31,7 @@ class ProvinceController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.province.index');
     }
 
@@ -48,13 +49,14 @@ class ProvinceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'unique:provinces,name'
+            'name' => 'unique:provinces,name',
         ], [
-            'name.unique' => 'Nama provinsi sudah ada'
+            'name.unique' => 'Nama provinsi sudah ada',
         ]);
 
         try {
             $this->province->create($request->all());
+
             return redirect()->route('admin.province.index')->with('success', 'Tambah Provinsi Berhasil');
         } catch (Exception $e) {
             return back()->with('error', 'Tambah Provinsi Gagal');
@@ -92,14 +94,15 @@ class ProvinceController extends Controller
     {
         try {
             $this->province->delete($id);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Hapus Provinsi Berhasil'
+                'message' => 'Hapus Provinsi Berhasil',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -112,9 +115,10 @@ class ProvinceController extends Controller
             foreach ($provinces as $province) {
                 $data->push([
                     'id' => $province->id,
-                    'text' => $province->name
+                    'text' => $province->name,
                 ]);
             }
+
             return response()->json($data);
         }
     }

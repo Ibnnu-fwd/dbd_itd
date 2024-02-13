@@ -10,7 +10,8 @@ class VillageController extends Controller
 {
     private $village;
 
-    public function __construct(VillageInterface $village) {
+    public function __construct(VillageInterface $village)
+    {
         $this->village = $village;
     }
 
@@ -18,28 +19,28 @@ class VillageController extends Controller
     {
         $villages = $this->village->getAll();
 
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of(
-                $villages
-            )
-            ->addColumn('name', function($data) {
-                return $data->name ?? '-';
-            })
-            ->addColumn('district', function($data) {
-                return $data->district->name ?? '-';
-            })
-            ->addColumn('regency', function($data) {
-                return $data->district->regency->name ?? '-';
-            })
-            ->addColumn('province', function($data) {
-                return $data->district->regency->province->name ?? '-';
-            })
+                ->of(
+                    $villages
+                )
+                ->addColumn('name', function ($data) {
+                    return $data->name ?? '-';
+                })
+                ->addColumn('district', function ($data) {
+                    return $data->district->name ?? '-';
+                })
+                ->addColumn('regency', function ($data) {
+                    return $data->district->regency->name ?? '-';
+                })
+                ->addColumn('province', function ($data) {
+                    return $data->district->regency->province->name ?? '-';
+                })
             // ->addColumn('action', function($data) {
             //     return view('admin.village.column.action', compact('data'));
             // })
-            ->addIndexColumn()
-            ->make(true);
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('admin.village.index');
@@ -57,10 +58,11 @@ class VillageController extends Controller
     {
         $request->validate([
             'name' => ['required', 'unique:villages,name'],
-            'district_id' => ['required', 'exists:districts,id']
+            'district_id' => ['required', 'exists:districts,id'],
         ]);
 
         $this->village->create($request->only('name', 'district_id'));
+
         return redirect()->route('admin.village.index')->with('success', 'Data berhasil ditambahkan');
     }
 
@@ -70,7 +72,7 @@ class VillageController extends Controller
     public function show(string $id)
     {
         $village = $this->village->getById($id);
-        $address = $village->name . ', ' . $village->district->name . ', ' . $village->district->regency->name . ', ' . $village->district->regency->province->name;
+        $address = $village->name.', '.$village->district->name.', '.$village->district->regency->name.', '.$village->district->regency->province->name;
         $address = strtolower($address);
         $validAddress = ucwords($address);
 
@@ -89,7 +91,7 @@ class VillageController extends Controller
     public function edit(string $id)
     {
         return view('admin.village.edit', [
-            'village' => $this->village->getById($id)
+            'village' => $this->village->getById($id),
         ]);
     }
 
@@ -99,11 +101,12 @@ class VillageController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => ['required', 'unique:villages,name,' . $id],
-            'district_id' => ['required', 'exists:districts,id']
+            'name' => ['required', 'unique:villages,name,'.$id],
+            'district_id' => ['required', 'exists:districts,id'],
         ]);
 
         $this->village->update($id, $request->only('name', 'district_id'));
+
         return redirect()->route('admin.village.index')->with('success', 'Data berhasil diubah');
     }
 
@@ -113,6 +116,7 @@ class VillageController extends Controller
     public function destroy(string $id)
     {
         $this->village->delete($id);
+
         return redirect()->route('admin.village.index')->with('success', 'Data berhasil dihapus');
     }
 
@@ -120,6 +124,7 @@ class VillageController extends Controller
     public function list(Request $request)
     {
         $villages = $this->village->getByDistrict($request->district_id);
+
         return response()->json($villages);
     }
 }

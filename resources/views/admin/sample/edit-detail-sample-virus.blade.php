@@ -3,7 +3,7 @@
     <x-card-container>
         <form action="{{ route('admin.sample.detail-sample.virus.update', $sample->id) }}" method="POST">
             @csrf
-            <h3 class="mb-4 font-semibold text-gray-900 text-xs 2xl:text-sm">Detail Morfotipe</h3>
+            <h3 class="mb-4 font-semibold text-gray-900 text-sm">Detail Morfotipe</h3>
             <ul class="items-center w-full text-sm font-medium text-gray-900 rounded-lg xl:flex gap-x-2">
                 <li class="w-full">
                     <x-input id="morphotype_1" name="morphotype_1" label="Jumlah Morfotipe 1" type="number"
@@ -41,7 +41,7 @@
 
             <br>
 
-            <h3 class="mb-4 font-semibold text-gray-900 text-xs 2xl:text-sm">Detail Serotipe</h3>
+            <h3 class="mb-4 font-semibold text-gray-900 text-sm">Detail Serotipe</h3>
             <ul class="items-center w-full text-sm font-medium text-gray-900 rounded-lg xl:flex gap-x-2">
                 <li class="w-full">
                     <x-select id="denv_1" name="denv_1" label="DENV 1">
@@ -101,7 +101,6 @@
                     showConfirmButton: false,
                     timer: 1500
                 });
-
             @elseif (Session::has('error'))
                 Swal.fire({
                     icon: 'error',

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Regency;
+use Illuminate\Http\Request;
 
 class RegencyControllerApi extends Controller
 {
@@ -12,7 +12,7 @@ class RegencyControllerApi extends Controller
     {
         // Mengambil parameter "page" dari URL atau menggunakan halaman pertama jika tidak ada parameter
         $page = $request->input('page', 1);
-        
+
         // Jumlah item yang akan ditampilkan dalam setiap halaman
         $perPage = 10;
 
@@ -26,7 +26,7 @@ class RegencyControllerApi extends Controller
     {
         $regency = Regency::find($id);
 
-        if (!$regency) {
+        if (! $regency) {
             return response()->json(['message' => 'Regency not found'], 404);
         }
 

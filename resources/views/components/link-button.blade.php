@@ -14,5 +14,5 @@
             $color .
             '-900 focus:outline-none focus:ring-2 focus:ring-' .
             $color .
-            '-500 focus:ring-offset-2 transition ease-in-out duration-150  text-xs 2xl:text-sm',
+            '-500 focus:ring-offset-2 transition ease-in-out duration-150  text-xs',
     ]) !!}>{{ $slot }}</a>

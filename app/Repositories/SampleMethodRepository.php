@@ -9,7 +9,8 @@ class SampleMethodRepository implements SampleMethodInterface
 {
     private $sampleMethod;
 
-    public function __construct(SampleMethod $sampleMethod) {
+    public function __construct(SampleMethod $sampleMethod)
+    {
         $this->sampleMethod = $sampleMethod;
     }
 

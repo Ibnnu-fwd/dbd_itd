@@ -10,6 +10,7 @@ class Morphotype extends Model
     use HasFactory;
 
     public $table = 'morphotypes';
+
     protected $fillable = ['name', 'is_active'];
 
     // SCOPES

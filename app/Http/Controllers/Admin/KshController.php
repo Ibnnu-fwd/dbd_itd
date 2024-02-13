@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Mail;
 class KshController extends Controller
 {
     private $regency;
+
     private $tpaType;
+
     private $ksh;
+
     private $detailKsh;
 
     public function __construct(RegencyInterface $regency, TpaTypeInterface $tpaType, KshInterface $ksh, DetailKshInterface $detailKsh)
@@ -31,8 +34,8 @@ class KshController extends Controller
         if ($request->ajax()) {
             return datatables()
                 ->of($this->ksh->getAll())
-                ->addColumn('sample_code', function($data) {
-                    return 'KSH-' . date('Ymd', strtotime($data->created_at)) . '-' . $data->id;
+                ->addColumn('sample_code', function ($data) {
+                    return 'KSH-'.date('Ymd', strtotime($data->created_at)).'-'.$data->id;
                 })
                 ->addColumn('regency', function ($data) {
                     return ucwords(strtolower($data->regency->name));
@@ -52,9 +55,9 @@ class KshController extends Controller
                 ->addColumn('total_sample', function ($data) {
                     return $data->total_sample ?? 0;
                 })
-                ->addColumn('created_by', function($data) {
+                ->addColumn('created_by', function ($data) {
                     $name = explode(' ', $data->createdBy->name);
-                    if(count($name) > 1) {
+                    if (count($name) > 1) {
                         return $name[1];
                     } else {
                         return $data->createdBy->name;
@@ -66,6 +69,7 @@ class KshController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.ksh.index');
     }
 
@@ -76,7 +80,7 @@ class KshController extends Controller
     {
         return view('admin.ksh.create', [
             'regencies' => $this->regency->getAll(),
-            'tpaTypes' => $this->tpaType->getAll()
+            'tpaTypes' => $this->tpaType->getAll(),
         ]);
     }
 
@@ -95,6 +99,7 @@ class KshController extends Controller
 
         try {
             $this->ksh->create($request->all());
+
             return redirect()->route('admin.ksh.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -124,16 +129,17 @@ class KshController extends Controller
                 ->addColumn('larva_status_false', function ($data) {
                     return $data->larva_status == 0 ? '✓' : '';
                 })
-                ->addColumn('action', function($data) {
+                ->addColumn('action', function ($data) {
                     return view('admin.ksh.column.action-detail', [
-                        'data' => $data
+                        'data' => $data,
                     ]);
                 })
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.ksh.show', [
-            'ksh' => $this->ksh->getById($id)
+            'ksh' => $this->ksh->getById($id),
         ]);
     }
 
@@ -161,6 +167,7 @@ class KshController extends Controller
 
         try {
             $this->ksh->edit($request->all(), $id);
+
             return redirect()->route('admin.ksh.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -174,6 +181,7 @@ class KshController extends Controller
     {
         $this->ksh->delete($id);
         $this->ksh->delete_abj($id);
+
         return response()->json([
             'status' => true,
             'message' => 'Data berhasil dihapus.',
@@ -185,7 +193,7 @@ class KshController extends Controller
     {
         return view('admin.ksh.detail.create', [
             'ksh' => $this->ksh->getById($id),
-            'tpaTypes' => $this->tpaType->getAll()
+            'tpaTypes' => $this->tpaType->getAll(),
         ]);
     }
 
@@ -197,7 +205,7 @@ class KshController extends Controller
             'larva_status' => ['required'],
             'latitude' => ['required'],
             'longitude' => ['required'],
-            'tpa_description'=>['required'],
+            'tpa_description' => ['required'],
         ], [
             'house_name.required' => 'Nama rumah tidak boleh kosong',
             'house_owner.required' => 'Nama pemilik rumah tidak boleh kosong',
@@ -209,9 +217,11 @@ class KshController extends Controller
 
         try {
             $this->detailKsh->create($request->all(), $id);
+
             return redirect()->route('admin.ksh.show', $id)->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
@@ -232,7 +242,7 @@ class KshController extends Controller
             'larva_status' => ['required'],
             'latitude' => ['required'],
             'longitude' => ['required'],
-            'tpa_description'=>['required'],
+            'tpa_description' => ['required'],
         ], [
             'house_name.required' => 'Nama rumah tidak boleh kosong',
             'house_owner.required' => 'Nama pemilik rumah tidak boleh kosong',
@@ -244,42 +254,43 @@ class KshController extends Controller
 
         try {
             $this->detailKsh->edit($request->all(), $id);
+
             return redirect()->back()->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->back()->with('error', $th->getMessage());
         }
     }
 
     public function member(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->ksh->getAllMember())
-            ->addColumn('name', function($data){
-                return $data->name;
-            })
-            ->addColumn('sex', function($data) {
-                return $data->sex == 1 ? 'Laki-laki' : 'Perempuan';
-            })
-            ->addColumn('phone', function($data) {
-                return $data->phone;
-            })
-            ->addColumn('email', function($data) {
-                return $data->email;
-            })
-            ->addColumn('role', function($data) {
-                return strtoupper($data->role);
-            })
-            ->addColumn('created_at', function($data) {
-                return date('d-m-Y', strtotime($data->created_at));
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.ksh.column.action-member', compact('data'));
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->ksh->getAllMember())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('sex', function ($data) {
+                    return $data->sex == 1 ? 'Laki-laki' : 'Perempuan';
+                })
+                ->addColumn('phone', function ($data) {
+                    return $data->phone;
+                })
+                ->addColumn('email', function ($data) {
+                    return $data->email;
+                })
+                ->addColumn('role', function ($data) {
+                    return strtoupper($data->role);
+                })
+                ->addColumn('created_at', function ($data) {
+                    return date('d-m-Y', strtotime($data->created_at));
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.ksh.column.action-member', compact('data'));
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('admin.ksh.member');
@@ -305,6 +316,7 @@ class KshController extends Controller
 
             Mail::send(new NewKshMemberRegistered($request->all()));
             $this->ksh->createMember($request->all());
+
             return redirect()->route('admin.ksh.member')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -315,14 +327,15 @@ class KshController extends Controller
     {
         try {
             $this->ksh->changeStatusMember($request->all());
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Status berhasil diubah'
+                'message' => 'Status berhasil diubah',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +19,7 @@ class Ksh extends Model
         'village_id',
         'created_by',
         'updated_by',
-        'is_active'
+        'is_active',
     ];
 
     // RELATION

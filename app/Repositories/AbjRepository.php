@@ -6,7 +6,6 @@ use App\Models\Abj;
 use App\Models\Ksh;
 use App\Repositories\Interface\AbjInterface;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 
 class AbjRepository implements AbjInterface
 {
@@ -24,30 +23,30 @@ class AbjRepository implements AbjInterface
             ->where('is_active', true)
             ->get()
             ->groupBy('district_id');
-            
+
         $data = [];
 
         foreach ($abj as $key => $value) {
             $data[$key]['province'] = Ksh::where('id', $value->first()->ksh_id)->first()->regency->province->name;
-            $data[$key]['regency']  = Ksh::where('id', $value->first()->ksh_id)->first()->regency->name;
+            $data[$key]['regency'] = Ksh::where('id', $value->first()->ksh_id)->first()->regency->name;
             $data[$key]['district'] = $value->first()->district->name;
-            $data[$key]['village']  = $value->first()->village->name;
+            $data[$key]['village'] = $value->first()->village->name;
             $data[$key]['location'] = $value->map(function ($item) {
                 return [
-                    'village'    => $item->ksh->village,
+                    'village' => $item->ksh->village,
                     'coordinate' => $item->ksh->detailKsh->map(function ($item) {
                         return $item;
-                    })
+                    }),
                 ];
             });
             $data[$key]['abj'] = $value->map(function ($item) {
                 return [
-                    'abj_total'  => $item->abj_total,
+                    'abj_total' => $item->abj_total,
                     'created_at' => $item->created_at,
                 ];
             });
             $data[$key]['total_sample'] = $value->count();
-            $data[$key]['total_check']  = $value->sum(function ($item) {
+            $data[$key]['total_check'] = $value->sum(function ($item) {
                 return $item->ksh->detailKsh->count();
             });
             $data[$key]['min_long'] = $value->min(function ($item) {

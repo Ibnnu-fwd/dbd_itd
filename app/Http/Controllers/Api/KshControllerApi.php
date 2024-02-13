@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Ksh;
-use App\Models\District;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Abj;
 use App\Models\DetailKsh;
-use App\Models\Regency;
+use App\Models\Ksh;
+use Illuminate\Http\Request;
 
 class KshControllerApi extends Controller
 {
@@ -26,6 +24,7 @@ class KshControllerApi extends Controller
         // Now, you want to add the $abjData transformation code
         $abjData = $kshData->map(function ($item) {
             $item['district'] = $item->district->name; // Change 'name' to the desired column name
+
             return $item;
         });
 
@@ -33,12 +32,11 @@ class KshControllerApi extends Controller
         return response()->json($abjData, 200);
     }
 
-
     public function show($id)
     {
         $ksh = Ksh::find($id);
 
-        if (!$ksh) {
+        if (! $ksh) {
             return response()->json(['message' => 'Ksh not found'], 404);
         }
 
@@ -75,7 +73,7 @@ class KshControllerApi extends Controller
             'created_by' => 1, // ID pengguna yang membuat entri
             'updated_by' => 1, // ID pengguna yang memperbarui entri
             'is_active' => 1, // Status aktif
-            'tpa_description' => 'bakmandi'
+            'tpa_description' => 'bakmandi',
         ];
         $datakecamatan = [
             'latitude' => '-7.276153', // Koordinat latitude
@@ -92,9 +90,9 @@ class KshControllerApi extends Controller
             'village_id' => 3578090006,
             'ksh_id' => 1,
             'abj_total' => 10,
-            'created_by'=> 1,
+            'created_by' => 1,
             'updated_by',
-            'is_active'=> 1
+            'is_active' => 1,
         ];
         // Membuat entri baru dalam model "DetailKsh" menggunakan atribut-atribut dari data dummy
         $detailKsh = new DetailKsh();
@@ -111,16 +109,16 @@ class KshControllerApi extends Controller
         $abj->fill($dataabj);
 
         $abj->save();
+
         // Mengembalikan respons JSON dengan status 200
         return response()->json(200);
     }
-
 
     public function update(Request $request, $id)
     {
         $ksh = Ksh::find($id);
 
-        if (!$ksh) {
+        if (! $ksh) {
             return response()->json(['message' => 'Ksh not found'], 404);
         }
 
@@ -144,7 +142,7 @@ class KshControllerApi extends Controller
     {
         $ksh = Ksh::find($id);
 
-        if (!$ksh) {
+        if (! $ksh) {
             return response()->json(['message' => 'Ksh not found'], 404);
         }
 

@@ -44,15 +44,16 @@ class EnvironmentTypeController extends Controller
         $request->validate([
             'name' => ['required', 'string', Rule::unique('environment_types', 'name')->where(function ($query) {
                 return $query->where('is_active', 1);
-            })]
+            })],
         ], [
             'name.required' => 'Nama jenis lingkungan tidak boleh kosong',
             'name.string' => 'Nama jenis lingkungan harus berupa string',
-            'name.unique' => 'Nama jenis lingkungan sudah terdaftar'
+            'name.unique' => 'Nama jenis lingkungan sudah terdaftar',
         ]);
 
         try {
             $this->environmentType->store($request->all());
+
             return redirect()->route('admin.environment-type.index')->with('success', 'Jenis lingkungan berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -76,11 +77,12 @@ class EnvironmentTypeController extends Controller
         $request->validate([
             'name' => ['required', 'string', Rule::unique('environment_types', 'name')->where(function ($query) {
                 return $query->where('is_active', 1);
-            })]
+            })],
         ]);
 
         try {
             $this->environmentType->update($id, $request->all());
+
             return redirect()->route('admin.environment-type.index')->with('success', 'Jenis lingkungan berhasil diubah');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -91,14 +93,15 @@ class EnvironmentTypeController extends Controller
     {
         try {
             $this->environmentType->destroy($id);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Jenis lingkungan berhasil dihapus'
+                'message' => 'Jenis lingkungan berhasil dihapus',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

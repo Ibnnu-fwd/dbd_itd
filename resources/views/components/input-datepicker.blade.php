@@ -2,7 +2,7 @@
 
 <div class="form-control mb-4">
     <label class="label">
-        <span class="font-medium text-xs 2xl:text-sm text-gray-700 2xl:label-text">{{ $label }}
+        <span class="font-medium text-sm text-gray-700 2xl:label-text">{{ $label }}
             {!! $required == true ? '<sup class="text-error">*</sup>' : '' !!}</span>
     </label>
     <div class="relative">
@@ -16,7 +16,7 @@
         </div>
         <input datepicker name={{ $name }} type="text" {!! $attributes->merge([
             'class' =>
-                'border-gray-300 focus:border-primary text-xs 2xl:text-sm focus:ring-primary rounded-md shadow-sm block w-full pl-10 py-2.5',
+                'border-gray-300 focus:border-primary text-sm focus:ring-primary rounded-md shadow-sm block w-full pl-10 py-2.5',
         ]) !!} placeholder="Pilih tanggal"
             id="{{ $id }}">
     </div>

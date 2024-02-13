@@ -9,7 +9,8 @@ class TpaTypeRepository implements TpaTypeInterface
 {
     private $tpaType;
 
-    public function __construct(TpaType $tpaType) {
+    public function __construct(TpaType $tpaType)
+    {
         $this->tpaType = $tpaType;
     }
 
@@ -32,6 +33,7 @@ class TpaTypeRepository implements TpaTypeInterface
     {
         $tpaType = $this->getById($id);
         $tpaType->update($attributes);
+
         return $tpaType;
     }
 

@@ -12,24 +12,24 @@ class SampleMethodController extends Controller
 {
     private $sampleMethod;
 
-    public function __construct(SampleMethodInterface $sampleMethod) {
+    public function __construct(SampleMethodInterface $sampleMethod)
+    {
         $this->sampleMethod = $sampleMethod;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->sampleMethod->getAll())
-            ->addColumn('name', function($data) {
-                return $data->name;
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.sample-method.column.action', compact('data'));
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->sampleMethod->getAll())
+                ->addColumn('name', function ($data) {
+                    return $data->name;
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.sample-method.column.action', compact('data'));
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
 
         return view('admin.sample-method.index');
@@ -43,11 +43,12 @@ class SampleMethodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', Rule::unique('sample_methods', 'name')->where('is_active', 1)]
+            'name' => ['required', Rule::unique('sample_methods', 'name')->where('is_active', 1)],
         ]);
 
         try {
             $this->sampleMethod->create($request->all());
+
             return redirect()->route('admin.sample-method.index')->with('success', 'Metode Sampling berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()->route('admin.sample-method.index')->with('error', 'Metode Sampling gagal ditambahkan');
@@ -62,18 +63,19 @@ class SampleMethodController extends Controller
     public function edit(string $id)
     {
         return view('admin.sample-method.edit', [
-            'sampleMethod' => $this->sampleMethod->getById($id)
+            'sampleMethod' => $this->sampleMethod->getById($id),
         ]);
     }
 
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => ['required', Rule::unique('sample_methods', 'name')->where('is_active', 1)->ignore($id)]
+            'name' => ['required', Rule::unique('sample_methods', 'name')->where('is_active', 1)->ignore($id)],
         ]);
 
         try {
             $this->sampleMethod->update($id, $request->all());
+
             return redirect()->route('admin.sample-method.index')->with('success', 'Metode Sampling berhasil diubah');
         } catch (\Throwable $th) {
             return redirect()->route('admin.sample-method.index')->with('error', 'Metode Sampling gagal diubah');
@@ -83,9 +85,10 @@ class SampleMethodController extends Controller
     public function destroy(string $id)
     {
         $this->sampleMethod->delete($id);
+
         return response()->json([
             'status' => true,
-            'message' => 'Metode Sampling berhasil dihapus'
+            'message' => 'Metode Sampling berhasil dihapus',
         ]);
     }
 
@@ -97,7 +100,7 @@ class SampleMethodController extends Controller
         foreach ($sampleMethods as $sampleMethod) {
             $arr_data->push([
                 'id' => $sampleMethod->id,
-                'text' => $sampleMethod->name
+                'text' => $sampleMethod->name,
             ]);
         }
 

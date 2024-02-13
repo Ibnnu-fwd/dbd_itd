@@ -10,6 +10,7 @@ class DetailKsh extends Model
     use HasFactory;
 
     public $table = 'detail_ksh';
+
     protected $fillable = [
         'ksh_id',
         'house_name',
@@ -21,7 +22,7 @@ class DetailKsh extends Model
         'created_by',
         'updated_by',
         'is_active',
-        'tpa_description'
+        'tpa_description',
     ];
 
     // RELATION

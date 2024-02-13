@@ -2,19 +2,17 @@
 
 namespace App\Imports;
 
-use App\Models\TCases;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithStartRow;
 use App\Models\District;
 use App\Models\Regency;
+use App\Models\TCases;
 use App\Models\Village;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class TcasesImport implements ToModel, WithStartRow
 {
     /**
-     * @param array $row
-     *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row)
@@ -54,8 +52,6 @@ class TcasesImport implements ToModel, WithStartRow
         }
     }
 
-
-
     // Metode untuk mencari ID distrik berdasarkan nama distrik
     private function getDistrictId($districtName)
     {
@@ -67,6 +63,7 @@ class TcasesImport implements ToModel, WithStartRow
             return $district->id;
         }
     }
+
     private function getRegencyId($RegencyName)
     {
         $RegencyName = strtoupper($RegencyName);
@@ -77,6 +74,7 @@ class TcasesImport implements ToModel, WithStartRow
             return $regency->id;
         }
     }
+
     private function getVillageId($VillageName)
     {
         $VillageName = strtoupper($VillageName);
@@ -87,7 +85,6 @@ class TcasesImport implements ToModel, WithStartRow
             return $village->id;
         }
     }
-
 
     // Tentukan nomor baris awal (baris pertama yang akan diimpor)
     public function startRow(): int

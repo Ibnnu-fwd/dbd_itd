@@ -5,7 +5,7 @@
             @csrf
             <div class="sm:grid grid-cols-2 gap-x-4">
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Sampling</p>
+                    <p class="text-sm font-semibold mb-6">Detail Sampling</p>
                     <x-select id="regency_id" label="Kabupaten/Kota" name="regency_id" isFit="true" required>
                         @foreach ($regencies as $regency)
                             <option value="{{ $regency->id }}">{{ $regency->name }}</option>
@@ -13,10 +13,10 @@
                     </x-select>
                     <x-select id="district_id" label="Kecamatan" name="district_id" isFit="true" required />
                     <x-select id="village_id" label="Desa" name="village_id" isFit="true" required />
-                    <p class="text-xs 2xl:text-sm" id="address"></p>
+                    <p class="text-sm" id="address"></p>
                 </div>
                 <div>
-                    <p class="text-xs 2xl:text-sm font-semibold mb-6">Detail Koordinat</p>
+                    <p class="text-sm font-semibold mb-6">Detail Koordinat</p>
                     <div class="sm:grid grid-cols-2 gap-x-4">
                         <x-input id="latitude" label="Latitude" name="latitude" type="text" required />
                         <x-input id="longitude" label="Longitude" name="longitude" type="text" required />

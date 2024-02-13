@@ -2,17 +2,17 @@
     <x-breadcrumb name="dashboard" />
     <div class="z-0 relative mb-4" style="height: 350px; border-radius: 6px;">
         <!-- Legenda -->
-        <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-xs 2xl:text-sm" style="z-index: 2;">
+        <div class="absolute bottom-0 right-0 p-2 mr-2 mb-2 bg-white shadow text-sm" style="z-index: 2;">
             <h5 class="mb-2 legend-text ">Legend</h5>
             <ul class="list-unstyled">
-            <li>
-                        <span class="legend-color legend-green"></span>
-                        ABJ Normal
-                    </li>
-                    <li>
-                        <span class="legend-color legend-red"></span>
-                        ABJ Tidak Normal
-                    </li>
+                <li>
+                    <span class="legend-color legend-green"></span>
+                    ABJ Normal
+                </li>
+                <li>
+                    <span class="legend-color legend-red"></span>
+                    ABJ Tidak Normal
+                </li>
                 <!-- Tambahkan elemen li sesuai dengan legenda Anda -->
             </ul>
         </div>
@@ -45,7 +45,7 @@
     <div class="xl:grid grid-cols-2 gap-x-4">
         @if ($samplePerYear->count() > 0)
             <x-card-container style="height: 301px">
-                <p class="text-xs 2xl:text-sm font-semibold">
+                <p class="text-sm font-semibold">
                     Statistik Sampel
                 </p>
                 <canvas id="samplePerYear"></canvas>
@@ -60,7 +60,7 @@
                             {{ number_format($usersCount, 0, ',', '.') }}
                         </h5>
                     </a>
-                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Pengguna</p>
+                    <p class="font-normal text-sm text-gray-500">Pengguna</p>
                 </div>
             </div>
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
@@ -71,7 +71,7 @@
                             {{ number_format($totalSample, 0, ',', '.') }}
                         </h5>
                     </a>
-                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Sampel Nyamuk</p>
+                    <p class="font-normal text-sm text-gray-500">Sampel Nyamuk</p>
                 </div>
             </div>
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
@@ -82,7 +82,7 @@
                             {{ number_format($totalMosquito, 0, ',', '.') }}
                         </h5>
                     </a>
-                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Total Nyamuk</p>
+                    <p class="font-normal text-sm text-gray-500">Total Nyamuk</p>
                 </div>
             </div>
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow flex items-center mb-4 md:mb-0">
@@ -93,7 +93,7 @@
                             {{ number_format($totalLarva, 0, ',', '.') }}
                         </h5>
                     </a>
-                    <p class="font-normal text-xs 2xl:text-sm text-gray-500">Total Larva</p>
+                    <p class="font-normal text-sm text-gray-500">Total Larva</p>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
 
     <x-card-container class="mt-8" id="sampleAbjCard" style="height: 410px; max-height: 100%; overflow: hidden">
         <div class="md:flex justify-between items-center">
-            <p class="text-xs 2xl:text-sm font-semibold">
+            <p class="text-sm font-semibold">
                 Data Sampel dan ABJ (%)
             </p>
             <x-select id="regency" name="regency" label="Kabupaten">
@@ -120,13 +120,13 @@
 
         <script>
             function getColor(abj_total) {
-            if (abj_total <= 95) {
-                return '#e74a3b'; // ABJ Sedang
-            } else{
-                return '#1cc88a'; // ABJ Rendah1cc88a
-            } 
+                if (abj_total <= 95) {
+                    return '#e74a3b'; // ABJ Sedang
+                } else {
+                    return '#1cc88a'; // ABJ Rendah1cc88a
+                }
 
-        }
+            }
 
             const map = L.map('map').setView([-7.2756196, 112.7106256], 11.5);
 

@@ -47,6 +47,7 @@ class TCases extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
     // SCOPE
     public function scopeActive($query)
     {

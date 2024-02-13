@@ -20,7 +20,7 @@
                 <form action="{{ route('admin.user.update', auth()->user()->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <p class="text-xs 2xl:text-sm font-semibold mb-4">
+                    <p class="text-sm font-semibold mb-4">
                         Informasi Pribadi
                     </p>
                     <x-input id="name" name="name" type="text" label="Nama Lengkap" :value="auth()->user()->name"
@@ -42,7 +42,7 @@
                 </form>
             </div>
             <div class="col-span-2">
-                <p class="text-xs 2xl:text-sm font-semibold mb-4">
+                <p class="text-sm font-semibold mb-4">
                     Akun Pengguna
                 </p>
                 <form action="{{ route('admin.user.update-user-account', auth()->user()->id) }}" method="POST">

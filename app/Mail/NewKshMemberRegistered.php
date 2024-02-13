@@ -3,10 +3,7 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class NewKshMemberRegistered extends Mailable
@@ -26,7 +23,7 @@ class NewKshMemberRegistered extends Mailable
             ->subject('Anggota Baru KSH')
             ->to($this->credential['email'])
             ->markdown('mail.new-ksh-member-registered', [
-                'credential' => $this->credential
+                'credential' => $this->credential,
             ]);
     }
 }

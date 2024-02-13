@@ -5,7 +5,7 @@
 table,
 th,
 td {
-    @apply text-sm
+    @apply text-sm;
 }
 
 /* datatable thead th font weight normal */
@@ -450,6 +450,15 @@ select option {
     @apply min-h-0;
 }
 
-.leaflet-marker-icon div span, .leaflet-marker-icon div {
-    font-family: 'Lexend Deca', sans-serif;
+.leaflet-marker-icon div span,
+.leaflet-marker-icon div {
+    font-family: "Lexend Deca", sans-serif;
+}
+
+.dtr-details li {
+    @apply text-xs;
+}
+
+.dtr-title {
+    @apply font-normal;
 }

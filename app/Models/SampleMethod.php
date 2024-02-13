@@ -10,9 +10,10 @@ class SampleMethod extends Model
     use HasFactory;
 
     public $table = 'sample_methods';
+
     protected $fillable = [
         'name',
-        'is_active'
+        'is_active',
     ];
 
     // SCOPES
