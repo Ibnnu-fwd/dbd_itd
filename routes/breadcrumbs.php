@@ -409,8 +409,12 @@ Breadcrumbs::for('tcases.create', function (BreadcrumbTrail $trail) {
 // ------------- Cluster ----------
 Breadcrumbs::for('cluster.index', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push('Cluster');
-    $trail->push('Sampel');
+    $trail->push('Sampel Data Klaster');
+});
+
+Breadcrumbs::for('cluster.distance', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Eucledian Distance');
 });
 
 Breadcrumbs::for('cluster.clustering', function (BreadcrumbTrail $trail) {

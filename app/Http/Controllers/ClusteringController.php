@@ -100,14 +100,41 @@ class ClusteringController extends Controller
         }
     }
 
-    public function clustering()
+    public function distance()
     {
         $samples = Cluster::all();
 
-        $result = $this->operation->doingAllProcess($samples);
+        $distances = $this->operation->calculateDistance($samples);
+
+        return view('admin.cluster.distance', [
+            'distances' => $distances,
+        ]);
+    }
+
+    public function clustering()
+    {
+        $dataset = Cluster::all();
+        $cluster = $this->operation->processCluster($dataset->map(function ($item) {
+            return [
+                $item->latitude,
+                $item->longitude,
+            ];
+        })->toArray(), 0.002839, 1);
+
+        // append each cluster with informtion from dataset
+        foreach ($cluster as $key => $value) {
+            $cluster[$key] = collect($value)->map(function ($item) use ($dataset) {
+                return $dataset->where('latitude', $item[0])->where('longitude', $item[1])->first();
+            })->toArray();
+
+            // append cluster number
+            foreach ($cluster[$key] as $k => $v) {
+                $cluster[$key][$k]['cluster'] = $key;
+            }
+        }
 
         return view('admin.cluster.clustering', [
-            'distances' => $result['distance'],
+            'cluster' => $cluster,
         ]);
     }
 }

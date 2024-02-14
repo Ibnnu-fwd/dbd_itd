@@ -139,7 +139,7 @@
                     id: 'mapbox/light-v11',
                     tileSize: 512,
                     zoomOffset: -1,
-                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                    accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3FobmIwYXZqM3Fsd2NndnFhM3N5In0.uC04E9g0UXy6uRTOcNN80w',
                 }
             ).addTo(map);
 

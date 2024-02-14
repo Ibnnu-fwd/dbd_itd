@@ -4,5 +4,6 @@ namespace App\Repositories\Interface;
 
 interface ClusteringInterface
 {
-    public function doingAllProcess($dataset);
+    public function calculateDistance($dataset);
+    public function processCluster($dataset, $epsilon, $minSamples);
 }

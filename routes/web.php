@@ -184,7 +184,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // Cluster
     Route::get('cluster', [ClusteringController::class, 'index'])->name('admin.cluster.index');
     Route::post('cluster/import', [ClusteringController::class, 'import'])->name('admin.cluster.import');
+    Route::get('cluster/distance', [ClusteringController::class, 'distance'])->name('admin.cluster.distance');
     Route::get('cluster/clustering', [ClusteringController::class, 'clustering'])->name('admin.cluster.clustering');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -462,3 +462,7 @@ select option {
 .dtr-title {
     @apply font-normal;
 }
+
+.custom-icon {
+    @apply w-5 h-5;
+}
