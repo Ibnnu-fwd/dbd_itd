@@ -101,7 +101,7 @@
                         id: 'mapbox/light-v11',
                         tileSize: 512,
                         zoomOffset: -1,
-                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                        accessToken: '{{ env('MAPBOX_TOKEN') }}',
                     }
                 ).addTo(map);
 
@@ -249,7 +249,7 @@
                         icon: 'success',
                         title: 'Berhasil',
                         text: '{{ Session::get('
-                                        success ') }}',
+                                                                success ') }}',
                     });
                 @endif
 
@@ -258,7 +258,7 @@
                         icon: 'error',
                         title: 'Gagal',
                         text: '{{ Session::get('
-                                        error ') }}',
+                                                                error ') }}',
                     });
                 @endif
             });

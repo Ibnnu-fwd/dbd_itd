@@ -193,7 +193,7 @@
                         id: 'mapbox/light-v11',
                         tileSize: 512,
                         zoomOffset: -1,
-                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                        accessToken: '{{ env('MAPBOX_TOKEN') }}',
                     }
                 ).addTo(map);
 

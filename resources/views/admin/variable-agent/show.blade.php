@@ -106,7 +106,7 @@
                         id: 'mapbox/light-v11',
                         tileSize: 512,
                         zoomOffset: -1,
-                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                        accessToken: '{{ env('MAPBOX_TOKEN') }}',
                     }
                 ).addTo(map);
 
@@ -260,7 +260,7 @@
                                         id: 'mapbox/light-v11',
                                         tileSize: 512,
                                         zoomOffset: -1,
-                                        accessToken: 'pk.eyJ1IjoiaWJudTIyMDQyMiIsImEiOiJjbGltd3BkdnowMGpsM3JveGVteG52NWptIn0.Ficg1JfyGMJHRgnU48gDdg',
+                                        accessToken: '{{ env('MAPBOX_TOKEN') }}',
                                     }
                                 ).addTo(map);
 
@@ -314,12 +314,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                                        <tr>
-                                                                                            <td>${type.name}</td>
-                                                                                            <td>:</td>
-                                                                                            <td>${type.amount}</td>
-                                                                                        </tr>
-                                                                                    `;
+                                                                                                <tr>
+                                                                                                    <td>${type.name}</td>
+                                                                                                    <td>:</td>
+                                                                                                    <td>${type.amount}</td>
+                                                                                                </tr>
+                                                                                            `;
                                                         }).join('')
                                                     }
                                                 </table>
@@ -442,12 +442,12 @@
                                                     ${
                                                         sample.type.map(type => {
                                                             return `
-                                                                                        <tr>
-                                                                                            <td>${type.name}</td>
-                                                                                            <td>:</td>
-                                                                                            <td>${type.amount}</td>
-                                                                                        </tr>
-                                                                                    `;
+                                                                                                <tr>
+                                                                                                    <td>${type.name}</td>
+                                                                                                    <td>:</td>
+                                                                                                    <td>${type.amount}</td>
+                                                                                                </tr>
+                                                                                            `;
                                                         }).join('')
                                                     }
                                                 </table>
