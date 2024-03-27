@@ -466,3 +466,13 @@ select option {
 .custom-icon {
     @apply w-5 h-5;
 }
+
+.dataTables_filter label,
+.dataTables_length label,
+.dataTables_info a,
+.dataTables_paginate a {
+    @apply text-xs;
+}
+.dataTable * {
+    @apply text-xs;
+}

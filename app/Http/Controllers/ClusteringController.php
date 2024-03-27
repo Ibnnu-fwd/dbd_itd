@@ -111,15 +111,43 @@ class ClusteringController extends Controller
         ]);
     }
 
-    public function clustering()
+    public function clustering(Request $request)
     {
+
+        if ($request->ajax()) {
+            $epsilon = $request['epsilon'];
+            $minPts = $request['minPts'];
+
+            $dataset = Cluster::all();
+            $cluster = $this->operation->processCluster($dataset->map(function ($item) {
+                return [
+                    $item->latitude,
+                    $item->longitude,
+                ];
+            })->toArray(),  $epsilon, $minPts);
+
+            // append each cluster with informtion from dataset
+            foreach ($cluster as $key => $value) {
+                $cluster[$key] = collect($value)->map(function ($item) use ($dataset) {
+                    return $dataset->where('latitude', $item[0])->where('longitude', $item[1])->first();
+                })->toArray();
+
+                // append cluster number
+                foreach ($cluster[$key] as $k => $v) {
+                    $cluster[$key][$k]['cluster'] = $key;
+                }
+            }
+
+            return response()->json($cluster);
+        }
+
         $dataset = Cluster::all();
         $cluster = $this->operation->processCluster($dataset->map(function ($item) {
             return [
                 $item->latitude,
                 $item->longitude,
             ];
-        })->toArray(), 0.002839, 1);
+        })->toArray(),  0.002839, 1);
 
         // append each cluster with informtion from dataset
         foreach ($cluster as $key => $value) {
