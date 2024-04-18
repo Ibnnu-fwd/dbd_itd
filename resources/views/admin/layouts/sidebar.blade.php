@@ -47,8 +47,8 @@
                     active="{{ request()->routeIs('admin.cluster.*') }}">
                     <x-sidebar-item title="Sampel" route="{{ route('admin.cluster.index') }}"
                         active="{{ request()->routeIs('admin.cluster.index') }}" />
-                    <x-sidebar-item title="Jarak" route="{{ route('admin.cluster.distance') }}"
-                        active="{{ request()->routeIs('admin.cluster.distance') }}" />
+                    {{-- <x-sidebar-item title="Jarak" route="{{ route('admin.cluster.distance') }}"
+                        active="{{ request()->routeIs('admin.cluster.distance') }}" /> --}}
                     <x-sidebar-item title="Klasterisasi" route="{{ route('admin.cluster.clustering') }}"
                         active="{{ request()->routeIs('admin.cluster.clustering') }}" />
                 </x-sidebar-dropdown>

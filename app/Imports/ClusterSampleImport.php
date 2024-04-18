@@ -4,12 +4,19 @@ namespace App\Imports;
 
 use App\Models\Cluster;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class ClusterSampleImport implements ToModel, WithStartRow, WithValidation
+class ClusterSampleImport implements ToModel, WithStartRow, WithValidation, WithMultipleSheets
 {
+    public function sheets(): array
+    {
+        return [
+            0 => $this,
+        ];
+    }
     public function startRow(): int
     {
         return 2;
@@ -48,11 +55,11 @@ class ClusterSampleImport implements ToModel, WithStartRow, WithValidation
     public function sumColumnValue($row, $column)
     {
         $value = 0;
-        if (isset($row[$column]) || ! empty($row[$column]) || $row[$column] == '0') {
+        if (isset($row[$column]) || !empty($row[$column]) || $row[$column] == '0') {
             if (is_numeric($row[$column])) {
                 $value = $row[$column];
             } else {
-                $value = array_sum(explode('+', str_replace('=', '', $row[$column])));
+                $value = array_sum(array_map('intval', explode('+', str_replace('=', '', $row[$column]))));
             }
         }
 
@@ -71,7 +78,14 @@ class ClusterSampleImport implements ToModel, WithStartRow, WithValidation
             return null;
         }
 
+        $sampleCode = '';
+        if ($date) {
+            $sampleCode = 'SPL-' . $date->format('dmy');
+        }
+
+
         return new Cluster([
+            'sample_code' => $sampleCode,
             'date' => $date,
             'province' => 'Surabaya', // TODO: lengkapi dataset terlebih dahulu
             'regency' => null, // TODO: lengkapi dataset terlebih dahulu

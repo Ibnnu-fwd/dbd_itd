@@ -42,6 +42,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Kode</th>
                     <th>Provinsi</th>
                     <th>Kecamatan</th>
                     <th>Desa</th>
@@ -106,6 +107,10 @@
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'code',
+                            name: 'code'
                         },
                         {
                             data: 'province',

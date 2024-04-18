@@ -10,6 +10,7 @@ class Cluster extends Model
     use HasFactory;
 
     protected $fillable = [
+        'sample_code',
         'date',
         'province',
         'regency',

@@ -24,6 +24,9 @@ class ClusteringController extends Controller
             $data = Cluster::all();
 
             return datatables()->of($data)
+                ->addColumn('code', function ($data) {
+                    return $data->sample_code;
+                })
                 ->addColumn('province', function ($data) {
                     return $data->province;
                 })

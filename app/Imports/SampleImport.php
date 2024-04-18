@@ -287,7 +287,7 @@ class SampleImport implements ToModel, WithChunkReading, WithMultipleSheets, Wit
         $lastSample = Sample::orderBy('id', 'desc')->first();
         $lastId = $lastSample ? $lastSample->id : 0;
         $year = date('Y');
-        $code = 'SC-'.$year.'-'.sprintf('%04s', $lastId + 1);
+        $code = 'SC-' . $year . '-' . sprintf('%04s', $lastId + 1);
 
         return $code;
     }
@@ -295,7 +295,7 @@ class SampleImport implements ToModel, WithChunkReading, WithMultipleSheets, Wit
     public function province($province)
     {
         $province = strtoupper($province);
-        $province = Province::where('name', 'like', '%'.$province.'%')->first();
+        $province = Province::where('name', 'like', '%' . $province . '%')->first();
 
         return $province->id;
     }
@@ -303,7 +303,7 @@ class SampleImport implements ToModel, WithChunkReading, WithMultipleSheets, Wit
     public function regency($regency)
     {
         $regency = strtoupper($regency);
-        $regency = Regency::where('name', 'like', '%'.$regency.'%')->first();
+        $regency = Regency::where('name', 'like', '%' . $regency . '%')->first();
 
         return $regency->id ?? null;
     }
@@ -311,7 +311,7 @@ class SampleImport implements ToModel, WithChunkReading, WithMultipleSheets, Wit
     public function district($param)
     {
         $param = strtoupper($param);
-        $district = District::where('name', 'like', '%'.$param.'%')->first();
+        $district = District::where('name', 'like', '%' . $param . '%')->first();
 
         return $district->id ?? null;
     }
@@ -340,7 +340,7 @@ class SampleImport implements ToModel, WithChunkReading, WithMultipleSheets, Wit
     public function locationType($param)
     {
         $param = strtoupper($param);
-        $locationType = LocationType::where('name', 'like', '%'.$param.'%')->first();
+        $locationType = LocationType::where('name', 'like', '%' . $param . '%')->first();
         if ($locationType == null) {
             $locationType = LocationType::create([
                 'name' => $param,
