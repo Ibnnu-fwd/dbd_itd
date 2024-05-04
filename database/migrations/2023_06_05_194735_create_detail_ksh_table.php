@@ -16,12 +16,12 @@ return new class extends Migration
             $table->foreignId('ksh_id')->nullable()->constrained('ksh');
             $table->string('house_name');
             $table->string('house_owner');
+            $table->text('tpa_description');
             $table->foreignId('tpa_type_id')->nullable()->constrained('tpa_types');
             $table->boolean('larva_status');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->boolean('is_active')->default(true);
-            $table->text('tpa_description')->change();
             $table->timestamps();
         });
     }

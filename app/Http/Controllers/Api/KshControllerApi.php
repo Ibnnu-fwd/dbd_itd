@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Abj;
 use App\Models\DetailKsh;
 use App\Models\Ksh;
+use App\Models\Village;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KshControllerApi extends Controller
 {
+
     public function index()
     {
         // Retrieve Ksh data
@@ -29,96 +32,106 @@ class KshControllerApi extends Controller
         });
 
         // Return the modified $abjData as JSON response
-        return response()->json($abjData, 200);
+        return response()->json(['locations' => $abjData], 200);
     }
 
     public function show($id)
     {
         $ksh = Ksh::find($id);
 
-        if (! $ksh) {
+        if (!$ksh) {
             return response()->json(['message' => 'Ksh not found'], 404);
         }
 
         return response()->json($ksh, 200);
     }
 
-    // public function store(Request $request)
-    // {
-    //     // Menerima data dari permintaan
-    //     $data = $request->all();
-
-    //     // Membuat entri baru dalam model "DetailKsh" menggunakan atribut-atribut yang telah Anda tentukan dalam $fillable
-    //     $detailKsh = new DetailKsh();
-    //     $detailKsh->fill($data); // Mengisi model dengan data dari permintaan
-
-    //     // Menyimpan model "DetailKsh" ke dalam database
-    //     $detailKsh->save();
-
-    //     // Mengembalikan respons JSON dengan status 200
-    //     return response()->json(200);
-    // }
-
     public function store(Request $request)
     {
-        // Data dummy
-        $data = [
-            'ksh_id' => 1, // ID "Ksh" yang sesuai
-            'house_name' => 'rumah a',
-            'house_owner' => 'rumah a',
-            'latitude' => '-7.276153', // Koordinat latitude
-            'longitude' => '112.788692', // Koordinat longitude
-            'tpa_type_id' => 1, // ID jenis TPA yang sesuai
-            'larva_status' => 1, // Status larva
-            'created_by' => 1, // ID pengguna yang membuat entri
-            'updated_by' => 1, // ID pengguna yang memperbarui entri
-            'is_active' => 1, // Status aktif
-            'tpa_description' => 'bakmandi',
-        ];
-        $datakecamatan = [
-            'latitude' => '-7.276153', // Koordinat latitude
-            'longitude' => '112.788692', // Koordinat longitude
-            'regency_id' => 3578,
-            'district_id' => 3578090,
-            'village_id' => 3578090006,
-            'created_by' => 1,
-            'updated_by',
-            'is_active' => 1,
-        ];
-        $dataabj = [
-            'district_id' => 3578090,
-            'village_id' => 3578090006,
-            'ksh_id' => 1,
-            'abj_total' => 10,
-            'created_by' => 1,
-            'updated_by',
-            'is_active' => 1,
-        ];
-        // Membuat entri baru dalam model "DetailKsh" menggunakan atribut-atribut dari data dummy
-        $detailKsh = new DetailKsh();
-        $detailKsh->fill($data); // Mengisi model dengan data dummy
+        $validatedData = $request->validate([
+            'regency_id' => ['required'],
+            'district_id' => ['required'],
+            'village_id' => ['required'],
+            'latitude' => ['required'],
+            'longitude' => ['required'],
+            'house_name' => ['required'],
+            'house_owner' => ['required'],
+            'tpa_type_id' => ['required'],
+            'larva_status' => ['required'],
+            'tpa_description' => ['required'],
+        ]);
 
-        // Menyimpan model "DetailKsh" ke dalam database
-        $detailKsh->save();
+        // Cek apakah Ksh dengan district_id yang sama sudah ada
+        $ksh = Ksh::where('village_id', $validatedData['village_id'])->first();
 
-        $ksh = new Ksh();
-        $ksh->fill($datakecamatan);
+        if ($ksh) {
+            // Jika Ksh sudah ada, tambahkan DetailKsh ke Ksh yang sudah ada
+            $detailKsh = $ksh->detailKsh()->create([
+                'house_name' => $validatedData['house_name'],
+                'house_owner' => $validatedData['house_owner'],
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
+                'tpa_type_id' => $validatedData['tpa_type_id'],
+                'larva_status' => $validatedData['larva_status'],
+                'created_by' => 1,
+                'is_active' => true,
+                'tpa_description' => $validatedData['tpa_description'],
+            ]);
+        } else {
+            // Jika Ksh belum ada, buat Ksh baru dan tambahkan DetailKsh ke Ksh baru
+            $newKsh = Ksh::create([
+                'regency_id' => $validatedData['regency_id'],
+                'district_id' => $validatedData['district_id'],
+                'village_id' => $validatedData['village_id'],
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
+                'created_by' => 1,
+            ]);
 
-        $ksh->save();
-        $abj = new Abj();
-        $abj->fill($dataabj);
+            if ($newKsh) {
+                $detailKsh = $newKsh->detailKsh()->create([
+                    'house_name' => $validatedData['house_name'],
+                    'house_owner' => $validatedData['house_owner'],
+                    'latitude' => $validatedData['latitude'],
+                    'longitude' => $validatedData['longitude'],
+                    'tpa_type_id' => $validatedData['tpa_type_id'],
+                    'larva_status' => $validatedData['larva_status'],
+                    'created_by' => 1,
+                    'is_active' => true,
+                    'tpa_description' => $validatedData['tpa_description'],
+                ]);
+            }
+        }
 
-        $abj->save();
+        // Hitung jumlah DetailKsh untuk Ksh yang terkait
+        $countData = DetailKsh::where('ksh_id', $detailKsh->ksh_id)->count();
+        $countNegatif = DetailKsh::where('ksh_id', $detailKsh->ksh_id)->where('larva_status', 0)->count();
 
-        // Mengembalikan respons JSON dengan status 200
-        return response()->json(200);
+        // Update atau buat Abj terkait
+        if ($countData > 0) {
+            $abjTotal = ($countNegatif / $countData) * 100;
+
+            $abj = Abj::updateOrCreate(
+                ['ksh_id' => $detailKsh->ksh_id],
+                [
+                    'regency_id' => $detailKsh->ksh->regency_id ?? null,
+                    'district_id' => $detailKsh->ksh->district_id ?? null,
+                    'village_id' => $detailKsh->ksh->village_id ?? null,
+                    'abj_total' => $abjTotal
+                ]
+            );
+        }
+
+        return response()->json([
+            'message' => 'DetailKsh berhasil ditambahkan untuk Ksh yang sudah ada.',
+        ], 200);
     }
 
     public function update(Request $request, $id)
     {
         $ksh = Ksh::find($id);
 
-        if (! $ksh) {
+        if (!$ksh) {
             return response()->json(['message' => 'Ksh not found'], 404);
         }
 
@@ -142,7 +155,7 @@ class KshControllerApi extends Controller
     {
         $ksh = Ksh::find($id);
 
-        if (! $ksh) {
+        if (!$ksh) {
             return response()->json(['message' => 'Ksh not found'], 404);
         }
 

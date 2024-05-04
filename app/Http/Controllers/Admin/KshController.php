@@ -99,7 +99,7 @@ class KshController extends Controller
 
         try {
             $this->ksh->create($request->all());
-
+            
             return redirect()->route('admin.ksh.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());

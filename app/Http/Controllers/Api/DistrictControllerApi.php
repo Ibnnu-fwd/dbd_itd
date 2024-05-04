@@ -23,14 +23,16 @@ class DistrictControllerApi extends Controller
 
     public function show($id)
     {
-        $district = District::find($id);
+        // Find the district based on the regency_id
+        $district = District::where('regency_id', $id)->get();
 
-        if (! $district) {
+        if (!$district) {
             return response()->json(['message' => 'District not found'], 404);
         }
 
         return response()->json($district);
     }
+
 
     public function search(Request $request)
     {
